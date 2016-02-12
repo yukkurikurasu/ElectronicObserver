@@ -91,6 +91,11 @@ namespace ElectronicObserver.Utility {
 
 		public IDDictionary<SoundHandle> Handles { get; internal set; }
 		public bool Enabled;
+		public bool IsMute {
+			get { return _mp.IsMute; }
+			set { _mp.IsMute = value; }
+		}
+
 		private MediaPlayer _mp;
 		private bool _isBoss;
 
@@ -98,6 +103,10 @@ namespace ElectronicObserver.Utility {
 		public SyncBGMPlayer() {
 
 			_mp = new MediaPlayer();
+
+			if ( !_mp.IsAvailable )
+				Utility.Logger.Add( 3, "Windows Media Player のロードに失敗しました。音声の再生はできません。" );
+
 			_mp.AutoPlay = false;
 
 			_isBoss = false;
@@ -130,6 +139,8 @@ namespace ElectronicObserver.Utility {
 
 			o["api_req_sortie/airbattle"].ResponseReceived += PlayBattleAir;
 			o["api_req_combined_battle/airbattle"].ResponseReceived += PlayBattleAir;
+			o["api_req_sortie/ld_airbattle"].ResponseReceived += PlayBattleAir;
+			o["api_req_combined_battle/ld_airbattle"].ResponseReceived += PlayBattleAir;
 
 			o["api_req_practice/battle"].ResponseReceived += PlayPracticeDay;
 
@@ -163,6 +174,9 @@ namespace ElectronicObserver.Utility {
 			if ( c.Handles != null )
 				Handles = new IDDictionary<SoundHandle>( c.Handles );
 
+			if ( !c.SyncBrowserMute )
+				IsMute = false;
+
 			// 設定変更を適用するためいったん閉じる
 			_mp.Close();
 		}
@@ -172,6 +186,11 @@ namespace ElectronicObserver.Utility {
 
 			c.Enabled = Enabled;
 			c.Handles = Handles.Values.ToList();
+		}
+
+
+		public void SetInitialVolume( int volume ) {
+			_mp.Volume = volume;
 		}
 
 

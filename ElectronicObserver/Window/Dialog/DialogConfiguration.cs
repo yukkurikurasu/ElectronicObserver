@@ -317,7 +317,7 @@ namespace ElectronicObserver.Window.Dialog {
 			Life_ShowStatusBar.Checked = config.Life.ShowStatusBar;
 			Life_ClockFormat.SelectedIndex = config.Life.ClockFormat;
 			Life_AutoScaleDpi.Checked = config.UI.AutoScaleDpi;
-			Life_LockLayout.Checked = config.Life.LockLayout;
+			Life_LockLayout.Checked = config.Life.IsLocked;
 			Life_CanCloseFloatWindowInLock.Checked = config.Life.CanCloseFloatWindowInLock;
 
 			//[サブウィンドウ]
@@ -394,6 +394,8 @@ namespace ElectronicObserver.Window.Dialog {
 			FormBrowser_FlashQuality.Text = config.FormBrowser.FlashQuality;
 			FormBrowser_FlashWMode.Text = config.FormBrowser.FlashWmode;
 
+			FormCompass_CandidateDisplayCount.Value = config.FormCompass.CandidateDisplayCount;
+
 			// [缓存]
 			textCacheFolder.Text = config.CacheSettings.CacheFolder;
 			checkCache.Checked = config.CacheSettings.CacheEnabled;
@@ -401,6 +403,7 @@ namespace ElectronicObserver.Window.Dialog {
 			//[BGM]
 			BGMPlayer_Enabled.Checked = config.BGMPlayer.Enabled;
 			BGMHandles = config.BGMPlayer.Handles.ToDictionary( h => h.HandleID );
+			BGMPlayer_SyncBrowserMute.Checked = config.BGMPlayer.SyncBrowserMute;
 			UpdateBGMPlayerUI();
 
 			//finalize
@@ -521,7 +524,7 @@ namespace ElectronicObserver.Window.Dialog {
 			config.Life.ShowStatusBar = Life_ShowStatusBar.Checked;
 			config.Life.ClockFormat = Life_ClockFormat.SelectedIndex;
 			config.UI.AutoScaleDpi = Life_AutoScaleDpi.Checked;
-			config.Life.LockLayout = Life_LockLayout.Checked;
+			config.Life.IsLocked = Life_LockLayout.Checked;
 			config.Life.CanCloseFloatWindowInLock = Life_CanCloseFloatWindowInLock.Checked;
 
 			//[サブウィンドウ]
@@ -556,11 +559,15 @@ namespace ElectronicObserver.Window.Dialog {
 			config.FormBrowser.FlashQuality = FormBrowser_FlashQuality.Text;
 			config.FormBrowser.FlashWmode = FormBrowser_FlashWMode.Text;
 
+			config.FormCompass.CandidateDisplayCount = (int)FormCompass_CandidateDisplayCount.Value;
 
 			//[BGM]
 			config.BGMPlayer.Enabled = BGMPlayer_Enabled.Checked;
+			for ( int i = 0; i < BGMPlayer_ControlGrid.Rows.Count; i++ ) {
+				BGMHandles[(SyncBGMPlayer.SoundHandleID)BGMPlayer_ControlGrid[BGMPlayer_ColumnContent.Index, i].Value].Enabled = (bool)BGMPlayer_ControlGrid[BGMPlayer_ColumnEnabled.Index, i].Value;
+			}
 			config.BGMPlayer.Handles = new List<SyncBGMPlayer.SoundHandle>( BGMHandles.Values.ToList() );
-
+			config.BGMPlayer.SyncBrowserMute = BGMPlayer_SyncBrowserMute.Checked;
 			// [缓存]
 			if (checkCache.Checked)
 			{
@@ -593,6 +600,8 @@ namespace ElectronicObserver.Window.Dialog {
 			}
 
 			BGMPlayer_ControlGrid.Rows.AddRange( rows );
+
+			BGMPlayer_VolumeAll.Value = (int)BGMHandles.Values.Average( h => h.Volume );
 		}
 
 

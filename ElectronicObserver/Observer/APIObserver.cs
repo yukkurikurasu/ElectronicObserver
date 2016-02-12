@@ -96,6 +96,8 @@ namespace ElectronicObserver.Observer {
 			APIList.Add( new kcsapi.api_get_member.record() );
 			APIList.Add( new kcsapi.api_get_member.payitem() );
 			APIList.Add( new kcsapi.api_req_kousyou.remodel_slotlist() );
+			APIList.Add( new kcsapi.api_req_sortie.ld_airbattle() );
+			APIList.Add( new kcsapi.api_req_combined_battle.ld_airbattle() );
 
 			APIList.Add( new kcsapi.api_req_quest.clearitemget() );
 			APIList.Add( new kcsapi.api_req_nyukyo.start() );
@@ -171,8 +173,8 @@ namespace ElectronicObserver.Observer {
 
 			Utility.Logger.Add( 2, "APIObserver: 监听终止。" );
 
-			if ( Utility.Configuration.Config.CacheSettings.CacheEnabled )
-				Cache.SaveCacheList();
+			//if ( Utility.Configuration.Config.CacheSettings.CacheEnabled )
+				//Cache.SaveCacheList();
 		}
 
 
