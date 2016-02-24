@@ -179,6 +179,7 @@
     <Compile Include="Observer\kcsapi\api_req_sortie\ld_airbattle.cs" />
     <Compile Include="Resource\ImageCollection.cs" />
     <Compile Include="Resource\Record\ResourceRecord.cs" />
+    <Compile Include="Utility\Data\Calculator.cs" />
     <Compile Include="Utility\SyncBGMPlayer.cs" />
     <Compile Include="Utility\MediaPlayer.cs" />
     <Compile Include="Utility\Modify\ModifyConfiguration.cs" />
@@ -441,7 +442,6 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Utility\Data\Calculator.cs" />
     <Compile Include="Window\FormShipGroup.cs">
       <SubType>Form</SubType>
     </Compile>
