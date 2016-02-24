@@ -169,7 +169,16 @@ namespace ElectronicObserver.Resource.Record {
 							battle.BattleDay.Searching.FormationEnemy,
 							battle.BattleDay.Initial.EnemyMembers,
 							baseExp );
-
+                    case BattleManager.BattleModes.AirRaid:
+                        return new EnemyFleetElement(
+                            fleetName,
+                            battle.Compass.MapAreaID,
+                            battle.Compass.MapInfoID,
+                            battle.Compass.Destination,
+                            battle.Compass.MapInfo.EventDifficulty,
+                            battle.BattleDay.Searching.FormationEnemy,
+                            battle.BattleDay.Initial.EnemyMembers,
+                            baseExp);
 					case BattleManager.BattleModes.NightOnly:
 					case BattleManager.BattleModes.NightDay:
 						return new EnemyFleetElement(

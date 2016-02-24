@@ -283,8 +283,9 @@ namespace ElectronicObserver.Window.Dialog {
 
 
 			//装備画像を読み込んでみる
-			{
-				string path = string.Format( @"{0}\\resources\\image\\slotitem\\card\\{1:D3}.png", Utility.Configuration.Config.Connection.SaveDataPath, equipmentID );
+            {
+				//string path = string.Format( @"{0}\\resources\\image\\slotitem\\card\\{1:D3}.png", Utility.Configuration.Config.Connection.SaveDataPath, equipmentID );
+                string path = string.Format(@"{0}\\kcs\\resources\\image\\slotitem\\card\\{1:D3}.png", Utility.Configuration.Config.CacheSettings.CacheFolder, equipmentID);
 				if ( File.Exists( path ) ) {
 					try {
 
