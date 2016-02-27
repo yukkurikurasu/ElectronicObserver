@@ -42,6 +42,8 @@
 			this.colorEliteColor = new ElectronicObserver.Window.Control.ColorPicker();
 			this.colorFlagshipColor = new ElectronicObserver.Window.Control.ColorPicker();
 			this.colorLateModelColor = new ElectronicObserver.Window.Control.ColorPicker();
+			this.colorLateModelEliteColor = new ElectronicObserver.Window.Control.ColorPicker();
+			this.colorLateModelFlagshipColor = new ElectronicObserver.Window.Control.ColorPicker();
 			this.tabPageColorHp = new System.Windows.Forms.TabPage();
 			this.colorHp0Color = new ElectronicObserver.Window.Control.ColorPicker();
 			this.colorHp25Color = new ElectronicObserver.Window.Control.ColorPicker();
@@ -148,6 +150,9 @@
 			this.FormFleet_SearchingAbilityMethod = new System.Windows.Forms.ComboBox();
 			this.label13 = new System.Windows.Forms.Label();
 			this.FormFleet_ShowAircraft = new System.Windows.Forms.CheckBox();
+			this.tabPage18 = new System.Windows.Forms.TabPage();
+			this.FormCompass_CandidateDisplayCount = new System.Windows.Forms.NumericUpDown();
+			this.label2 = new System.Windows.Forms.Label();
 			this.tabPage13 = new System.Windows.Forms.TabPage();
 			this.FormShipGroup_ShowStatusBar = new System.Windows.Forms.CheckBox();
 			this.FormShipGroup_AutoUpdate = new System.Windows.Forms.CheckBox();
@@ -205,9 +210,7 @@
 			((System.ComponentModel.ISupportInitialize)(this.numericHpBackgroundOffset)).BeginInit();
 			this.tabPageColorFleet.SuspendLayout();
 			this.tabPageColorQuest.SuspendLayout();
-			this.tabPage18 = new System.Windows.Forms.TabPage();
-			this.FormCompass_CandidateDisplayCount = new System.Windows.Forms.NumericUpDown();
-			this.label2 = new System.Windows.Forms.Label();
+			this.Debug_AlertOnError = new System.Windows.Forms.CheckBox();
 			this.tabControl1.SuspendLayout();
 			this.tabPage1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.Connection_UpstreamProxyPort)).BeginInit();
@@ -223,6 +226,8 @@
 			this.tabPage7.SuspendLayout();
 			this.tabControl2.SuspendLayout();
 			this.tabPage8.SuspendLayout();
+			this.tabPage18.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.FormCompass_CandidateDisplayCount)).BeginInit();
 			this.tabPage13.SuspendLayout();
 			this.tabPage12.SuspendLayout();
 			this.groupBox3.SuspendLayout();
@@ -233,8 +238,6 @@
 			this.tabPage17.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.BGMPlayer_VolumeAll)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.BGMPlayer_ControlGrid)).BeginInit();
-			this.tabPage18.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.FormCompass_CandidateDisplayCount)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// tabControl1
@@ -560,6 +563,8 @@
 			this.tabPageColorBattle.Controls.Add(this.colorLateModelColor);
 			this.tabPageColorBattle.Controls.Add(this.colorFlagshipColor);
 			this.tabPageColorBattle.Controls.Add(this.colorEliteColor);
+			this.tabPageColorBattle.Controls.Add(this.colorLateModelEliteColor);
+			this.tabPageColorBattle.Controls.Add(this.colorLateModelFlagshipColor);
 			this.tabPageColorBattle.Controls.Add(this.colorFailedColor);
 			this.tabPageColorBattle.Location = new System.Drawing.Point(4, 24);
 			this.tabPageColorBattle.Name = "tabPageColorBattle";
@@ -680,6 +685,24 @@
 			this.colorFlagshipColor.Size = new System.Drawing.Size(200, 23);
 			this.colorFlagshipColor.TabIndex = 2;
 			this.colorFlagshipColor.Text = "Flagship：";
+			// 
+			// colorLateModelEliteColor
+			// 
+			this.colorLateModelEliteColor.Location = new System.Drawing.Point(228, 35);
+			this.colorLateModelEliteColor.MinimumSize = new System.Drawing.Size(190, 23);
+			this.colorLateModelEliteColor.Name = "colorLateModelEliteColor";
+			this.colorLateModelEliteColor.Size = new System.Drawing.Size(200, 23);
+			this.colorLateModelEliteColor.TabIndex = 4;
+			this.colorLateModelEliteColor.Text = "后期Elite：";
+			// 
+			// colorLateModelFlagshipColor
+			// 
+			this.colorLateModelFlagshipColor.Location = new System.Drawing.Point(228, 64);
+			this.colorLateModelFlagshipColor.MinimumSize = new System.Drawing.Size(190, 23);
+			this.colorLateModelFlagshipColor.Name = "colorLateModelFlagshipColor";
+			this.colorLateModelFlagshipColor.Size = new System.Drawing.Size(200, 23);
+			this.colorLateModelFlagshipColor.TabIndex = 5;
+			this.colorLateModelFlagshipColor.Text = "后期Flagship：";
 			// 
 			// colorLateModelColor
 			// 
@@ -1320,10 +1343,10 @@
 			this.tabPage6.Controls.Add(this.label14);
 			this.tabPage6.Controls.Add(this.Life_TopMost);
 			this.tabPage6.Controls.Add(this.Life_ConfirmOnClosing);
-			this.tabPage6.Location = new System.Drawing.Point(4, 44);
+			this.tabPage6.Location = new System.Drawing.Point(4, 24);
 			this.tabPage6.Name = "tabPage6";
 			this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage6.Size = new System.Drawing.Size(456, 233);
+			this.tabPage6.Size = new System.Drawing.Size(456, 253);
 			this.tabPage6.TabIndex = 5;
 			this.tabPage6.Text = "窗口";
 			this.tabPage6.UseVisualStyleBackColor = true;
@@ -1456,10 +1479,10 @@
 			// tabPage7
 			// 
 			this.tabPage7.Controls.Add(this.tabControl2);
-			this.tabPage7.Location = new System.Drawing.Point(4, 44);
+			this.tabPage7.Location = new System.Drawing.Point(4, 24);
 			this.tabPage7.Name = "tabPage7";
 			this.tabPage7.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage7.Size = new System.Drawing.Size(456, 233);
+			this.tabPage7.Size = new System.Drawing.Size(456, 253);
 			this.tabPage7.TabIndex = 6;
 			this.tabPage7.Text = "子窗口";
 			this.tabPage7.UseVisualStyleBackColor = true;
@@ -1475,7 +1498,7 @@
 			this.tabControl2.Location = new System.Drawing.Point(3, 3);
 			this.tabControl2.Name = "tabControl2";
 			this.tabControl2.SelectedIndex = 0;
-			this.tabControl2.Size = new System.Drawing.Size(450, 227);
+			this.tabControl2.Size = new System.Drawing.Size(450, 247);
 			this.tabControl2.TabIndex = 0;
 			// 
 			// tabPage8
@@ -1496,7 +1519,7 @@
 			this.tabPage8.Location = new System.Drawing.Point(4, 24);
 			this.tabPage8.Name = "tabPage8";
 			this.tabPage8.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage8.Size = new System.Drawing.Size(442, 199);
+			this.tabPage8.Size = new System.Drawing.Size(442, 219);
 			this.tabPage8.TabIndex = 0;
 			this.tabPage8.Text = "舰队";
 			this.tabPage8.UseVisualStyleBackColor = true;
@@ -1630,6 +1653,50 @@
 			this.FormFleet_ShowAircraft.Text = "显示舰载机数量";
 			this.FormFleet_ShowAircraft.UseVisualStyleBackColor = true;
 			// 
+			// tabPage18
+			// 
+			this.tabPage18.Controls.Add(this.FormCompass_CandidateDisplayCount);
+			this.tabPage18.Controls.Add(this.label2);
+			this.tabPage18.Location = new System.Drawing.Point(4, 22);
+			this.tabPage18.Name = "tabPage18";
+			this.tabPage18.Padding = new System.Windows.Forms.Padding(3);
+			this.tabPage18.Size = new System.Drawing.Size(442, 201);
+			this.tabPage18.TabIndex = 7;
+			this.tabPage18.Text = "羅針盤";
+			this.tabPage18.UseVisualStyleBackColor = true;
+			// 
+			// FormCompass_CandidateDisplayCount
+			// 
+			this.FormCompass_CandidateDisplayCount.Location = new System.Drawing.Point(143, 6);
+			this.FormCompass_CandidateDisplayCount.Maximum = new decimal(new int[] {
+            6,
+            0,
+            0,
+            0});
+			this.FormCompass_CandidateDisplayCount.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+			this.FormCompass_CandidateDisplayCount.Name = "FormCompass_CandidateDisplayCount";
+			this.FormCompass_CandidateDisplayCount.Size = new System.Drawing.Size(60, 23);
+			this.FormCompass_CandidateDisplayCount.TabIndex = 4;
+			this.FormCompass_CandidateDisplayCount.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			this.FormCompass_CandidateDisplayCount.Value = new decimal(new int[] {
+            4,
+            0,
+            0,
+            0});
+			// 
+			// label2
+			// 
+			this.label2.AutoSize = true;
+			this.label2.Location = new System.Drawing.Point(6, 8);
+			this.label2.Name = "label2";
+			this.label2.Size = new System.Drawing.Size(131, 15);
+			this.label2.TabIndex = 3;
+			this.label2.Text = "一度に表示する候補数：";
+			// 
 			// tabPage13
 			// 
 			this.tabPage13.Controls.Add(this.FormShipGroup_ShowStatusBar);
@@ -1637,7 +1704,7 @@
 			this.tabPage13.Location = new System.Drawing.Point(4, 24);
 			this.tabPage13.Name = "tabPage13";
 			this.tabPage13.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage13.Size = new System.Drawing.Size(442, 199);
+			this.tabPage13.Size = new System.Drawing.Size(442, 221);
 			this.tabPage13.TabIndex = 4;
 			this.tabPage13.Text = "编成";
 			this.tabPage13.UseVisualStyleBackColor = true;
@@ -1681,7 +1748,7 @@
 			this.tabPage12.Location = new System.Drawing.Point(4, 24);
 			this.tabPage12.Name = "tabPage12";
 			this.tabPage12.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage12.Size = new System.Drawing.Size(442, 199);
+			this.tabPage12.Size = new System.Drawing.Size(442, 221);
 			this.tabPage12.TabIndex = 3;
 			this.tabPage12.Text = "浏览器";
 			this.tabPage12.UseVisualStyleBackColor = true;
@@ -1958,7 +2025,7 @@
 			this.tabPage14.Location = new System.Drawing.Point(4, 24);
 			this.tabPage14.Name = "tabPage14";
 			this.tabPage14.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage14.Size = new System.Drawing.Size(442, 199);
+			this.tabPage14.Size = new System.Drawing.Size(442, 221);
 			this.tabPage14.TabIndex = 5;
 			this.tabPage14.Text = "浏览器2";
 			this.tabPage14.UseVisualStyleBackColor = true;
@@ -2109,7 +2176,7 @@
 			this.BGMPlayer_ControlGrid.RowHeadersVisible = false;
 			this.BGMPlayer_ControlGrid.RowTemplate.Height = 21;
 			this.BGMPlayer_ControlGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-			this.BGMPlayer_ControlGrid.Size = new System.Drawing.Size(444, 172);
+			this.BGMPlayer_ControlGrid.Size = new System.Drawing.Size(444, 180);
 			this.BGMPlayer_ControlGrid.TabIndex = 0;
 			this.BGMPlayer_ControlGrid.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.BGMPlayer_ControlGrid_CellContentClick);
 			this.BGMPlayer_ControlGrid.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.BGMPlayer_ControlGrid_CellFormatting);
@@ -2199,50 +2266,36 @@
 			this.FormFleet_AirSuperiorityMethod.TabIndex = 9;
 			this.FormFleet_AirSuperiorityMethod.Visible = false;
 			// 
-			// tabPage18
+			// Control_UseSystemVolume
 			// 
-			this.tabPage18.Controls.Add(this.FormCompass_CandidateDisplayCount);
-			this.tabPage18.Controls.Add(this.label2);
-			this.tabPage18.Location = new System.Drawing.Point(4, 24);
-			this.tabPage18.Name = "tabPage18";
-			this.tabPage18.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage18.Size = new System.Drawing.Size(442, 199);
-			this.tabPage18.TabIndex = 7;
-			this.tabPage18.Text = "羅針盤";
-			this.tabPage18.UseVisualStyleBackColor = true;
+			this.Control_UseSystemVolume.AutoSize = true;
+			this.Control_UseSystemVolume.Location = new System.Drawing.Point(6, 64);
+			this.Control_UseSystemVolume.Name = "Control_UseSystemVolume";
+			this.Control_UseSystemVolume.Size = new System.Drawing.Size(230, 19);
+			this.Control_UseSystemVolume.TabIndex = 4;
+			this.Control_UseSystemVolume.Text = "通知・BGM音量にシステム設定を利用する";
+			this.ToolTipInfo.SetToolTip(this.Control_UseSystemVolume, "通知・BGM等の本体音量設定に、システム音量設定を利用するかを指定します。\r\n無効の場合は個別に音量を設定できますが、音量ミキサ等で調整できなくなります。\r\n有効" +
+        "の場合は音量ミキサ等で調整できますが、個別の音量設定は無視されます。");
+			this.Control_UseSystemVolume.UseVisualStyleBackColor = true;
+			// 
+			// label23
+			// 
+			this.label23.AutoSize = true;
+			this.label23.Location = new System.Drawing.Point(6, 62);
+			this.label23.Name = "label23";
+			this.label23.Size = new System.Drawing.Size(103, 15);
+			this.label23.TabIndex = 8;
+			this.label23.Text = "制空战力算式：";
+			this.label23.Visible = false;
+			// 
+			this.Debug_AlertOnError.AutoSize = true;
+			this.Debug_AlertOnError.Location = new System.Drawing.Point(8, 31);
+			this.Debug_AlertOnError.Name = "Debug_AlertOnError";
+			this.Debug_AlertOnError.Size = new System.Drawing.Size(104, 19);
+			this.Debug_AlertOnError.TabIndex = 2;
+			this.Debug_AlertOnError.Text = "エラー音を鳴らす";
+			this.Debug_AlertOnError.UseVisualStyleBackColor = true;
 
-			// FormCompass_CandidateDisplayCount
-			// 
-			this.FormCompass_CandidateDisplayCount.Location = new System.Drawing.Point(143, 6);
-			this.FormCompass_CandidateDisplayCount.Maximum = new decimal(new int[] {
-            6,
-            0,
-            0,
-            0});
-			this.FormCompass_CandidateDisplayCount.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-			this.FormCompass_CandidateDisplayCount.Name = "FormCompass_CandidateDisplayCount";
-			this.FormCompass_CandidateDisplayCount.Size = new System.Drawing.Size(60, 23);
-			this.FormCompass_CandidateDisplayCount.TabIndex = 4;
-			this.FormCompass_CandidateDisplayCount.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			this.FormCompass_CandidateDisplayCount.Value = new decimal(new int[] {
-            4,
-            0,
-            0,
-            0});
-			// 
-			// label2
-			// 
-			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(6, 8);
-			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(131, 15);
-			this.label2.TabIndex = 3;
-			this.label2.Text = "一度に表示する候補数：";
-			// 
 			// DialogConfiguration
 			// 
 			this.AcceptButton = this.ButtonOK;
@@ -2294,6 +2347,9 @@
 			this.tabControl2.ResumeLayout(false);
 			this.tabPage8.ResumeLayout(false);
 			this.tabPage8.PerformLayout();
+			this.tabPage18.ResumeLayout(false);
+			this.tabPage18.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.FormCompass_CandidateDisplayCount)).EndInit();
 			this.tabPage13.ResumeLayout(false);
 			this.tabPage13.PerformLayout();
 			this.tabPage12.ResumeLayout(false);
@@ -2344,6 +2400,8 @@
 		private Control.ColorPicker colorLateModelColor;
 		private Control.ColorPicker colorFlagshipColor;
 		private Control.ColorPicker colorEliteColor;
+        private Control.ColorPicker colorLateModelEliteColor;
+        private Control.ColorPicker colorLateModelFlagshipColor;
 		private System.Windows.Forms.TabPage tabPageColorHp;
 		private Control.ColorPicker colorHp75Color;
 		private Control.ColorPicker colorHp50Color;
@@ -2490,9 +2548,5 @@
 		private System.Windows.Forms.CheckBox Control_UseSystemVolume;
 		private System.Windows.Forms.CheckBox FormBrowser_ModifyCookieRegion;
 		private System.Windows.Forms.CheckBox FormBrowser_ShowURL;
-		private System.Windows.Forms.CheckBox BGMPlayer_SyncBrowserMute;
-		private System.Windows.Forms.TabPage tabPage18;
-		private System.Windows.Forms.NumericUpDown FormCompass_CandidateDisplayCount;
-		private System.Windows.Forms.Label label2;
 	}
 }

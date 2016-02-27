@@ -180,11 +180,11 @@ namespace ElectronicObserver.Window {
 
 				Formation = InitializeImageLabel();
 				Formation.Anchor = AnchorStyles.None;
-				
+
 				Formation.ImageAlign = ContentAlignment.MiddleLeft;
 				Formation.ImageList = ResourceManager.Instance.Icons;
 				Formation.ImageIndex = -1;
-				
+
 
 				AirSuperiority = InitializeImageLabel();
 				AirSuperiority.Anchor = AnchorStyles.Right;
@@ -262,7 +262,7 @@ namespace ElectronicObserver.Window {
 					if ( ship == null ) {
 						// nothing
 						ShipNames[i].Text = "-";
-						ShipNames[i].ForeColor = Color.Black;
+						ShipNames[i].ForeColor = Utility.Configuration.Config.UI.ForeColor;
 						ShipNames[i].Tag = -1;
 						ShipNames[i].Cursor = Cursors.Default;
 						ToolTipInfo.SetToolTip( ShipNames[i], null );
@@ -280,8 +280,9 @@ namespace ElectronicObserver.Window {
 
 				}
 
-				Formation.Text = Constants.GetFormationShort( fleet.Formation );
+				//Formation.Text = Constants.GetFormationShort( fleet.Formation );
 				Formation.ImageIndex = (int)ResourceManager.IconContent.BattleFormationEnemyLineAhead + fleet.Formation - 1;
+				ToolTipInfo.SetToolTip( Formation, Constants.GetFormationShort( fleet.Formation ) );
 				Formation.Visible = true;
 
 				{
@@ -291,218 +292,137 @@ namespace ElectronicObserver.Window {
 					AirSuperiority.Visible = true;
 				}
 
-			}
 
-
-			void TableEnemyCandidateControl_MouseClick( object sender, MouseEventArgs e ) {
-
-				if ( ( e.Button & System.Windows.Forms.MouseButtons.Right ) != 0 ) {
-					int shipID = ( (ImageLabel)sender ).Tag as int? ?? -1;
-
-					if ( shipID != -1 )
-						new DialogAlbumMasterShip( shipID ).Show( Parent );
-				}
-			}
-
-		}
-
-
-
-		#region ***Control method
+			private string GetShipString( int shipID, int[] slot ) {
 
 		private static Color GetShipNameColor( ShipDataMaster ship ) {
 			switch ( ship.AbyssalShipClass ) {
 				case 0:
 				case 1:		//normal
 				default:
-                    return Utility.Configuration.Config.UI.ForeColor;
+					return Utility.Configuration.Config.UI.ForeColor; // Color.FromArgb( 0x00, 0x00, 0x00 );
 				case 2:		//elite
-					return Color.FromArgb( 0xFF, 0x00, 0x00 );
+					return Utility.Configuration.Config.UI.EliteColor; // Color.FromArgb( 0xFF, 0x00, 0x00 );
 				case 3:		//flagship
-					return Color.FromArgb( 0xFF, 0x88, 0x00 );
+					return Utility.Configuration.Config.UI.FlagshipColor; // Color.FromArgb( 0xFF, 0x88, 0x00 );
 				case 4:		//latemodel / flagship kai
-					return Color.FromArgb( 0x00, 0x88, 0xFF );
+					return Utility.Configuration.Config.UI.LateModelColor; // Color.FromArgb( 0x00, 0x88, 0xFF );
 				case 5:		//latemodel elite
-					return Color.FromArgb( 0x88, 0x00, 0x00 );
+					return Utility.Configuration.Config.UI.LateModelEliteColor; // Color.FromArgb( 0x88, 0x00, 0x00 );
 				case 6:		//latemodel flagship
-					return Color.FromArgb( 0x88, 0x44, 0x00 );
+					return Utility.Configuration.Config.UI.LateModelFlagshipColor; // Color.FromArgb( 0x88, 0x44, 0x00 );
 			}
 		}
 
 
 		private static string GetShipString( int shipID, int[] slot ) {
 
-			ShipDataMaster ship = KCDatabase.Instance.MasterShips[shipID];
-			if ( ship == null ) return null;
+				ShipDataMaster ship = KCDatabase.Instance.MasterShips[shipID];
+				if ( ship == null ) return null;
 
-			return GetShipString( shipID, slot, -1, ship.HPMin, ship.FirepowerMax, ship.TorpedoMax, ship.AAMax, ship.ArmorMax,
-				 ship.ASW != null && !ship.ASW.IsMaximumDefault ? ship.ASW.Maximum : -1,
-				 ship.Evasion != null && !ship.Evasion.IsMaximumDefault ? ship.Evasion.Maximum : -1,
-				 ship.LOS != null && !ship.LOS.IsMaximumDefault ? ship.LOS.Maximum : -1,
-				 ship.LuckMin );
-		}
+				return GetShipString( shipID, slot, -1, ship.HPMin, ship.FirepowerMax, ship.TorpedoMax, ship.AAMax, ship.ArmorMax,
+					 ship.ASW != null && !ship.ASW.IsMaximumDefault ? ship.ASW.Maximum : -1,
+					 ship.Evasion != null && !ship.Evasion.IsMaximumDefault ? ship.Evasion.Maximum : -1,
+					 ship.LOS != null && !ship.LOS.IsMaximumDefault ? ship.LOS.Maximum : -1,
+					 ship.LuckMin );
+			}
 
 		private static string GetShipString( int shipID, int[] slot, int level, int hp, int firepower, int torpedo, int aa, int armor ) {
-			ShipDataMaster ship = KCDatabase.Instance.MasterShips[shipID];
-			if ( ship == null ) return null;
+				ShipDataMaster ship = KCDatabase.Instance.MasterShips[shipID];
+				if ( ship == null ) return null;
 
-			return GetShipString( shipID, slot, level, hp, firepower, torpedo, aa, armor,
-				ship.ASW != null && ship.ASW.IsAvailable ? ship.ASW.GetParameter( level ) : -1,
-				ship.Evasion != null && ship.Evasion.IsAvailable ? ship.Evasion.GetParameter( level ) : -1,
-				ship.LOS != null && ship.LOS.IsAvailable ? ship.LOS.GetParameter( level ) : -1,
-				level > 99 ? Math.Min( ship.LuckMin + 3, ship.LuckMax ) : ship.LuckMin );
-		}
+				return GetShipString( shipID, slot, level, hp, firepower, torpedo, aa, armor,
+					ship.ASW != null && ship.ASW.IsAvailable ? ship.ASW.GetParameter( level ) : -1,
+					ship.Evasion != null && ship.Evasion.IsAvailable ? ship.Evasion.GetParameter( level ) : -1,
+					ship.LOS != null && ship.LOS.IsAvailable ? ship.LOS.GetParameter( level ) : -1,
+					level > 99 ? Math.Min( ship.LuckMin + 3, ship.LuckMax ) : ship.LuckMin );
+			}
 
 		private static string GetShipString( int shipID, int[] slot, int level, int hp, int firepower, int torpedo, int aa, int armor, int asw, int evasion, int los, int luck ) {
 
-			ShipDataMaster ship = KCDatabase.Instance.MasterShips[shipID];
-			if ( ship == null ) return null;
+				ShipDataMaster ship = KCDatabase.Instance.MasterShips[shipID];
+				if ( ship == null ) return null;
 
-			int firepower_c = firepower;
-			int torpedo_c = torpedo;
-			int aa_c = aa;
-			int armor_c = armor;
-			int asw_c = asw;
-			int evasion_c = evasion;
-			int los_c = los;
-			int luck_c = luck;
-			int range = ship.Range;
+				int firepower_c = firepower;
+				int torpedo_c = torpedo;
+				int aa_c = aa;
+				int armor_c = armor;
+				int asw_c = asw;
+				int evasion_c = evasion;
+				int los_c = los;
+				int luck_c = luck;
+				int range = ship.Range;
 
-			asw = Math.Max( asw, 0 );
-			evasion = Math.Max( evasion, 0 );
-			los = Math.Max( los, 0 );
+				asw = Math.Max( asw, 0 );
+				evasion = Math.Max( evasion, 0 );
+				los = Math.Max( los, 0 );
 
-			if ( slot != null ) {
-				int count = slot.Length;
-				for ( int i = 0; i < count; i++ ) {
-					EquipmentDataMaster eq = KCDatabase.Instance.MasterEquipments[slot[i]];
-					if ( eq == null ) continue;
+				if ( slot != null ) {
+					int count = slot.Length;
+					for ( int i = 0; i < count; i++ ) {
+						EquipmentDataMaster eq = KCDatabase.Instance.MasterEquipments[slot[i]];
+						if ( eq == null ) continue;
 
-					firepower += eq.Firepower;
-					torpedo += eq.Torpedo;
-					aa += eq.AA;
-					armor += eq.Armor;
-					asw += eq.ASW;
-					evasion += eq.Evasion;
-					los += eq.LOS;
-					luck += eq.Luck;
-					range = Math.Max( range, eq.Range );
+						firepower += eq.Firepower;
+						torpedo += eq.Torpedo;
+						aa += eq.AA;
+						armor += eq.Armor;
+						asw += eq.ASW;
+						evasion += eq.Evasion;
+						los += eq.LOS;
+						luck += eq.Luck;
+						range = Math.Max( range, eq.Range );
+					}
 				}
-			}
 
 			/*
-			return string.Format(
+				return string.Format(
 						"{0} {1}{2}\n耐久: {3}\n火力: {4}/{5}\n雷装: {6}/{7}\n対空: {8}/{9}\n装甲: {10}/{11}\n対潜: {12}/{13}\n回避: {14}/{15}\n索敵: {16}/{17}\n運: {18}/{19}\n射程: {20} / 速力: {21}\n(右クリックで図鑑)\n",
-						ship.ShipTypeName, ship.NameWithClass, level < 1 ? "" : string.Format( " Lv. {0}", level ),
-						hp,
+							ship.ShipTypeName, ship.NameWithClass, level < 1 ? "" : string.Format( " Lv. {0}", level ),
+							hp,
 						firepower_c, firepower,
-						torpedo_c, torpedo,
-						aa_c, aa,
-						armor_c, armor,
-						asw_c == -1 ? "???" : asw_c.ToString(), asw,
-						evasion_c == -1 ? "???" : evasion_c.ToString(), evasion,
-						los_c == -1 ? "???" : los_c.ToString(), los,
-						luck_c, luck,
-						Constants.GetRange( range ),
+							torpedo_c, torpedo,
+							aa_c, aa,
+							armor_c, armor,
+							asw_c == -1 ? "???" : asw_c.ToString(), asw,
+							evasion_c == -1 ? "???" : evasion_c.ToString(), evasion,
+							los_c == -1 ? "???" : los_c.ToString(), los,
+							luck_c, luck,
+							Constants.GetRange( range ),
 						Constants.GetSpeed( ship.Speed )
-						);
-			*/
-
-			var sb = new StringBuilder();
-
-			sb.Append( ship.ShipTypeName ).Append( " " ).Append( ship.NameWithClass );
-			if ( level > 0 )
-				sb.Append( " Lv. " ).Append( level );
-			sb.AppendLine();
-
-			sb.Append( "耐久: " ).Append( hp ).AppendLine();
-
-			sb.Append( "火力: " ).Append( firepower_c );
-			if ( firepower_c != firepower )
-				sb.Append( "/" ).Append( firepower );
-            if ( ship.ShipType == 7 ||	// 轻空母
-				 ship.ShipType == 11 ||	// 正规空母
-                 ship.IsLandBase)
-            {
-                sb.Append("（空母火力：" + CalculatorEx.CalculateFireEnemy(shipID, slot, firepower_c, torpedo_c) + ")");
-            }
-			sb.AppendLine();
-
-			sb.Append( "雷装: " ).Append( torpedo_c );
-			if ( torpedo_c != torpedo )
-				sb.Append( "/" ).Append( torpedo );
-			sb.AppendLine();
-
-			sb.Append( "対空: " ).Append( aa_c );
-			if ( aa_c != aa )
-				sb.Append( "/" ).Append( aa );
-			sb.AppendLine();
-
-            sb.Append( "加权对空: " ).Append( CalculatorEx.CalculateWeightingAAEnemy( shipID, slot, aa_c ) ).AppendLine();
-
-			sb.Append( "装甲: " ).Append( armor_c );
-			if ( armor_c != armor )
-				sb.Append( "/" ).Append( armor );
-			sb.AppendLine();
-
-			sb.Append( "対潜: " ).Append( asw_c );
-			if ( asw_c != asw )
-				sb.Append( "/" ).Append( asw );
-			sb.AppendLine();
-
-			sb.Append( "回避: " ).Append( evasion_c );
-			if ( evasion_c != evasion )
-				sb.Append( "/" ).Append( evasion );
-			sb.AppendLine();
-
-			sb.Append( "索敵: " ).Append( los_c );
-			if ( los_c != los )
-				sb.Append( "/" ).Append( los );
-			sb.AppendLine();
-
-			sb.Append( "運: " ).Append( luck_c );
-			if ( luck_c != luck )
-				sb.Append( "/" ).Append( luck );
-			sb.AppendLine();
-
-			sb.AppendFormat( "射程: {0} / 速力: {1}\r\n(右クリックで図鑑)\r\n",
-				Constants.GetRange( range ),
-				Constants.GetSpeed( ship.Speed ) );
-
-			return sb.ToString();
-
-		}
-
-		private static string GetEquipmentString( int shipID, int[] slot ) {
-			StringBuilder sb = new StringBuilder();
-			ShipDataMaster ship = KCDatabase.Instance.MasterShips[shipID];
-
-			if ( ship == null || slot == null ) return null;
-
-			for ( int i = 0; i < slot.Length; i++ ) {
-				if ( slot[i] != -1 )
-					sb.AppendFormat( "[{0}] {1}\r\n", ship.Aircraft[i], KCDatabase.Instance.MasterEquipments[slot[i]].Name );
+							);
 			}
 
-			sb.AppendFormat( "\r\n昼戦: {0}\r\n夜戦: {1}\r\n",
-				Constants.GetDayAttackKind( Calculator.GetDayAttackKind( slot, ship.ShipID, -1 ) ),
-				Constants.GetNightAttackKind( Calculator.GetNightAttackKind( slot, ship.ShipID, -1 ) ) );
+			private string GetEquipmentString( int shipID, int[] slot ) {
+				StringBuilder sb = new StringBuilder();
+				ShipDataMaster ship = KCDatabase.Instance.MasterShips[shipID];
 
-			{
-				int aacutin = Calculator.GetAACutinKind( shipID, slot );
-				if ( aacutin != 0 ) {
-					sb.AppendFormat( "対空: {0}\r\n", Constants.GetAACutinKind( aacutin ) );
+				if ( ship == null || slot == null ) return null;
+
+				for ( int i = 0; i < slot.Length; i++ ) {
+					if ( slot[i] != -1 )
+						sb.AppendFormat( "[{0}] {1}\r\n", ship.Aircraft[i], KCDatabase.Instance.MasterEquipments[slot[i]].Name );
 				}
-			}
-			{
-				int airsup = Calculator.GetAirSuperiority( slot, ship.Aircraft.ToArray() );
-				if ( airsup > 0 ) {
-					sb.AppendFormat( "制空戦力: {0}\r\n", airsup );
-				}
-			}
 
-			return sb.ToString();
-		}
+				sb.AppendFormat( "\r\n昼戦: {0}\r\n夜戦: {1}\r\n",
+					Constants.GetDayAttackKind( Calculator.GetDayAttackKind( slot, ship.ShipID, -1 ) ),
+					Constants.GetNightAttackKind( Calculator.GetNightAttackKind( slot, ship.ShipID, -1 ) ) );
+
+				{
+					int aacutin = Calculator.GetAACutinKind( shipID, slot );
+					if ( aacutin != 0 ) {
+						sb.AppendFormat( "対空: {0}\r\n", Constants.GetAACutinKind( aacutin ) );
+					}
+				}
+				{
+					int airsup = Calculator.GetAirSuperiority( slot, ship.Aircraft.ToArray() );
+					if ( airsup > 0 ) {
+						sb.AppendFormat( "制空戦力: {0}\r\n", airsup );
+					}
+				}
+
+				return sb.ToString();
+			}
 
 		private static string GetAirSuperiorityString( int air ) {
 			if ( air > 0 ) {
@@ -511,13 +431,16 @@ namespace ElectronicObserver.Window {
 							(int)Math.Ceiling( air * 1.5 ),
 							(int)( air / 1.5 + 1 ),
 							(int)( air / 3.0 + 1 ) );
-			}
+				}
 			return null;
-		}
-
-		#endregion
+			}
 
 
+			public void ConfigurationChanged( FormCompass parent ) {
+				ShipName.Font = parent.MainFont;
+				Equipments.Font = parent.SubFont;
+
+			}
 
 
 		public Font MainFont { get; set; }
@@ -564,27 +487,6 @@ namespace ElectronicObserver.Window {
 			}
 			TableEnemyMember.ResumeLayout();
 
-			TableEnemyCandidate.SuspendLayout();
-			ControlCandidates = new TableEnemyCandidateControl[6];
-			for ( int i  = 0; i < ControlCandidates.Length; i++ ) {
-				ControlCandidates[i] = new TableEnemyCandidateControl( this, TableEnemyCandidate, i );
-			}
-			//row/column style init
-			for ( int y = 0; y < TableEnemyCandidate.RowCount; y++ ) {
-				var rs = new RowStyle( SizeType.AutoSize );
-				if ( TableEnemyCandidate.RowStyles.Count <= y )
-					TableEnemyCandidate.RowStyles.Add( rs );
-				else
-					TableEnemyCandidate.RowStyles[y] = rs;
-			}
-			for ( int x = 0; x < TableEnemyCandidate.ColumnCount; x++ ) {
-				var cs = new ColumnStyle( SizeType.AutoSize );
-				if ( TableEnemyCandidate.ColumnStyles.Count <= x )
-					TableEnemyCandidate.ColumnStyles.Add( cs );
-				else
-					TableEnemyCandidate.ColumnStyles[x] = cs;
-			}
-			TableEnemyCandidate.ResumeLayout();
 
 
 			//BasePanel.SetFlowBreak( TextMapArea, true );
@@ -596,9 +498,6 @@ namespace ElectronicObserver.Window {
 
 			TextDestination.ImageList = ResourceManager.Instance.Equipments;
 			TextEventDetail.ImageList = ResourceManager.Instance.Equipments;
-			TextFormation.ImageList = ResourceManager.Instance.Icons;
-			TextAirSuperiority.ImageList = ResourceManager.Instance.Equipments;
-			TextAirSuperiority.ImageIndex = (int)ResourceManager.EquipmentContent.CarrierBasedFighter;
 
 
 
@@ -613,9 +512,9 @@ namespace ElectronicObserver.Window {
 		private void FormCompass_Load( object sender, EventArgs e ) {
 
 			BasePanel.Visible = false;
-            TextAA.ImageList = TextAirSuperiority.ImageList = ResourceManager.Instance.Equipments;
-            TextAirSuperiority.ImageIndex = (int)ResourceManager.EquipmentContent.CarrierBasedFighter;
-            TextAA.ImageIndex = (int)ResourceManager.EquipmentContent.AADirector;
+			TextAA.ImageList = TextAirSuperiority.ImageList = ResourceManager.Instance.Equipments;
+			TextAirSuperiority.ImageIndex = (int)ResourceManager.EquipmentContent.CarrierBasedFighter;
+			TextAA.ImageIndex = (int)ResourceManager.EquipmentContent.AADirector;
 
 
 			APIObserver o = APIObserver.Instance;
@@ -685,10 +584,10 @@ namespace ElectronicObserver.Window {
 				BasePanel.SuspendLayout();
 				PanelEnemyFleet.Visible = false;
 				PanelEnemyCandidate.Visible = false;
-                TextEnemyFleetName.Visible =
-                TextFormation.Visible =
-                TextAirSuperiority.Visible = false;
-                TextAA.Visible = false;
+				TextEnemyFleetName.Visible =
+				TextFormation.Visible =
+				TextAirSuperiority.Visible = false;
+				TextAA.Visible = false;
 
 				_enemyFleetCandidate = null;
 				_enemyFleetCandidateIndex = -1;
@@ -696,20 +595,6 @@ namespace ElectronicObserver.Window {
 
 				TextMapArea.Text = string.Format( "出撃海域 : {0}-{1}{2}", compass.MapAreaID, compass.MapInfoID,
 					compass.MapInfo.EventDifficulty > 0 ? " [" + Constants.GetDifficulty( compass.MapInfo.EventDifficulty ) + "]" : "" );
-				{
-					var mapinfo = compass.MapInfo;
-
-					if ( mapinfo.RequiredDefeatedCount != -1 ) {
-						ToolTipInfo.SetToolTip( TextMapArea, string.Format( "撃破: {0} / {1} 回", mapinfo.CurrentDefeatedCount, mapinfo.RequiredDefeatedCount ) );
-
-					} else if ( mapinfo.MapHPMax > 0 ) {
-						ToolTipInfo.SetToolTip( TextMapArea, string.Format( "{0}: {1} / {2}", mapinfo.GaugeType == 3 ? "TP" : "HP", mapinfo.MapHPCurrent, mapinfo.MapHPMax ) );
-
-					} else {
-						ToolTipInfo.SetToolTip( TextMapArea, null );
-					}
-				}
-
 
 				TextDestination.Text = string.Format( "次のセル : {0}{1}", compass.Destination, ( compass.IsEndPoint ? " (終点)" : "" ) );
 				if ( compass.LaunchedRecon != 0 ) {
@@ -938,19 +823,18 @@ namespace ElectronicObserver.Window {
 
 				TableEnemyCandidate.Visible = false;
 
+				TableEnemyCandidate.Visible = false;
+
 			} else {
-				_enemyFleetCandidate.Sort( ( a, b ) => {
-					for ( int i = 0; i < a.FleetMember.Length; i++ ) {
-						int diff = a.FleetMember[i] - b.FleetMember[i];
-						if ( diff != 0 )
-							return diff;
-					}
+				NextEnemyFleetCandidate();
+			}
 					return a.Formation - b.Formation;
 				} );
 
 				NextEnemyFleetCandidate( 0 );
 			}
 
+			PanelEnemyFleet.Visible = true;
 
 			PanelEnemyFleet.Visible = false;
 
@@ -995,16 +879,13 @@ namespace ElectronicObserver.Window {
 			}
 
 			TextFormation.Text = Constants.GetFormationShort( (int)bd.Searching.FormationEnemy );
-			TextFormation.ImageIndex = (int)ResourceManager.IconContent.BattleFormationEnemyLineAhead + bd.Searching.FormationEnemy - 1;
 			TextFormation.Visible = true;
 			{
 				int air = Calculator.GetAirSuperiority( enemies, slots );
-				TextAirSuperiority.Text = isPractice ?
-					air.ToString() + " ～ " + Calculator.GetAirSuperiorityAtMaxLevel( enemies, slots ).ToString() :
-					air.ToString();
-				ToolTipInfo.SetToolTip( TextAirSuperiority, GetAirSuperiorityString( isPractice ? 0 : air ) );
-                //ToolTipInfo.SetToolTip(TextAirSuperiority, string.Format("优势 {0:F0}，确保 {1:F0}", airSuperiority * 1.5, airSuperiority * 3));
-                TextAirSuperiority.Visible = true;
+			TextAirSuperiority.Text = isPractice ?
+				airSuperiority.ToString() + " ～ " + Calculator.GetAirSuperiorityAtMaxLevel( enemies, slots ).ToString() :
+				airSuperiority.ToString();
+			TextAirSuperiority.Visible = true;
 			}
 			TextAA.Text = CalculatorEx.GetEnemyFleetAAValue( enemies, bd.Searching.FormationEnemy ).ToString();
 
@@ -1021,10 +902,10 @@ namespace ElectronicObserver.Window {
 
 			PanelEnemyFleet.Visible = true;
 			PanelEnemyCandidate.Visible = false;
-            TextEnemyFleetName.Visible =
-            TextFormation.Visible =
-            TextAirSuperiority.Visible = true;
-            TextAA.Visible = true;
+			TextEnemyFleetName.Visible =
+			TextFormation.Visible =
+			TextAirSuperiority.Visible = true;
+			TextAA.Visible = true;
 			BasePanel.Visible = true;			//checkme
 
 		}
@@ -1043,6 +924,8 @@ namespace ElectronicObserver.Window {
 		private void NextEnemyFleetCandidate() {
 			NextEnemyFleetCandidate( _candidatesDisplayCount );
 		}
+
+		private void NextEnemyFleetCandidate( int offset = 1 ) {
 
 		private void NextEnemyFleetCandidate( int offset ) {
 
@@ -1115,7 +998,7 @@ namespace ElectronicObserver.Window {
 					ControlMembers[i].Equipments.ShowAircraft = flag;
 					ControlMembers[i].ConfigurationChanged();
 				}
-			}
+				}
 
 
 			if ( ControlCandidates != null ) {
