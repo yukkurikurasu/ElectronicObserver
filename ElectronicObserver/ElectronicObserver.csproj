@@ -80,10 +80,6 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
-    <Reference Include="WeifenLuo.WinFormsUI.Docking, Version=2.9.0.0, Culture=neutral, PublicKeyToken=5cded1a1a0a7b481, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Data\AdmiralData.cs" />
@@ -156,10 +152,6 @@
     <Compile Include="Data\UseItemMaster.cs" />
     <Compile Include="Notifier\NotifierDialogData.cs" />
     <Compile Include="Observer\APIGraphicList.cs" />
-    <Compile Include="Observer\Cache\CacheCore.cs" />
-    <Compile Include="Observer\Cache\Extensions.cs" />
-    <Compile Include="Observer\Cache\GMTHelper.cs" />
-    <Compile Include="Observer\Cache\TaskRecord.cs" />
     <Compile Include="Observer\kcsapi\api_get_member\material.cs" />
     <Compile Include="Observer\kcsapi\api_get_member\payitem.cs" />
     <Compile Include="Observer\kcsapi\api_get_member\record.cs" />
@@ -179,7 +171,7 @@
     <Compile Include="Observer\kcsapi\api_req_sortie\ld_airbattle.cs" />
     <Compile Include="Resource\ImageCollection.cs" />
     <Compile Include="Resource\Record\ResourceRecord.cs" />
-    <Compile Include="Utility\Data\Calculator.cs" />
+    <Compile Include="Utility\Mathematics\GMTHelper.cs" />
     <Compile Include="Utility\SyncBGMPlayer.cs" />
     <Compile Include="Utility\MediaPlayer.cs" />
     <Compile Include="Utility\Modify\ModifyConfiguration.cs" />
@@ -442,6 +434,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utility\Data\Calculator.cs" />
     <Compile Include="Window\FormShipGroup.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -469,6 +462,7 @@
     <Compile Include="Window\Plugins\PluginSettingControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Window\Plugins\ObserverPlugin.cs" />
     <Compile Include="Window\Plugins\ServerPlugin.cs" />
     <Compile Include="Window\Plugins\DialogPlugin.cs" />
     <Compile Include="Window\Plugins\DockPlugin.cs" />
@@ -634,6 +628,10 @@
     <ProjectReference Include="..\BrowserLib\BrowserLib.csproj">
       <Project>{8bb3e37d-09fb-40b9-958a-8cdcd18ef1f5}</Project>
       <Name>BrowserLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DockPanelSuite\WinFormsUI\WinFormsUI.csproj">
+      <Project>{c75532c4-765b-418e-b09b-46d36b2abdb1}</Project>
+      <Name>WinFormsUI</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
