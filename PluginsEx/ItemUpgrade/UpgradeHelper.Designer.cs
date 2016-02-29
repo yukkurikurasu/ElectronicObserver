@@ -54,6 +54,7 @@
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.cbMidnight = new System.Windows.Forms.CheckBox();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.SuspendLayout();
             // 
             // lvList
@@ -82,6 +83,7 @@
             this.lvList.UseCompatibleStateImageBehavior = false;
             this.lvList.View = System.Windows.Forms.View.Details;
             this.lvList.SelectedIndexChanged += new System.EventHandler(this.lvList_SelectedIndexChanged);
+            this.lvList.MouseMove += new System.Windows.Forms.MouseEventHandler(this.lvList_MouseMove);
             // 
             // colGraph
             // 
@@ -290,6 +292,7 @@
         private System.Windows.Forms.ColumnHeader columnHeader4;
         private System.Windows.Forms.CheckBox cbMidnight;
         private System.Windows.Forms.ColumnHeader colMidnight;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }
 

@@ -668,11 +668,13 @@ namespace ItemUpgrade
                 li.SubItems.Add(inf.ShipListDisplayed.ToString());
                 li.SubItems.Add(inf.DayofWeek != DayofWeek ? "半夜限定" : "");
                 li.ToolTipText = inf.GetHint();
+                li.Tag = inf.GetHint(inf.Name);
                 lvList.Items.Add(li);
             }
             lvList.EndUpdate();
         }
 
+        
         bool ShipExists(ShipList Ship, List<string> exceptions)
         {
             var ships = Ship.List;
@@ -807,6 +809,26 @@ namespace ItemUpgrade
         {
             SaveConfig();
         }
+
+        ListViewItem LastItem = null;
+        private void lvList_MouseMove(object sender, MouseEventArgs e)
+        {
+            
+            ListViewItem item = this.lvList.GetItemAt(e.X, e.Y);
+            if (item == LastItem)
+                return;
+            LastItem = item;
+            if (item != null)
+            {
+                toolTip1.Active = true;
+                toolTip1.Show(item.Tag.ToString(), lvList, new Point(e.X + 15, e.Y + 15), 50000);
+               
+            }
+            else
+            {
+                toolTip1.Active = false;
+            }
+        }
     }
 
     public class UpgradeInformation
@@ -854,6 +876,50 @@ namespace ItemUpgrade
             {
                 builder.Append('\x0');
                 builder.Append(Refresh.GetHint());
+            }
+            return builder.ToString();
+        }
+
+        public string GetHint(string EqName)
+        {
+            StringBuilder builder = new StringBuilder();
+
+            var eqs = KCDatabase.Instance.Equipments.Values.Where(eq => eq.Name == EqName).OrderBy(e => (e.Level + e.AircraftLevel));
+            var countlist = new Dictionary<int, DetailCounter>();
+            foreach (var eq in eqs)
+            {
+                int Key = DetailCounter.CalculateID(eq);
+                DetailCounter c;
+                if (!countlist.ContainsKey(Key))
+                {
+                    DetailCounter dc = new DetailCounter(eq.Level, eq.AircraftLevel);
+                    countlist.Add(dc.ID, dc);
+                }
+                c = countlist[Key];
+                c.countAll++;
+                c.countRemain++;
+                c.countRemainPrev++;
+            }
+            //装備艦集計
+            foreach (var ship in KCDatabase.Instance.Ships.Values)
+            {
+                foreach (var eq in ship.AllSlotInstance.Where(s => s != null && s.Name == EqName))
+                {
+                    countlist[DetailCounter.CalculateID(eq)].countRemain--;
+                }
+                foreach (var c in countlist.Values)
+                {
+                    if (c.countRemain != c.countRemainPrev)
+                    {
+                        int diff = c.countRemainPrev - c.countRemain;
+                        c.equippedShips.Add(ship.NameWithLevel + (diff > 1 ? (" x" + diff) : ""));
+                        c.countRemainPrev = c.countRemain;
+                    }
+                }
+            }
+            foreach (var c in countlist.Values)
+            {
+                builder.AppendFormat("★{0}\t{1:3}/{2:3}\t{3}\r\n", c.level, c.countRemainPrev.ToString(), c.countAll.ToString(), string.Join(";", c.equippedShips));
             }
             return builder.ToString();
         }
@@ -926,7 +992,42 @@ namespace ItemUpgrade
             }
 
             return builder.ToString();
+
+           
         }
+    }
+
+    class DetailCounter : IIdentifiable
+    {
+
+        public int level;
+        public int countAll;
+        public int countRemain;
+        public int countRemainPrev;
+
+        public List<string> equippedShips;
+
+        public DetailCounter(int lv, int aircraftLv)
+        {
+
+            level = aircraftLv > 0 ? aircraftLv : lv;
+            countAll = 0;
+            countRemainPrev = 0;
+            countRemain = 0;
+            equippedShips = new List<string>();
+        }
+
+        public static int CalculateID(int level, int aircraftLevel)
+        {
+            return level + aircraftLevel;
+        }
+
+        public static int CalculateID(EquipmentData eq)
+        {
+            return CalculateID(eq.Level, eq.AircraftLevel);
+        }
+
+        public int ID { get { return CalculateID(level, 0); } }
     }
 
     public class ShipList

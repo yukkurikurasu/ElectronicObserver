@@ -99,7 +99,7 @@
       <Project>{c75532c4-765b-418e-b09b-46d36b2abdb1}</Project>
       <Name>WinFormsUI</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ElectronicObserver\ElectronicObserver.csproj">
+    <ProjectReference Include="..\..\ElectronicObserver\ElectronicObserver.csproj">
       <Project>{a9abec50-1bfc-4c69-87ae-c68db6004f68}</Project>
       <Name>ElectronicObserver</Name>
     </ProjectReference>
