@@ -884,7 +884,7 @@ namespace ItemUpgrade
         {
             StringBuilder builder = new StringBuilder();
 
-            var eqs = KCDatabase.Instance.Equipments.Values.Where(eq => eq.Name == EqName).OrderBy(e => (e.Level + e.AircraftLevel));
+            var eqs = KCDatabase.Instance.Equipments.Values.Where(eq => eq.Name == EqName).OrderBy(e => (e.Level));
             var countlist = new Dictionary<int, DetailCounter>();
             foreach (var eq in eqs)
             {
@@ -892,7 +892,7 @@ namespace ItemUpgrade
                 DetailCounter c;
                 if (!countlist.ContainsKey(Key))
                 {
-                    DetailCounter dc = new DetailCounter(eq.Level, eq.AircraftLevel);
+                    DetailCounter dc = new DetailCounter(eq.Level, 0);
                     countlist.Add(dc.ID, dc);
                 }
                 c = countlist[Key];

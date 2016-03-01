@@ -17,7 +17,7 @@ namespace EquipmentsDetail
 
 		public override string Version
 		{
-			get { return "1.0.0.1"; }
+			get { return "1.0.0.2"; }
 		}
 
 		public override Form GetToolWindow()

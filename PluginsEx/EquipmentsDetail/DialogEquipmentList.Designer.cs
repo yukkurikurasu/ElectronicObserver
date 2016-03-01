@@ -24,13 +24,14 @@
 		/// the contents of this method with the code editor.
 		/// </summary>
 		private void InitializeComponent() {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.EquipmentView = new System.Windows.Forms.DataGridView();
             this.EquipmentView_ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.EquipmentView_Icon = new System.Windows.Forms.DataGridViewImageColumn();
             this.EquipmentView_Name = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.EquipmentView_CountAll = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColLevel = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColAirLevel = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColTotal = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColShips = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.button1 = new System.Windows.Forms.Button();
@@ -54,6 +55,7 @@
             this.EquipmentView_Name,
             this.EquipmentView_CountAll,
             this.ColLevel,
+            this.ColAirLevel,
             this.ColTotal,
             this.ColShips});
             this.EquipmentView.Location = new System.Drawing.Point(0, 39);
@@ -65,6 +67,7 @@
             this.EquipmentView.Size = new System.Drawing.Size(924, 543);
             this.EquipmentView.TabIndex = 2;
             this.EquipmentView.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.EquipmentView_CellFormatting);
+            this.EquipmentView.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.EquipmentView_CellMouseClick);
             this.EquipmentView.CellPainting += new System.Windows.Forms.DataGridViewCellPaintingEventHandler(this.EquipmentView_CellPainting);
             // 
             // EquipmentView_ID
@@ -109,19 +112,29 @@
             this.ColLevel.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             this.ColLevel.Width = 40;
             // 
+            // ColAirLevel
+            // 
+            this.ColAirLevel.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.ColAirLevel.HeaderText = "熟练";
+            this.ColAirLevel.Name = "ColAirLevel";
+            this.ColAirLevel.ReadOnly = true;
+            this.ColAirLevel.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.ColAirLevel.Width = 37;
+            // 
             // ColTotal
             // 
+            this.ColTotal.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.ColTotal.HeaderText = "个数";
             this.ColTotal.Name = "ColTotal";
             this.ColTotal.ReadOnly = true;
             this.ColTotal.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.ColTotal.Width = 40;
+            this.ColTotal.Width = 37;
             // 
             // ColShips
             // 
             this.ColShips.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            this.ColShips.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            this.ColShips.DefaultCellStyle = dataGridViewCellStyle1;
             this.ColShips.HeaderText = "装备于";
             this.ColShips.Name = "ColShips";
             this.ColShips.ReadOnly = true;
@@ -173,14 +186,15 @@
 		#endregion
 
         private System.Windows.Forms.DataGridView EquipmentView;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.DataGridViewTextBoxColumn EquipmentView_ID;
         private System.Windows.Forms.DataGridViewImageColumn EquipmentView_Icon;
         private System.Windows.Forms.DataGridViewTextBoxColumn EquipmentView_Name;
         private System.Windows.Forms.DataGridViewTextBoxColumn EquipmentView_CountAll;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColLevel;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColAirLevel;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColTotal;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColShips;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.CheckBox checkBox1;
 	}
 }

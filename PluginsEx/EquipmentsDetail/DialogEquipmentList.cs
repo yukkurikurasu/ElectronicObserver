@@ -157,7 +157,30 @@ namespace EquipmentsDetail
 
             foreach (int id in ids)
             {
-                var eqs = KCDatabase.Instance.Equipments.Values.Where(eq => eq.EquipmentID == id).OrderBy(e => (e.Level + e.AircraftLevel));
+                StringBuilder sb = new StringBuilder();
+                var Equipment = masterEquipments[id];
+                sb.AppendFormat("{0} {1}\r\n", Equipment.CategoryTypeInstance.Name, Equipment.Name);
+                if (Equipment.Firepower != 0)
+                    sb.AppendFormat("火力 {0}{1}\r\n", Equipment.Firepower > 0 ? "+" : "", Equipment.Firepower);
+                if (Equipment.Torpedo != 0)
+                    sb.AppendFormat("雷装 {0}{1}\r\n", Equipment.Torpedo > 0 ? "+" : "", Equipment.Torpedo);
+                if (Equipment.AA != 0)
+                    sb.AppendFormat("対空 {0}{1}\r\n", Equipment.AA > 0 ? "+" : "", Equipment.AA);
+                if (Equipment.Armor != 0)
+                    sb.AppendFormat("装甲 {0}{1}\r\n", Equipment.Armor > 0 ? "+" : "", Equipment.Armor);
+                if (Equipment.ASW != 0)
+                    sb.AppendFormat("対潜 {0}{1}\r\n", Equipment.ASW > 0 ? "+" : "", Equipment.ASW);
+                if (Equipment.Evasion != 0)
+                    sb.AppendFormat("回避 {0}{1}\r\n", Equipment.Evasion > 0 ? "+" : "", Equipment.Evasion);
+                if (Equipment.LOS != 0)
+                    sb.AppendFormat("索敵 {0}{1}\r\n", Equipment.LOS > 0 ? "+" : "", Equipment.LOS);
+                if (Equipment.Accuracy != 0)
+                    sb.AppendFormat("命中 {0}{1}\r\n", Equipment.Accuracy > 0 ? "+" : "", Equipment.Accuracy);
+                if (Equipment.Bomber != 0)
+                    sb.AppendFormat("爆装 {0}{1}\r\n", Equipment.Bomber > 0 ? "+" : "", Equipment.Bomber);
+                sb.AppendLine("(右键点击查看图鉴)");
+
+                var eqs = KCDatabase.Instance.Equipments.Values.Where(eq => eq.EquipmentID == id).OrderBy(e => (e.Level + e.AircraftLevel * 10));
                 var countlist = new Dictionary<int, DetailCounter>();
 
                 foreach (var eq in eqs)
@@ -209,16 +232,19 @@ namespace EquipmentsDetail
                             FirstRow ? masterEquipments[id].Name : "",
                             FirstRow ? allCount[id].ToString() + "(" + remainCount[id].ToString() + ")" : "",
                             FirstShipRow ? c.level.ToString() : "",
+                            FirstShipRow ? c.aircraftLevel.ToString() : "",
                             FirstShipRow ? c.countAll.ToString() + "(" + c.countRemain.ToString() + ")" : "",
                             GetShips(c.equippedShips, cc)
                             );
-                        row.Cells[0].Tag = FirstRow ? null : "";
-                        row.Cells[1].Tag = FirstRow ? null : "";
-                        row.Cells[2].Tag = FirstRow ? null : "";
-                        row.Cells[3].Tag = FirstRow ? null : "";
-                        row.Cells[4].Tag = FirstShipRow ? null : "";
-                        row.Cells[5].Tag = FirstShipRow ? null : "";
-                        row.Cells[6].Tag = FirstShipRow ? null : "";
+                        row.Cells[0].Tag = FirstRow ? 0 : id;
+                        row.Cells[1].Tag = FirstRow ? 0 : 1;
+                        row.Cells[2].Tag = FirstRow ? 0 : 1;
+                        row.Cells[2].ToolTipText = FirstRow ? sb.ToString() : "";
+                        row.Cells[3].Tag = FirstRow ? 0 : 1;
+                        row.Cells[4].Tag = FirstShipRow ? 0 : 1;
+                        row.Cells[5].Tag = FirstShipRow ? 0 : 1;
+                        row.Cells[6].Tag = FirstShipRow ? 0 : 1;
+                        row.Cells[7].Tag = FirstShipRow ? 0 : 1;
                         rows.Add(row);
                         FirstRow = false;
                         FirstShipRow = false;
@@ -257,6 +283,7 @@ namespace EquipmentsDetail
 		private class DetailCounter : IIdentifiable {
 
 			public int level;
+            public int aircraftLevel;
 			public int countAll;
 			public int countRemain;
 			public int countRemainPrev;
@@ -265,7 +292,8 @@ namespace EquipmentsDetail
 
 			public DetailCounter( int lv, int aircraftLv ) {
 
-                level = aircraftLv > 0 ? aircraftLv : lv;
+                level =  lv;
+                aircraftLevel = aircraftLv;
 				countAll = 0;
 				countRemainPrev = 0;
 				countRemain = 0;
@@ -273,14 +301,14 @@ namespace EquipmentsDetail
 			}
 
 			public static int CalculateID( int level, int aircraftLevel ) {
-                return level + aircraftLevel;
+                return level + aircraftLevel * 10;
 			}
 
 			public static int CalculateID( EquipmentData eq ) {
 				return CalculateID( eq.Level, eq.AircraftLevel );
 			}
 
-            public int ID { get { return CalculateID(level, 0); } }
+            public int ID { get { return CalculateID(level, aircraftLevel); } }
 		}
 
 		private void DialogEquipmentList_FormClosed( object sender, FormClosedEventArgs e ) {
@@ -310,7 +338,7 @@ namespace EquipmentsDetail
 
         bool NoNeedTop(DataGridViewCellPaintingEventArgs e)
         {
-            if (EquipmentView.Rows[e.RowIndex].Cells[e.ColumnIndex].Tag != null)
+            if ((int)(EquipmentView.Rows[e.RowIndex].Cells[e.ColumnIndex].Tag) != 0)
             {
                 return true;
             }
@@ -381,6 +409,22 @@ namespace EquipmentsDetail
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
             UpdateView();
+        }
+
+        private void EquipmentView_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.Button == System.Windows.Forms.MouseButtons.Right)
+            {
+                if (e.ColumnIndex == 2)
+                {
+                    var cell = EquipmentView.Rows[e.RowIndex].Cells[0];
+                    int ID;
+                    if (int.TryParse(cell.Value.ToString(), out ID))                   
+                    {
+                        new ElectronicObserver.Window.Dialog.DialogAlbumMasterEquipment(ID).Show();
+                    }
+                }
+            }
         }
 	}
 }
