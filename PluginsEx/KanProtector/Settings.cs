@@ -303,11 +303,13 @@ namespace KanProtector
             if (selector.Equipment != null)
             {
                 textBox2.Text = selector.Equipment.EquipmentID.ToString();
+                button2.PerformClick();
             }
         }
 
         private void textBox2_TextChanged(object sender, EventArgs e)
         {
+            button2.Enabled = false;
             int ID = 0;
             if (!int.TryParse(textBox2.Text, out ID))
             {
@@ -334,7 +336,6 @@ namespace KanProtector
             label1.ForeColor = ForeColor;
             label1.Text = KCDatabase.Instance.MasterEquipments[ID].Name;
             button2.Enabled = true;
-            button2.PerformClick();
         }
 
         private void dataGridView2_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
