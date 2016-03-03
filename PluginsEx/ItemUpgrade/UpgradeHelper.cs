@@ -242,6 +242,19 @@ namespace ItemUpgrade
             AddInformation(ItemType.大口径主砲, "35.6cm連装砲", new int[] { 0, 5, 6 }, "扶桑", RequirementList);
 
             RequirementList.New();
+            RequirementList.Initial.SetCondition(3, 4, "35.6cm連装砲", 2);
+            RequirementList.Steps.SetCondition(4, 7, "35.6cm連装砲", 3);
+            AddInformation(ItemType.大口径主砲, "試製35.6cm三連装砲", new int[] { 3, 4 }, "金剛改二", RequirementList);
+            AddInformation(ItemType.大口径主砲, "試製35.6cm三連装砲", new int[] { 4 }, "榛名改二", RequirementList);
+            AddInformation(ItemType.大口径主砲, "試製35.6cm三連装砲", new int[] { 3, 4 }, "扶桑改二", RequirementList);
+            AddInformation(ItemType.大口径主砲, "試製35.6cm三連装砲", new int[] { 4 }, "山城改二", RequirementList);
+
+            RequirementList.New();
+            RequirementList.Initial.SetCondition(2, 3, "35.6cm連装砲", 1);
+            RequirementList.Steps.SetCondition(3, 5, "35.6cm連装砲", 2);
+            AddInformation(ItemType.大口径主砲, "35.6cm連装砲(ダズル迷彩)", new int[] { 1, 2, 3 }, "榛名改二", RequirementList);
+
+            RequirementList.New();
             RequirementList.Initial.SetCondition(2, 3, "35.6cm連装砲", 1);
             RequirementList.Steps.SetCondition(3, 5, "35.6cm連装砲", 2);
             RequirementList.Refresh.SetCondition(6, 13, "41cm連装砲", 2, "38cm連装砲改★+3");
@@ -270,6 +283,12 @@ namespace ItemUpgrade
             RequirementList.Steps.SetCondition(3, 6, "41cm連装砲", 2);
             AddInformation(ItemType.大口径主砲, "41cm連装砲", new int[] { 2, 5, 6 }, "長門", RequirementList);
             AddInformation(ItemType.大口径主砲, "41cm連装砲", new int[] { 0, 1, 4, }, "陸奥", RequirementList);
+
+            RequirementList.New();
+            RequirementList.Initial.SetCondition(4, 6, "41cm連装砲", 2);
+            RequirementList.Steps.SetCondition(5, 8, "41cm連装砲", 3);
+            AddInformation(ItemType.大口径主砲, "試製41cm三連装砲", new int[] { 1, 3, 4 }, "長門改", RequirementList);
+            AddInformation(ItemType.大口径主砲, "試製41cm三連装砲", new int[] { 2, 3 }, "陸奥改", RequirementList);
 
             RequirementList.New();
             RequirementList.Initial.SetCondition(3, 5, "41cm連装砲", 2);
@@ -510,12 +529,13 @@ namespace ItemUpgrade
             RequirementList.Initial.SetCondition(3, 5, "瑞雲", 1);
             RequirementList.Steps.SetCondition(4, 7, "零式水上観測機", 1);
             AddInformation(ItemType.水上偵察機, "零式水上観測機", new int[] { 1, 2, 3 }, "瑞穂", RequirementList);
+            AddInformation(ItemType.水上偵察機, "零式水上観測機", new int[] { 4 }, "瑞穂", RequirementList);
 
             RequirementList.New();
             RequirementList.Initial.SetCondition(1, 2, "零式水上偵察機", 1);
             RequirementList.Steps.SetCondition(2, 4, "瑞雲", 1);
             RequirementList.Refresh.SetCondition(3, 5, "零式水上偵察機", 2, "Ro.44水上戦闘機");
-            AddInformation(ItemType.水上偵察機, "Ro.43水偵", new int[] { 1, 2 }, "Zara改", RequirementList);
+            AddInformation(ItemType.水上偵察機, "Ro.43水偵", new int[] { 1, 2, 3, 4 }, "Zara改", RequirementList);
             AddInformation(ItemType.水上偵察機, "Ro.43水偵", new int[] { 2, 3 }, "Roma改", RequirementList);
         }
 
