@@ -1083,7 +1083,7 @@ namespace ElectronicObserver.Window
             _enemyFleetCandidate = null;
             _enemyFleetCandidateIndex = -1;
 
-
+            PanelEnemyCandidate.Visible = false;
 
             if ((bm.BattleMode & BattleManager.BattleModes.BattlePhaseMask) != BattleManager.BattleModes.Practice)
             {
@@ -1122,10 +1122,11 @@ namespace ElectronicObserver.Window
                     ControlMembers[i].UpdateEquipmentToolTip(shipID, slots[i], levels[i], hps[i + 6], parameters[i][0], parameters[i][1], parameters[i][2], parameters[i][3]);
             }
             TableEnemyMember.ResumeLayout();
+            
             TableEnemyMember.Visible = true;
 
             PanelEnemyFleet.Visible = true;
-            PanelEnemyCandidate.Visible = false;
+            
             TextEnemyFleetName.Visible =
             TextFormation.Visible =
             TextAirSuperiority.Visible = true;

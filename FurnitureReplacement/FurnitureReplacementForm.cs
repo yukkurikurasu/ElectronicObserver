@@ -13,6 +13,7 @@ namespace FurnitureReplacement
     public partial class FurnitureReplacementForm : Form
     {
         Dictionary<string, string> FurnitureType;
+        string CacheFolder = null;
         public FurnitureReplacementForm()
         {
             InitializeComponent();
@@ -25,33 +26,43 @@ namespace FurnitureReplacement
             FurnitureType.Add("家具", "chest");
         }
 
-        private void Form1_Shown(object sender, EventArgs e)
+        protected virtual void Form1_Shown(object sender, EventArgs e)
         {
             if (!System.IO.Directory.Exists(ElectronicObserver.Utility.Configuration.Config.CacheSettings.CacheFolder))
             {
                 label1.Visible = true;
                 this.Enabled = false;
             }
+            else
+            {
+                CacheFolder = ElectronicObserver.Utility.Configuration.Config.CacheSettings.CacheFolder;
+                CacheFolder += "\\kcs\\resources\\image\\furniture\\";
+            }
+
 
             comboBox1.Items.AddRange(FurnitureType.Keys.ToArray());
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
+            button2.Enabled = false;
+            listBox1.Items.Clear();
+            PurgeImage();
+
             if (comboBox1.SelectedIndex < 0)
             {
-                button2.Enabled = false;
-                listBox1.Items.Clear();
                 return;
             }
             string Type = FurnitureType[comboBox1.Text];
-            string path = ElectronicObserver.Utility.Configuration.Config.CacheSettings.CacheFolder + "\\kcs\\resources\\image\\furniture\\" + Type;
-            var AllPicList = System.IO.Directory.GetFiles(path, "*.png").Select(name => System.IO.Path.GetFileName(name));
-            var PicList = AllPicList.Where((filename) => { return filename.ToLower().IndexOf(".hack.") < 0; });
-            listBox1.Items.Clear();
-            listBox1.Items.AddRange(PicList.ToArray());
-            PurgeImage();
-            button2.Enabled = true;
+            string path = CacheFolder + Type;
+
+            if (System.IO.Directory.Exists(path))
+            {
+                var AllPicList = System.IO.Directory.GetFiles(path, "*.png").Select(name => System.IO.Path.GetFileName(name));
+                var PicList = AllPicList.Where((filename) => { return filename.ToLower().IndexOf(".hack.") < 0; });
+                listBox1.Items.AddRange(PicList.ToArray());
+                button2.Enabled = true;
+            }
         }
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -62,7 +73,7 @@ namespace FurnitureReplacement
                 return;
             }
             string Type = FurnitureType[comboBox1.Text];
-            string path = ElectronicObserver.Utility.Configuration.Config.CacheSettings.CacheFolder + "\\kcs\\resources\\image\\furniture\\" + Type;
+            string path = CacheFolder + Type;
             var filename = listBox1.GetItemText(listBox1.SelectedItem);
             var picfile = path + "\\" + filename;
             pictureBox1.Image = Image.FromFile(picfile);
@@ -78,19 +89,19 @@ namespace FurnitureReplacement
         private void button1_Click(object sender, EventArgs e)
         {
             string Type = FurnitureType[comboBox1.Text];
-            string path = ElectronicObserver.Utility.Configuration.Config.CacheSettings.CacheFolder + "\\kcs\\resources\\image\\furniture\\" + Type;
+            string path = CacheFolder + Type;
             var filename = listBox1.GetItemText(listBox1.SelectedItem);
             var picfile = path + "\\" + filename;
-            System.IO.File.Copy(picfile, path + "\\001.hack.png");
+            System.IO.File.Copy(picfile, path + "\\001.hack.png", true);
             MessageBox.Show("替换成功,更换成初始家具并且刷新母港可以看到效果(可能需要清除缓存)");
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
             string Type = FurnitureType[comboBox1.Text];
-            string path = ElectronicObserver.Utility.Configuration.Config.CacheSettings.CacheFolder + "\\kcs\\resources\\image\\furniture\\" + Type;
+            string path = CacheFolder + Type;
             System.IO.File.Delete(path + "\\001.hack.png");
-            MessageBox.Show(comboBox1.Text+"类别已经成功恢复");
+            MessageBox.Show(comboBox1.Text + "类别已经成功恢复");
         }
     }
 }

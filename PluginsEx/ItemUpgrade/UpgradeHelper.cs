@@ -152,6 +152,8 @@ namespace ItemUpgrade
             TypeGraph["対空機銃"] = "Equipment_AAGun";
             TypeGraph["高射装置"] = "Equipment_AADirector";
             TypeGraph["探照灯"] = "Equipment_Searchlight";
+            TypeGraph["水上偵察機"] = "Equipment_Seaplane";
+            TypeGraph["水上爆撃機"] = "Equipment_Seaplane";
 
             try
             {
@@ -407,7 +409,7 @@ namespace ItemUpgrade
             RequirementList.Initial.SetCondition(1, 2, null, 0);
             RequirementList.Steps.SetCondition(2, 3, "九三式水中聴音機", 1);
             RequirementList.Refresh.SetCondition(6, 12, "三式水中探信儀", 2, "四式水中聴音機");
-            AddInformation(ItemType.ソナー, "九三式水中聴音機", new int[] {4, 5 }, "五十鈴改二", RequirementList);
+            AddInformation(ItemType.ソナー, "九三式水中聴音機", new int[] { 4, 5 }, "五十鈴改二", RequirementList);
             AddInformation(ItemType.ソナー, "九三式水中聴音機", new int[] { 0, 4, 5, 6 }, "時雨改二", RequirementList);
             AddInformation(ItemType.ソナー, "九三式水中聴音機", new int[] { 0, 5, 6 }, "香取改", RequirementList);
 
@@ -504,6 +506,17 @@ namespace ItemUpgrade
             AddInformation(ItemType.探照灯, "96式150cm探照灯", new int[] { 0, 1, 5, 6 }, "比叡", RequirementList);
             AddInformation(ItemType.探照灯, "96式150cm探照灯", new int[] { 2, 3, 4, 5 }, "霧島", RequirementList);
 
+            RequirementList.New();
+            RequirementList.Initial.SetCondition(3, 5, "瑞雲", 1);
+            RequirementList.Steps.SetCondition(4, 7, "零式水上観測機", 1);
+            AddInformation(ItemType.水上偵察機, "零式水上観測機", new int[] { 1, 2, 3 }, "瑞穂", RequirementList);
+
+            RequirementList.New();
+            RequirementList.Initial.SetCondition(1, 2, "零式水上偵察機", 1);
+            RequirementList.Steps.SetCondition(2, 4, "瑞雲", 1);
+            RequirementList.Refresh.SetCondition(3, 5, "零式水上偵察機", 2, "Ro.44水上戦闘機");
+            AddInformation(ItemType.水上偵察機, "Ro.43水偵", new int[] { 1, 2 }, "Zara改", RequirementList);
+            AddInformation(ItemType.水上偵察機, "Ro.43水偵", new int[] { 2, 3 }, "Roma改", RequirementList);
         }
 
         public void AddInformation(ItemType Type, string Name, int[] DayofWeeks, string ShipName, UpgradeRequirementList list)
@@ -982,8 +995,9 @@ namespace ItemUpgrade
         {
             StringBuilder builder = new StringBuilder();
             builder.AppendFormat("{0}~{1}/{2}", Period, Gears[0], Gears[1]);
+            int NowNum = ElectronicObserver.Data.KCDatabase.Instance.Equipments.Count(x => { return (x.Value.Name == EquipName) && (x.Value.Level == 0); });
             if (EquipNum > 0)
-                builder.AppendFormat("~{0}*{1}", EquipName, EquipNum);
+                builder.AppendFormat("~{0}*{1}   [余{2}]", EquipName, EquipNum, NowNum);
             else
                 builder.Append("~无");
             if (RefreshEquipName != null)
@@ -1001,6 +1015,7 @@ namespace ItemUpgrade
     {
 
         public int level;
+        public int airLevel;
         public int countAll;
         public int countRemain;
         public int countRemainPrev;
@@ -1010,7 +1025,8 @@ namespace ItemUpgrade
         public DetailCounter(int lv, int aircraftLv)
         {
 
-            level = aircraftLv > 0 ? aircraftLv : lv;
+            level = lv;
+            airLevel = aircraftLv;
             countAll = 0;
             countRemainPrev = 0;
             countRemain = 0;
@@ -1019,7 +1035,7 @@ namespace ItemUpgrade
 
         public static int CalculateID(int level, int aircraftLevel)
         {
-            return level + aircraftLevel;
+            return level;
         }
 
         public static int CalculateID(EquipmentData eq)
@@ -1027,7 +1043,7 @@ namespace ItemUpgrade
             return CalculateID(eq.Level, eq.AircraftLevel);
         }
 
-        public int ID { get { return CalculateID(level, 0); } }
+        public int ID { get { return CalculateID(level, airLevel); } }
     }
 
     public class ShipList
@@ -1056,7 +1072,7 @@ namespace ItemUpgrade
 
     public enum ItemType
     {
-        小口径主砲, _小口径主砲, 中口径主砲, 大口径主砲, 副砲, _副砲, 魚雷, 電探, ソナー, 爆雷, 対艦強化弾, 対空機銃, 高射装置, 探照灯
+        小口径主砲, _小口径主砲, 中口径主砲, 大口径主砲, 副砲, _副砲, 魚雷, 電探, ソナー, 爆雷, 対艦強化弾, 対空機銃, 高射装置, 探照灯, 水上偵察機, 水上爆撃機
     }
 
     public class UpgradeRequirementList
