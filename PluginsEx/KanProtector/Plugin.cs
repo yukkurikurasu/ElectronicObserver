@@ -57,9 +57,12 @@ namespace KanProtector
                             ElectronicObserver.Utility.Logger.Add(3, string.Format("{0}", Warning));
                             if (!DebugMode)
                             {
-                                oSession.oResponse.headers.HTTPResponseCode = 502;
-                                oSession.utilCreateResponseAndBypassServer();
-                                oSession.oResponse.headers.HTTPResponseCode = 502;
+                                //if (WarningForm.ShowWarning(Warning) != DialogResult.OK)
+                                {
+                                    oSession.oResponse.headers.HTTPResponseCode = 502;
+                                    oSession.utilCreateResponseAndBypassServer();
+                                    oSession.oResponse.headers.HTTPResponseCode = 502;
+                                }
                             }
                         }
 
@@ -73,9 +76,12 @@ namespace KanProtector
                             ElectronicObserver.Utility.Logger.Add(3, string.Format("{0}", Warning));
                             if (!DebugMode)
                             {
-                                oSession.oResponse.headers.HTTPResponseCode = 502;
-                                oSession.utilCreateResponseAndBypassServer();
-                                oSession.oResponse.headers.HTTPResponseCode = 502;
+                                //if (WarningForm.ShowWarning(Warning) != DialogResult.OK)
+                                {
+                                    oSession.oResponse.headers.HTTPResponseCode = 502;
+                                    oSession.utilCreateResponseAndBypassServer();
+                                    oSession.oResponse.headers.HTTPResponseCode = 502;
+                                }
                             }                        
                         }
 
@@ -87,9 +93,12 @@ namespace KanProtector
                             ElectronicObserver.Utility.Logger.Add(3, string.Format("{0}", Warning));
                             if (!DebugMode)
                             {
-                                oSession.oResponse.headers.HTTPResponseCode = 502;
-                                oSession.utilCreateResponseAndBypassServer();
-                                oSession.oResponse.headers.HTTPResponseCode = 502;
+                                //if (WarningForm.ShowWarning(Warning) != DialogResult.OK)
+                                {
+                                    oSession.oResponse.headers.HTTPResponseCode = 502;
+                                    oSession.utilCreateResponseAndBypassServer();
+                                    oSession.oResponse.headers.HTTPResponseCode = 502;
+                                }
                             }                     
                         }
 

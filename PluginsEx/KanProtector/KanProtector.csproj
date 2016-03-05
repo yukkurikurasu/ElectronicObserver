@@ -88,6 +88,12 @@
       <DependentUpon>ShipSelector.cs</DependentUpon>
     </Compile>
     <Compile Include="ShipUtility.cs" />
+    <Compile Include="WarningForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WarningForm.Designer.cs">
+      <DependentUpon>WarningForm.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -109,6 +115,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ShipSelector.resx">
       <DependentUpon>ShipSelector.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WarningForm.resx">
+      <DependentUpon>WarningForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

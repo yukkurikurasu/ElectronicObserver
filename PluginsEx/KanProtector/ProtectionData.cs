@@ -243,18 +243,21 @@ namespace KanProtector
 
         void CombineVersion(int LastVersionID)
         {
-
             ProtectionVersion oldver = ProtectionVersionManager.Instance.GetVersion(LastVersionID);
-            var NewEquipments = CurrentVersion.IdentifiedEquipments.Except(oldver.IdentifiedEquipments);
-            foreach (var id in NewEquipments)
+            var VersionUpdates = ProtectionVersionManager.Instance.GetVersionUpdates(LastVersionID);
+            foreach (var Ver2Update in VersionUpdates)
             {
-                AddEquipment(id);
-            }
+                var NewEquipments = Ver2Update.IdentifiedEquipments.Except(oldver.IdentifiedEquipments);
+                foreach (var id in NewEquipments)
+                {
+                    AddEquipment(id);
+                }
 
-            var NewShips = CurrentVersion.IdentifiedShips.Except(oldver.IdentifiedShips);
-            foreach (var id in NewShips)
-            {
-                AddShip(id, true, ProtectionType.保护全部, true);
+                var NewShips = Ver2Update.IdentifiedShips.Except(oldver.IdentifiedShips);
+                foreach (var id in NewShips)
+                {
+                    AddShip(id, true, ProtectionType.保护全部, true);
+                }
             }
 
         }
@@ -354,9 +357,9 @@ namespace KanProtector
 
             if (!ExistShips.Contains(ID))
                 return true;
-            if (ProtectPrimary)
+            if (ProtectPrimary && ShipProtection.isPrimaryShipProtected(NowID))
             {
-                return ShipProtection.isPrimaryShipProtected(NowID);
+                return true;
             }
             foreach (ShipProtection sp in shipList)
             {

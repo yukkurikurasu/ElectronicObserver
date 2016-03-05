@@ -16,6 +16,8 @@ namespace KanProtector
         const string LockItemID = "api.slotitem.id";
         public static string OnDestroyShip(string body)
         {
+            List<string> shipList = new List<string>();
+            List<string> eqList = new List<string>();
             try
             {
                 Dictionary<string, string> api = GetAPI(body);
@@ -24,18 +26,26 @@ namespace KanProtector
                     int shipID = int.Parse(api[DestroyShipID]);
                     ShipData ship = KCDatabase.Instance.Ships[shipID];
                     if (ProtectionData.Instance.ShipProtectionEnabled && ProtectionData.Instance.isShipProtected(shipID))
-                        return "试图拆解被保护的舰娘[" + ship.NameWithLevel + "]";
+                        shipList.Add(ship.NameWithLevel);
                     if (ProtectionData.Instance.EquipmentProtectionEnabled)
                     {
                         foreach (int ItemID in ship.SlotMaster)
                         {
                             if (ProtectionData.Instance.isEquipmentProtected(ItemID))
                             {
-                                return "试图拆解的舰娘上存在被保护的装备[" + KCDatabase.Instance.MasterEquipments[ItemID].Name + "]";
+                                eqList.Add(KCDatabase.Instance.MasterEquipments[ItemID].Name);
                             }
                         }
                     }
                 }
+
+                StringBuilder WarningText = new StringBuilder();
+                if (shipList.Count > 0)
+                    WarningText.Append("试图拆解被保护的舰娘[" + string.Join("][", shipList.ToArray()) + "]" + Environment.NewLine);
+                if (eqList.Count > 0)
+                    WarningText.Append("试图拆解的舰娘上存在被保护的装备[" + string.Join("][", eqList.ToArray()) + "]");
+                if (shipList.Count > 0 || eqList.Count > 0)
+                    return WarningText.ToString();
             }
             catch(Exception e)
             {
@@ -45,6 +55,7 @@ namespace KanProtector
         }
         public static string OnDestroyItem(string body)
         {
+            List<string> eqList = new List<string>();
             try
             {
                 Dictionary<string, string> api = GetAPI(body);
@@ -58,9 +69,16 @@ namespace KanProtector
                         int ID = KCDatabase.Instance.Equipments[ItemID].EquipmentID;
                         if (ProtectionData.Instance.isEquipmentProtected(ID))
                         {
-                            return "试图废弃被保护的装备[" + KCDatabase.Instance.MasterEquipments[ID].Name + "]";
+                            eqList.Add(KCDatabase.Instance.MasterEquipments[ID].Name);
                         }
                     }
+                }
+
+                StringBuilder WarningText = new StringBuilder();
+                if (eqList.Count > 0)
+                {
+                    WarningText.Append("试图拆解的舰娘上存在被保护的装备[" + string.Join("][", eqList.ToArray()) + "]");
+                    return WarningText.ToString();
                 }
             }
             catch (Exception e)
@@ -71,6 +89,8 @@ namespace KanProtector
         }
         public static string OnPowerUp(string body)
         {
+            List<string> shipList = new List<string>();
+            List<string> eqList = new List<string>();
             try
             {
                 Dictionary<string, string> api = GetAPI(body);
@@ -84,7 +104,7 @@ namespace KanProtector
                         var shipdata = KCDatabase.Instance.Ships[shipID];
                         if (ProtectionData.Instance.ShipProtectionEnabled && ProtectionData.Instance.isShipProtected(shipID))
                         {
-                            return "试图喂掉被保护的舰娘[" + shipdata.NameWithLevel + "]";
+                            shipList.Add(shipdata.NameWithLevel);
                         }
                         if (ProtectionData.Instance.EquipmentProtectionEnabled)
                         {
@@ -92,12 +112,19 @@ namespace KanProtector
                             {
                                 if (ProtectionData.Instance.isEquipmentProtected(ID))
                                 {
-                                    return "试图喂掉的舰娘上存在被保护的装备[" + KCDatabase.Instance.MasterEquipments[ID].Name + "]";
+                                    eqList.Add(KCDatabase.Instance.MasterEquipments[ID].Name);
                                 }
                             }
                         }
                     }
                 }
+                StringBuilder WarningText = new StringBuilder();
+                if (shipList.Count > 0)
+                    WarningText.Append("试图拆解被保护的舰娘[" + string.Join("][", shipList.ToArray()) + "]" + Environment.NewLine);
+                if (eqList.Count > 0)
+                    WarningText.Append("试图拆解的舰娘上存在被保护的装备[" + string.Join("][", eqList.ToArray()) + "]");
+                if (shipList.Count > 0 || eqList.Count > 0)
+                    return WarningText.ToString();
             }
             catch (Exception e)
             {
