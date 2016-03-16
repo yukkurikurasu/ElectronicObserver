@@ -9,7 +9,7 @@ using System.Text;
 using System.Windows.Forms;
 using Microsoft.CSharp;
 using Fiddler;
-
+using System.Xml;
 using System.Text.RegularExpressions;
 
 using WeifenLuo.WinFormsUI.Docking;
@@ -48,6 +48,7 @@ namespace KanVoice
                 }
             }
             VoiceObserverPlugin.Data.Init();
+            LoadConfig();
             //ElectronicObserver.Utility.Configuration.Instance.AddObserverPlugin(VoiceObserverPlugin);
             return true;
         }
@@ -64,6 +65,66 @@ namespace KanVoice
             }
         }
 
+        public static void LoadConfig()
+        {
+            try
+            {
+                if (System.IO.File.Exists(VoiceData.ConfigFile))
+                {
+                    XmlDocument doc = new XmlDocument();
+                    doc.Load(VoiceData.ConfigFile);
+                    var Root = doc.DocumentElement;
+
+                    string UseThirdBuffer = Root.GetAttribute("UseThirdBuffer");
+                    if (UseThirdBuffer == "True")
+                    {
+                        VoiceData.UseThirdBuffer = true;
+                        form.UseThird.Checked = true;
+                    }
+                    else
+                    {
+                        VoiceData.UseThirdBuffer = false;
+                    }
+
+                    string MaxLines = Root.GetAttribute("MaxLines");
+                    int max;
+                    if (int.TryParse(MaxLines, out max))
+                    {
+                        VoiceSubtitle.MaxLines = max;
+                    }
+                    if (VoiceSubtitle.MaxLines <= form.SetMax.DropDownItems.Count)
+                        ((ToolStripMenuItem)form.SetMax.DropDownItems[VoiceSubtitle.MaxLines - 1]).Checked = true;
+                }
+            }
+            catch
+            {
+            }
+        }
+
+        public static void SaveConfig()
+        {
+            try
+            {
+                XmlDocument doc = new XmlDocument();
+                if (!System.IO.File.Exists(VoiceData.ConfigFile))
+                {
+                    XmlElement xmlelem = doc.CreateElement("Config");
+                    doc.AppendChild(xmlelem);
+                }
+                else
+                {
+                    doc.Load(VoiceData.ConfigFile);
+                }
+                var Root = doc.DocumentElement;
+                Root.RemoveAll();
+                Root.SetAttribute("UseThirdBuffer", VoiceData.UseThirdBuffer.ToString());
+                Root.SetAttribute("MaxLines", VoiceSubtitle.MaxLines.ToString());
+                doc.Save(VoiceData.ConfigFile);
+            }
+            catch
+            {
+            }
+        }
     }
 
 
@@ -83,8 +144,15 @@ namespace KanVoice
 
         public override bool OnBeforeRequest(Session oSession)
         {
-            //System.IO.File.AppendAllText("d:\\1.txt", oSession.fullUrl + Environment.NewLine);
-            
+            if (VoiceData.UseThirdBuffer)
+            {
+                Regex reg = new Regex("sound/kc(.*?)/(.*?).mp3");
+                Match match = reg.Match(oSession.fullUrl);
+                if (match.Success && match.Groups.Count == 3)
+                {
+                    oSession.bBufferResponse = true;
+                }
+            }
             return false;
         }
 
@@ -101,8 +169,11 @@ namespace KanVoice
                 Match match = reg.Match(oSession.fullUrl);
                 if (match.Success && match.Groups.Count == 3)
                 {
-                    //oSession.oRequest.headers["Pragma"] = "no-cache";
-                    //oSession.oResponse.headers["Pragma"] = "no-cache";
+                    if (VoiceData.UseThirdBuffer)
+                    {
+                        oSession.oResponse.headers["Pragma"] = "no-cache";
+                        oSession.oResponse.headers["Cache-Control"] = "no-cache";
+                    }
                     string voice = Data.GetVoice(match.Groups[1].Value, int.Parse(match.Groups[2].Value));
                     if (voice != null)
                     {
