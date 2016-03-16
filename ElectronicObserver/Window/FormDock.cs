@@ -36,7 +36,7 @@ namespace ElectronicObserver.Window {
 				//ShipName.Padding = new Padding( 0, 1, 0, 1 );
 				ShipName.Margin = new Padding( 3, 2, 3, 2 );
 				//ShipName.MaximumSize = new Size( 60, 20 );
-				ShipName.AutoEllipsis = true;
+				//ShipName.AutoEllipsis = true;
 				ShipName.AutoSize = true;
 				ShipName.Visible = true;
 
@@ -222,21 +222,26 @@ namespace ElectronicObserver.Window {
 			ForeColor = Utility.Configuration.Config.UI.ForeColor;
 
 			if ( ControlDock != null ) {
+                TableDock.SuspendLayout();
+
 				for ( int i = 0; i < ControlDock.Length; i++ ) {
 					if ( ControlDock[i].RepairTime != null && ControlDock[i].ShipName != null ) {
 						ControlDock[i].ShipName.ForeColor = ForeColor;
 						ControlDock[i].RepairTime.ForeColor = ForeColor;
 					}
+
                     if (Utility.Configuration.Config.FormFleet.FixShipNameWidth)
                     {
                         ControlDock[i].ShipName.AutoSize = false;
-                        ControlDock[i].ShipName.Size = new Size(40, 20);
+                        ControlDock[i].ShipName.Size = new Size( 40, 17 );
                     }
                     else
                     {
                         ControlDock[i].ShipName.AutoSize = true;
                     }
 				}
+
+                TableDock.ResumeLayout();
 			}
 		}
 
