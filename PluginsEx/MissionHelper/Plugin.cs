@@ -31,7 +31,7 @@ namespace MissionHelper
             Main.SubForms.Add(form);
             for (int i = 0; i < Main.MainMenuStrip.Items.Count; i++)
             {
-                if (Main.MainMenuStrip.Items[i].Name == "StripMenu_Tool")
+                if (Main.MainMenuStrip.Items[i].Name == "StripMenu_View")
                 {
                     var aa = (ToolStripMenuItem)Main.MainMenuStrip.Items[i];
                     aa.DropDownItems.Add("远征助手").Click += MissionWarningPlugin_Click;
