@@ -146,7 +146,8 @@ namespace EquipmentsDetail
 
 			//表示処理
 			EquipmentView.SuspendLayout();
-
+            EquipmentView_Name.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+            ColShips.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
 			EquipmentView.Enabled = false;
 			EquipmentView.Rows.Clear();
 
@@ -236,6 +237,7 @@ namespace EquipmentsDetail
                             FirstShipRow ? c.countAll.ToString() + "(" + c.countRemain.ToString() + ")" : "",
                             GetShips(c.equippedShips, cc)
                             );
+                        row.Tag = masterEquipments[id].Name;
                         row.Cells[0].Tag = FirstRow ? 0 : id;
                         row.Cells[1].Tag = FirstRow ? 0 : 1;
                         row.Cells[2].Tag = FirstRow ? 0 : 1;
@@ -254,15 +256,17 @@ namespace EquipmentsDetail
 
             }
 
-			for ( int i = 0; i < rows.Count; i++ )
-				rows[i].Tag = i;
+            //for ( int i = 0; i < rows.Count; i++ )
+            //    rows[i].Tag = i;
 
 			EquipmentView.Rows.AddRange( rows.ToArray() );
-
+            
 			//EquipmentView.Sort( EquipmentView_Name, ListSortDirection.Ascending );
 
 
 			EquipmentView.Enabled = true;
+            EquipmentView_Name.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            ColShips.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 			EquipmentView.ResumeLayout();
 
 			if ( EquipmentView.Rows.Count > 0 )
@@ -403,6 +407,7 @@ namespace EquipmentsDetail
             FilterForm ff = new FilterForm();
             ff.SetFilter(Filters);
             ff.ShowDialog();
+            textBox1.Text = null;
             UpdateView();
         }
 
@@ -425,6 +430,31 @@ namespace EquipmentsDetail
                     }
                 }
             }
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            Search(textBox1.Text);
+        }
+
+        private void Search(string eqname)
+        {
+            EquipmentView.SuspendLayout();
+            EquipmentView_Name.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+            ColShips.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+            
+            bool visi = false;
+            if (eqname == null || eqname == "")
+                visi = true;
+            foreach (var rowobj in EquipmentView.Rows)
+            {
+                DataGridViewRow row = rowobj as DataGridViewRow;
+                row.Visible = visi || (row.Tag.ToString().IndexOf(eqname) >= 0);
+            }
+
+            EquipmentView_Name.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            ColShips.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            EquipmentView.ResumeLayout();
         }
 	}
 }

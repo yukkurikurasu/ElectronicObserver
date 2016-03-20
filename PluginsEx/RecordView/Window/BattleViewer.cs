@@ -79,7 +79,7 @@ namespace RecordView
             int max = Date2.Year * 10000 + Date2.Month * 100 + Date2.Day;
             List<string> files = new List<string>();
             if (!Directory.Exists(Application.StartupPath + "\\battlelogs"))
-                return null;
+                return files;
             foreach (var fullname in Directory.GetFiles(Application.StartupPath + "\\battlelogs", "battlelog_????_????.dat"))
             {
                 string filename = Path.GetFileName(fullname);

@@ -30,7 +30,8 @@ namespace KanVoice
                 VoiceText.RemoveAt(0);
             textBox1.Text = string.Join("\r\n", VoiceText.ToArray());
             textBox1.SelectionLength = 0;
-            textBox1.SelectionStart = 0;
+            textBox1.SelectionStart = textBox1.Text.Length;
+            textBox1.ScrollToCaret();
         }
 
         private void textBox1_DoubleClick(object sender, EventArgs e)
@@ -59,6 +60,33 @@ namespace KanVoice
             ((ToolStripMenuItem)sender).Checked = true;
             MaxLines = int.Parse(((ToolStripMenuItem)sender).Text);
             VoicePlugin.SaveConfig();
+        }
+
+        private void 我想帮忙完善台词ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start("http:\\zh.kcwiki.moe"); 
+        }
+
+        private void IgnoreItem_Click(object sender, EventArgs e)
+        {
+            IgnoreItem.Checked = VoiceData.IgnoreBlankSubtitles = !VoiceData.IgnoreBlankSubtitles;
+            VoicePlugin.SaveConfig();
+        }
+
+        private void VoiceSubtitle_Load(object sender, EventArgs e)
+        {
+            Instance_ConfigurationChanged();
+           
+            this.HideOnClose = true;
+
+            ElectronicObserver.Utility.Configuration.Instance.ConfigurationChanged += Instance_ConfigurationChanged;
+        }
+
+        void Instance_ConfigurationChanged()
+        {
+            textBox1.Font = ElectronicObserver.Utility.Configuration.Config.UI.MainFont;
+            textBox1.ForeColor = ElectronicObserver.Utility.Configuration.Config.UI.ForeColor;
+            textBox1.BackColor = ElectronicObserver.Utility.Configuration.Config.UI.BackColor;
         }
     }
 }

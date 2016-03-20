@@ -43,7 +43,6 @@
             this.toolStripMenuItem9 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem10 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem11 = new System.Windows.Forms.ToolStripMenuItem();
-            this.UseThird = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem12 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem13 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem14 = new System.Windows.Forms.ToolStripMenuItem();
@@ -54,6 +53,10 @@
             this.toolStripMenuItem19 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem20 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem21 = new System.Windows.Forms.ToolStripMenuItem();
+            this.UseThird = new System.Windows.Forms.ToolStripMenuItem();
+            this.IgnoreItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+            this.WebSiteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -74,9 +77,12 @@
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.CopyText,
             this.SetMax,
-            this.UseThird});
+            this.UseThird,
+            this.IgnoreItem,
+            this.toolStripMenuItem1,
+            this.WebSiteToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(185, 70);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(185, 142);
             // 
             // CopyText
             // 
@@ -182,6 +188,76 @@
             this.toolStripMenuItem11.Text = "10";
             this.toolStripMenuItem11.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
             // 
+            // toolStripMenuItem12
+            // 
+            this.toolStripMenuItem12.Name = "toolStripMenuItem12";
+            this.toolStripMenuItem12.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItem12.Text = "11";
+            this.toolStripMenuItem12.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
+            // 
+            // toolStripMenuItem13
+            // 
+            this.toolStripMenuItem13.Name = "toolStripMenuItem13";
+            this.toolStripMenuItem13.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItem13.Text = "12";
+            this.toolStripMenuItem13.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
+            // 
+            // toolStripMenuItem14
+            // 
+            this.toolStripMenuItem14.Name = "toolStripMenuItem14";
+            this.toolStripMenuItem14.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItem14.Text = "13";
+            this.toolStripMenuItem14.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
+            // 
+            // toolStripMenuItem15
+            // 
+            this.toolStripMenuItem15.Name = "toolStripMenuItem15";
+            this.toolStripMenuItem15.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItem15.Text = "14";
+            this.toolStripMenuItem15.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
+            // 
+            // toolStripMenuItem16
+            // 
+            this.toolStripMenuItem16.Name = "toolStripMenuItem16";
+            this.toolStripMenuItem16.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItem16.Text = "15";
+            this.toolStripMenuItem16.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
+            // 
+            // toolStripMenuItem17
+            // 
+            this.toolStripMenuItem17.Name = "toolStripMenuItem17";
+            this.toolStripMenuItem17.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItem17.Text = "16";
+            this.toolStripMenuItem17.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
+            // 
+            // toolStripMenuItem18
+            // 
+            this.toolStripMenuItem18.Name = "toolStripMenuItem18";
+            this.toolStripMenuItem18.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItem18.Text = "17";
+            this.toolStripMenuItem18.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
+            // 
+            // toolStripMenuItem19
+            // 
+            this.toolStripMenuItem19.Name = "toolStripMenuItem19";
+            this.toolStripMenuItem19.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItem19.Text = "18";
+            this.toolStripMenuItem19.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
+            // 
+            // toolStripMenuItem20
+            // 
+            this.toolStripMenuItem20.Name = "toolStripMenuItem20";
+            this.toolStripMenuItem20.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItem20.Text = "19";
+            this.toolStripMenuItem20.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
+            // 
+            // toolStripMenuItem21
+            // 
+            this.toolStripMenuItem21.Name = "toolStripMenuItem21";
+            this.toolStripMenuItem21.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItem21.Text = "20";
+            this.toolStripMenuItem21.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
+            // 
             // UseThird
             // 
             this.UseThird.Name = "UseThird";
@@ -189,65 +265,24 @@
             this.UseThird.Text = "使用第三方缓存工具";
             this.UseThird.Click += new System.EventHandler(this.UseThird_Click);
             // 
-            // toolStripMenuItem12
+            // IgnoreItem
             // 
-            this.toolStripMenuItem12.Name = "toolStripMenuItem12";
-            this.toolStripMenuItem12.Size = new System.Drawing.Size(152, 22);
-            this.toolStripMenuItem12.Text = "11";
+            this.IgnoreItem.Name = "IgnoreItem";
+            this.IgnoreItem.Size = new System.Drawing.Size(184, 22);
+            this.IgnoreItem.Text = "取消缺失台词的提示";
+            this.IgnoreItem.Click += new System.EventHandler(this.IgnoreItem_Click);
             // 
-            // toolStripMenuItem13
+            // toolStripMenuItem1
             // 
-            this.toolStripMenuItem13.Name = "toolStripMenuItem13";
-            this.toolStripMenuItem13.Size = new System.Drawing.Size(152, 22);
-            this.toolStripMenuItem13.Text = "12";
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(181, 6);
             // 
-            // toolStripMenuItem14
+            // WebSiteToolStripMenuItem
             // 
-            this.toolStripMenuItem14.Name = "toolStripMenuItem14";
-            this.toolStripMenuItem14.Size = new System.Drawing.Size(152, 22);
-            this.toolStripMenuItem14.Text = "13";
-            // 
-            // toolStripMenuItem15
-            // 
-            this.toolStripMenuItem15.Name = "toolStripMenuItem15";
-            this.toolStripMenuItem15.Size = new System.Drawing.Size(152, 22);
-            this.toolStripMenuItem15.Text = "14";
-            // 
-            // toolStripMenuItem16
-            // 
-            this.toolStripMenuItem16.Name = "toolStripMenuItem16";
-            this.toolStripMenuItem16.Size = new System.Drawing.Size(152, 22);
-            this.toolStripMenuItem16.Text = "15";
-            // 
-            // toolStripMenuItem17
-            // 
-            this.toolStripMenuItem17.Name = "toolStripMenuItem17";
-            this.toolStripMenuItem17.Size = new System.Drawing.Size(152, 22);
-            this.toolStripMenuItem17.Text = "16";
-            // 
-            // toolStripMenuItem18
-            // 
-            this.toolStripMenuItem18.Name = "toolStripMenuItem18";
-            this.toolStripMenuItem18.Size = new System.Drawing.Size(152, 22);
-            this.toolStripMenuItem18.Text = "17";
-            // 
-            // toolStripMenuItem19
-            // 
-            this.toolStripMenuItem19.Name = "toolStripMenuItem19";
-            this.toolStripMenuItem19.Size = new System.Drawing.Size(152, 22);
-            this.toolStripMenuItem19.Text = "18";
-            // 
-            // toolStripMenuItem20
-            // 
-            this.toolStripMenuItem20.Name = "toolStripMenuItem20";
-            this.toolStripMenuItem20.Size = new System.Drawing.Size(152, 22);
-            this.toolStripMenuItem20.Text = "19";
-            // 
-            // toolStripMenuItem21
-            // 
-            this.toolStripMenuItem21.Name = "toolStripMenuItem21";
-            this.toolStripMenuItem21.Size = new System.Drawing.Size(152, 22);
-            this.toolStripMenuItem21.Text = "20";
+            this.WebSiteToolStripMenuItem.Name = "WebSiteToolStripMenuItem";
+            this.WebSiteToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
+            this.WebSiteToolStripMenuItem.Text = "我想帮忙完善台词";
+            this.WebSiteToolStripMenuItem.Click += new System.EventHandler(this.我想帮忙完善台词ToolStripMenuItem_Click);
             // 
             // VoiceSubtitle
             // 
@@ -258,6 +293,7 @@
             this.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.Name = "VoiceSubtitle";
             this.Text = "舰娘语音字幕";
+            this.Load += new System.EventHandler(this.VoiceSubtitle_Load);
             this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -291,6 +327,9 @@
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem19;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem20;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem21;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem WebSiteToolStripMenuItem;
+        public System.Windows.Forms.ToolStripMenuItem IgnoreItem;
     }
 }
 

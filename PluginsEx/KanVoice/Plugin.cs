@@ -32,7 +32,7 @@ namespace KanVoice
 
         public override string Version
         {
-            get { return "1.0.0.1"; }
+            get { return "1.0.0.2"; }
         }
 
         public override bool RunService(ElectronicObserver.Window.FormMain main)
@@ -86,6 +86,17 @@ namespace KanVoice
                         VoiceData.UseThirdBuffer = false;
                     }
 
+                    string IgnoreBlankSubtitles = Root.GetAttribute("IgnoreBlankSubtitles");
+                    if (IgnoreBlankSubtitles == "True")
+                    {
+                        VoiceData.IgnoreBlankSubtitles = true;
+                        form.IgnoreItem.Checked = true;
+                    }
+                    else
+                    {
+                        VoiceData.IgnoreBlankSubtitles = false;
+                    }
+
                     string MaxLines = Root.GetAttribute("MaxLines");
                     int max;
                     if (int.TryParse(MaxLines, out max))
@@ -118,6 +129,7 @@ namespace KanVoice
                 var Root = doc.DocumentElement;
                 Root.RemoveAll();
                 Root.SetAttribute("UseThirdBuffer", VoiceData.UseThirdBuffer.ToString());
+                Root.SetAttribute("IgnoreBlankSubtitles", VoiceData.IgnoreBlankSubtitles.ToString());
                 Root.SetAttribute("MaxLines", VoiceSubtitle.MaxLines.ToString());
                 doc.Save(VoiceData.ConfigFile);
             }
@@ -139,7 +151,7 @@ namespace KanVoice
 
         public override string Version
         {
-            get { return "1.0.0.1"; }
+            get { return "1.0.0.2"; }
         }
 
         public override bool OnBeforeRequest(Session oSession)

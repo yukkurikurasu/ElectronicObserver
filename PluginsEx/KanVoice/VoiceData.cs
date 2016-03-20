@@ -16,6 +16,7 @@ namespace KanVoice
         Dictionary<string, object> data;
         public static string ConfigFile;
         public static bool UseThirdBuffer = false;
+        public static bool IgnoreBlankSubtitles = false;
 
         public void Init()
         {
@@ -42,7 +43,7 @@ namespace KanVoice
 
         public string GetVoice(string ShipCode, int FileName)
         {
-            var ship = KCDatabase.Instance.MasterShips.Values.First(e => { return e.ResourceName == ShipCode; });
+            var ship = KCDatabase.Instance.MasterShips.Values.FirstOrDefault(e => { return e.ResourceName == ShipCode; });
             if (ship == null)
                 return null;
             int shipid = ship.ShipID;
@@ -58,11 +59,11 @@ namespace KanVoice
                     if (voices.ContainsKey(voiceid))
                     {
                         string text = voices[voiceid].ToString();
-                        return "[" + ShipName + "]:" + text;
+                        return "[" + ShipName + "]: " + text;
                     }
                 }
             }
-            return "[" + ShipName + "]:";
+            return IgnoreBlankSubtitles ? null : "[" + ShipName + "]: 这句语音还没有台词呢,到舰娘百科网站帮忙维护吧";
         }
     }
 }

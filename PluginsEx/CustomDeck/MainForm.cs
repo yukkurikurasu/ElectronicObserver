@@ -20,14 +20,14 @@ using ElectronicObserver.Window.Support;
 
 namespace CustomDeck
 {
-    public partial class DeckMainForm : DockContent
+    public partial class DeckMainForm : Form
     {
 
         CustomFleets Fleets = new CustomFleets();
         CustomDeckForm[] Decks = new CustomDeckForm[4];
         bool Loading = false;
         
-        public DeckMainForm(FormMain main)
+        public DeckMainForm()
         {
             InitializeComponent();
         }

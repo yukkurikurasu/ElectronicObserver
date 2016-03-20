@@ -26,6 +26,9 @@
 		private void InitializeComponent() {
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.EquipmentView = new System.Windows.Forms.DataGridView();
+            this.button1 = new System.Windows.Forms.Button();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.EquipmentView_ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.EquipmentView_Icon = new System.Windows.Forms.DataGridViewImageColumn();
             this.EquipmentView_Name = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -34,8 +37,6 @@
             this.ColAirLevel = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColTotal = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColShips = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.button1 = new System.Windows.Forms.Button();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.EquipmentView)).BeginInit();
             this.SuspendLayout();
             // 
@@ -62,6 +63,7 @@
             this.EquipmentView.Name = "EquipmentView";
             this.EquipmentView.ReadOnly = true;
             this.EquipmentView.RowHeadersVisible = false;
+            this.EquipmentView.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             this.EquipmentView.RowTemplate.Height = 21;
             this.EquipmentView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.EquipmentView.Size = new System.Drawing.Size(924, 543);
@@ -69,76 +71,6 @@
             this.EquipmentView.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.EquipmentView_CellFormatting);
             this.EquipmentView.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.EquipmentView_CellMouseClick);
             this.EquipmentView.CellPainting += new System.Windows.Forms.DataGridViewCellPaintingEventHandler(this.EquipmentView_CellPainting);
-            // 
-            // EquipmentView_ID
-            // 
-            this.EquipmentView_ID.HeaderText = "ID";
-            this.EquipmentView_ID.Name = "EquipmentView_ID";
-            this.EquipmentView_ID.ReadOnly = true;
-            this.EquipmentView_ID.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.EquipmentView_ID.Width = 40;
-            // 
-            // EquipmentView_Icon
-            // 
-            this.EquipmentView_Icon.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
-            this.EquipmentView_Icon.HeaderText = "";
-            this.EquipmentView_Icon.Name = "EquipmentView_Icon";
-            this.EquipmentView_Icon.ReadOnly = true;
-            this.EquipmentView_Icon.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.EquipmentView_Icon.Width = 5;
-            // 
-            // EquipmentView_Name
-            // 
-            this.EquipmentView_Name.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.EquipmentView_Name.HeaderText = "装備名";
-            this.EquipmentView_Name.Name = "EquipmentView_Name";
-            this.EquipmentView_Name.ReadOnly = true;
-            this.EquipmentView_Name.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.EquipmentView_Name.Width = 49;
-            // 
-            // EquipmentView_CountAll
-            // 
-            this.EquipmentView_CountAll.HeaderText = "個数";
-            this.EquipmentView_CountAll.Name = "EquipmentView_CountAll";
-            this.EquipmentView_CountAll.ReadOnly = true;
-            this.EquipmentView_CountAll.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.EquipmentView_CountAll.Width = 40;
-            // 
-            // ColLevel
-            // 
-            this.ColLevel.HeaderText = "改修";
-            this.ColLevel.Name = "ColLevel";
-            this.ColLevel.ReadOnly = true;
-            this.ColLevel.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.ColLevel.Width = 40;
-            // 
-            // ColAirLevel
-            // 
-            this.ColAirLevel.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.ColAirLevel.HeaderText = "熟练";
-            this.ColAirLevel.Name = "ColAirLevel";
-            this.ColAirLevel.ReadOnly = true;
-            this.ColAirLevel.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.ColAirLevel.Width = 37;
-            // 
-            // ColTotal
-            // 
-            this.ColTotal.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.ColTotal.HeaderText = "个数";
-            this.ColTotal.Name = "ColTotal";
-            this.ColTotal.ReadOnly = true;
-            this.ColTotal.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.ColTotal.Width = 37;
-            // 
-            // ColShips
-            // 
-            this.ColShips.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            this.ColShips.DefaultCellStyle = dataGridViewCellStyle1;
-            this.ColShips.HeaderText = "装备于";
-            this.ColShips.Name = "ColShips";
-            this.ColShips.ReadOnly = true;
-            this.ColShips.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
             // button1
             // 
@@ -163,13 +95,96 @@
             this.checkBox1.UseVisualStyleBackColor = true;
             this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(243, 7);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(100, 23);
+            this.textBox1.TabIndex = 5;
+            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            // 
+            // EquipmentView_ID
+            // 
+            this.EquipmentView_ID.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.EquipmentView_ID.HeaderText = "ID";
+            this.EquipmentView_ID.Name = "EquipmentView_ID";
+            this.EquipmentView_ID.ReadOnly = true;
+            this.EquipmentView_ID.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.EquipmentView_ID.Width = 40;
+            // 
+            // EquipmentView_Icon
+            // 
+            this.EquipmentView_Icon.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.EquipmentView_Icon.HeaderText = "";
+            this.EquipmentView_Icon.Name = "EquipmentView_Icon";
+            this.EquipmentView_Icon.ReadOnly = true;
+            this.EquipmentView_Icon.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.EquipmentView_Icon.Width = 30;
+            // 
+            // EquipmentView_Name
+            // 
+            this.EquipmentView_Name.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.EquipmentView_Name.HeaderText = "装備名";
+            this.EquipmentView_Name.Name = "EquipmentView_Name";
+            this.EquipmentView_Name.ReadOnly = true;
+            this.EquipmentView_Name.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.EquipmentView_Name.Width = 49;
+            // 
+            // EquipmentView_CountAll
+            // 
+            this.EquipmentView_CountAll.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.EquipmentView_CountAll.HeaderText = "個数";
+            this.EquipmentView_CountAll.Name = "EquipmentView_CountAll";
+            this.EquipmentView_CountAll.ReadOnly = true;
+            this.EquipmentView_CountAll.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.EquipmentView_CountAll.Width = 40;
+            // 
+            // ColLevel
+            // 
+            this.ColLevel.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.ColLevel.HeaderText = "改修";
+            this.ColLevel.Name = "ColLevel";
+            this.ColLevel.ReadOnly = true;
+            this.ColLevel.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.ColLevel.Width = 40;
+            // 
+            // ColAirLevel
+            // 
+            this.ColAirLevel.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.ColAirLevel.HeaderText = "熟练";
+            this.ColAirLevel.Name = "ColAirLevel";
+            this.ColAirLevel.ReadOnly = true;
+            this.ColAirLevel.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.ColAirLevel.Width = 40;
+            // 
+            // ColTotal
+            // 
+            this.ColTotal.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.ColTotal.HeaderText = "个数";
+            this.ColTotal.Name = "ColTotal";
+            this.ColTotal.ReadOnly = true;
+            this.ColTotal.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.ColTotal.Width = 60;
+            // 
+            // ColShips
+            // 
+            this.ColShips.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            this.ColShips.DefaultCellStyle = dataGridViewCellStyle1;
+            this.ColShips.HeaderText = "装备于";
+            this.ColShips.Name = "ColShips";
+            this.ColShips.ReadOnly = true;
+            this.ColShips.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.ColShips.Width = 622;
+            // 
             // DialogEquipmentList
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(925, 582);
+            this.Controls.Add(this.EquipmentView);
+            this.Controls.Add(this.textBox1);
             this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.button1);
-            this.Controls.Add(this.EquipmentView);
             this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("Meiryo UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.Name = "DialogEquipmentList";
@@ -188,6 +203,7 @@
         private System.Windows.Forms.DataGridView EquipmentView;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.DataGridViewTextBoxColumn EquipmentView_ID;
         private System.Windows.Forms.DataGridViewImageColumn EquipmentView_Icon;
         private System.Windows.Forms.DataGridViewTextBoxColumn EquipmentView_Name;

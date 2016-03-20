@@ -16,7 +16,7 @@ namespace CustomDeck
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new DeckMainForm( null));
+            Application.Run(new DeckMainForm());
         }
     }
 }
