@@ -99,6 +99,14 @@ namespace KanVoice
                         VoiceData.UseThirdBuffer = false;
                     }
 
+                    string subtitleDisplayArea = Root.GetAttribute("SubtitleDisplayArea");
+                    SubtitleDisplayArea Area;
+                    if (Enum.TryParse(subtitleDisplayArea, out Area))
+                    {
+                        VoiceData.subtitleDisplayArea = Area;
+                    }
+                    ((ToolStripMenuItem)(form.MenuArea.DropDownItems[(int)Area])).Checked = true;
+
                     string IgnoreBlankSubtitles = Root.GetAttribute("IgnoreBlankSubtitles");
                     if (IgnoreBlankSubtitles == "True")
                     {
@@ -143,6 +151,7 @@ namespace KanVoice
                 Root.RemoveAll();
                 Root.SetAttribute("UseThirdBuffer", VoiceData.UseThirdBuffer.ToString());
                 Root.SetAttribute("IgnoreBlankSubtitles", VoiceData.IgnoreBlankSubtitles.ToString());
+                Root.SetAttribute("SubtitleDisplayArea", VoiceData.subtitleDisplayArea.ToString());
                 Root.SetAttribute("MaxLines", VoiceSubtitle.MaxLines.ToString());
                 doc.Save(VoiceData.ConfigFile);
             }
@@ -202,7 +211,21 @@ namespace KanVoice
                     string voice = Data.GetVoice(match.Groups[1].Value, int.Parse(match.Groups[2].Value));
                     if (voice != null)
                     {
-                        VoicePlugin.form.AddText(voice);
+                        if (VoiceData.subtitleDisplayArea == SubtitleDisplayArea.DockForm || VoiceData.subtitleDisplayArea == SubtitleDisplayArea.Both)
+                        {
+                            VoicePlugin.form.AddText(voice);
+                        }
+                        if (VoiceData.subtitleDisplayArea == SubtitleDisplayArea.StatusBar || VoiceData.subtitleDisplayArea == SubtitleDisplayArea.Both)
+                        {
+                            try
+                            {
+                                var stripStatus = VoicePlugin.Main.Controls.Find("StripStatus", false)[0] as StatusStrip;
+                                stripStatus.Items[0].Text = voice;
+                            }
+                            catch
+                            {//状态栏可能移动位置了
+                            }
+                        }
                     }
                     return false;
                 }

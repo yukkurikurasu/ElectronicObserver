@@ -88,5 +88,16 @@ namespace KanVoice
             textBox1.ForeColor = ElectronicObserver.Utility.Configuration.Config.UI.ForeColor;
             textBox1.BackColor = ElectronicObserver.Utility.Configuration.Config.UI.BackColor;
         }
+
+        private void AreaClick(object sender, EventArgs e)
+        {
+            foreach (var item in MenuArea.DropDownItems)
+            {
+                ((ToolStripMenuItem)item).Checked = false;
+            }
+            ((ToolStripMenuItem)sender).Checked = true;
+            VoiceData.subtitleDisplayArea = (SubtitleDisplayArea)((ToolStripMenuItem)sender).Tag;
+            VoicePlugin.SaveConfig();
+        }
     }
 }
