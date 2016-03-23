@@ -499,17 +499,7 @@ namespace ElectronicObserver.Data {
 		/// 現在の設定に応じて、索敵能力を取得します。
 		/// </summary>
 		public double GetSearchingAbility() {
-			switch ( Utility.Configuration.Config.FormFleet.SearchingAbilityMethod ) {
-				default:
-				case 0:
-					return Calculator.GetSearchingAbility_Old( this );
-
-				case 1:
-					return Calculator.GetSearchingAbility_Autumn( this );
-
-				case 2:
-					return Calculator.GetSearchingAbility_TinyAutumn( this );
-			}
+			return CalculatorEx.GetSearchingAbility( this, Utility.Configuration.Config.FormFleet.SearchingAbilityMethod );
 		}
 
 		/// <summary>
@@ -524,17 +514,8 @@ namespace ElectronicObserver.Data {
 		/// </summary>
 		/// <param name="index">計算式。0-2</param>
 		public string GetSearchingAbilityString( int index ) {
-			switch ( index ) {
-				default:
-				case 0:
-					return Calculator.GetSearchingAbility_Old( this ).ToString();
 
-				case 1:
-					return Calculator.GetSearchingAbility_Autumn( this ).ToString( "F1" );
-
-				case 2:
-					return Calculator.GetSearchingAbility_TinyAutumn( this ).ToString();
-			}
+			return CalculatorEx.GetSearchingAbility( this, index ).ToString( "F2" );
 		}
 
 		/// <summary>
@@ -770,12 +751,18 @@ namespace ElectronicObserver.Data {
 					break;
 				case FleetStates.Docking:
 					label.Text = "入渠中 " + DateTimeHelper.ToTimeRemainString( timer );
+					if ( Utility.Configuration.Config.FormFleet.BlinkAtCompletion && ( timer - DateTime.Now ).TotalMilliseconds <= Utility.Configuration.Config.NotifierRepair.AccelInterval )
+						label.BackColor = DateTime.Now.Second % 2 == 0 ? Color.LightGreen : Color.Transparent;
 					break;
 				case FleetStates.Expedition:
 					label.Text = "遠征中 " + DateTimeHelper.ToTimeRemainString( timer );
+					if ( Utility.Configuration.Config.FormFleet.BlinkAtCompletion && ( timer - DateTime.Now ).TotalMilliseconds <= Utility.Configuration.Config.NotifierExpedition.AccelInterval )
+						label.BackColor = DateTime.Now.Second % 2 == 0 ? Color.LightGreen : Color.Transparent;
 					break;
 				case FleetStates.Tired:
 					label.Text = "疲労 " + DateTimeHelper.ToTimeRemainString( timer );
+					if ( Utility.Configuration.Config.FormFleet.BlinkAtCompletion && ( timer - DateTime.Now ).TotalMilliseconds <= 0 )
+						label.BackColor = DateTime.Now.Second % 2 == 0 ? Color.LightGreen : Color.Transparent;
 					break;
 				case FleetStates.AnchorageRepairing:
 					label.Text = "泊地修理中 " + DateTimeHelper.ToTimeElapsedString( KCDatabase.Instance.Fleet.AnchorageRepairingTimer );

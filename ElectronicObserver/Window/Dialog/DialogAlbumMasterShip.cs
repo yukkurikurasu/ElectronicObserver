@@ -26,6 +26,9 @@ namespace ElectronicObserver.Window.Dialog
         private ImageLabel[] Aircrafts;
         private ImageLabel[] Equipments;
 
+        bool ShowVoice = false;
+        string VoiceCachePath = "";
+        Utility.MediaPlayer MediaPlayer;
 
         public DialogAlbumMasterShip()
         {
@@ -130,6 +133,8 @@ namespace ElectronicObserver.Window.Dialog
             LoadShips(null);
 
             this.ResumeLayoutForDpiScale();
+
+            VoiceCachePath = Utility.Configuration.Config.CacheSettings.CacheFolder + "\\kcs\\sound";
         }
 
         private void LoadShips(string filter)
@@ -263,7 +268,6 @@ namespace ElectronicObserver.Window.Dialog
             ShipDataMaster ship = db.MasterShips[shipID];
 
             if (ship == null) return;
-
 
             BasePanelShipGirl.SuspendLayout();
 
@@ -605,6 +609,8 @@ namespace ElectronicObserver.Window.Dialog
 
             this.Text = "艦船図鑑 - " + ship.NameWithClass;
 
+            if (ShowVoice)
+                LoadVoice();
         }
 
 
@@ -1069,5 +1075,60 @@ namespace ElectronicObserver.Window.Dialog
 
         }
 
+        private void lblVoice_Click(object sender, EventArgs e)
+        {
+            if (!Directory.Exists(VoiceCachePath))
+                return;
+            ShowVoice = !ShowVoice;
+            this.Width = ShowVoice ? 1100 : this.MinimumSize.Width;
+            dataGridView1.Visible = ShowVoice;
+            if (ShowVoice)
+                LoadVoice();
+        }
+
+        void LoadVoice()
+        {
+            dataGridView1.SuspendLayout();
+            dataGridView1.Rows.Clear();
+            List<DataGridViewRow> rows = new List<DataGridViewRow>();
+            for (int i = 1; i < Utility.KanVoice.GetVoiceCount(); i++)
+            {
+                DataGridViewRow row = new DataGridViewRow();
+                string shortPath = Utility.KanVoice.GetVoicePath(_shipID, i);
+                string FilePath = VoiceCachePath + "\\" + shortPath;
+                if (File.Exists(FilePath))
+                {
+                    row.CreateCells(dataGridView1);
+                    row.SetValues(Utility.KanVoice.GetVoiceName(i), shortPath);
+                    row.Cells[0].Tag = i;
+                    row.Tag = FilePath;
+                    rows.Add(row);
+                }
+            }
+            dataGridView1.Rows.AddRange(rows.ToArray());
+
+            dataGridView1.ResumeLayout();
+        }
+
+        private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.ColumnIndex == VoiceColAction.Index)
+            {
+                string text = Utility.KanVoice.GetVoiceText(_shipID, (int)(dataGridView1.Rows[e.RowIndex].Cells[0].Tag));
+                if (text != null)
+                    Description.Text = text;
+                if (MediaPlayer == null)
+                    MediaPlayer = new Utility.MediaPlayer();
+                if (MediaPlayer.PlayState > 0)
+                    MediaPlayer.Stop();
+                MediaPlayer.SourcePath = dataGridView1.Rows[e.RowIndex].Tag.ToString();
+                MediaPlayer.IsLoop = false;
+                MediaPlayer.Play();
+            }
+            if (e.ColumnIndex ==VoiceColPath.Index)
+            {
+                System.Diagnostics.Process.Start("Explorer.exe", "/e,/select," + dataGridView1.Rows[e.RowIndex].Tag.ToString());
+            }
+        }
     }
 }

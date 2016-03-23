@@ -627,13 +627,38 @@ namespace ElectronicObserver.Utility {
 				/// </summary>
 				public bool ShowShipName { get; set; }
 
+				/// <summary>
+				/// 完了時に点滅させるか
+				/// </summary>
+				public bool BlinkAtCompletion { get; set; }
+
 				public ConfigFormArsenal() {
 					ShowShipName = true;
+					BlinkAtCompletion = true;
 				}
 			}
 			/// <summary>[工廠]ウィンドウ</summary>
 			[DataMember]
 			public ConfigFormArsenal FormArsenal { get; private set; }
+
+
+			/// <summary>
+			/// [入渠]ウィンドウの設定を扱います。
+			/// </summary>
+			public class ConfigFormDock : ConfigPartBase {
+
+				/// <summary>
+				/// 完了時に点滅させるか
+				/// </summary>
+				public bool BlinkAtCompletion { get; set; }
+
+				public ConfigFormDock() {
+					BlinkAtCompletion = true;
+				}
+			}
+			/// <summary>[入渠]ウィンドウ</summary>
+			[DataMember]
+			public ConfigFormDock FormDock { get; private set; }
 
 
 			/// <summary>
@@ -670,6 +695,11 @@ namespace ElectronicObserver.Utility {
 				/// 索敵式の計算方法
 				/// </summary>
 				public int SearchingAbilityMethod { get; set; }
+
+				/// <summary>
+				/// 索敵式列表
+				/// </summary>
+				public string SearchingAbilities { get; set; }
 
 				/// <summary>
 				/// スクロール可能か
@@ -711,10 +741,15 @@ namespace ElectronicObserver.Utility {
 				/// </summary>
 				public bool ShowAnchorageRepairingTimer { get; set; }
 
+				/// <summary>
+				/// タイマー完了時に点滅させるか
+				/// </summary>
+				public bool BlinkAtCompletion { get; set; }
 
 				public ConfigFormFleet() {
 					ShowAircraft = true;
 					SearchingAbilityMethod = 0;
+					SearchingAbilities = "33式;2-5式(秋);2-5新秋簡易式;(旧)2-5式";
 					IsScrollable = true;
 					FixShipNameWidth = false;
 					ShortenHPBar = false;
@@ -723,6 +758,7 @@ namespace ElectronicObserver.Utility {
 					ShowEquipmentLevel = true;
 					AirSuperiorityMethod = 1;
 					ShowAnchorageRepairingTimer = true;
+					BlinkAtCompletion = true;
 				}
 			}
 			/// <summary>[艦隊]ウィンドウ</summary>
@@ -1189,6 +1225,7 @@ namespace ElectronicObserver.Utility {
 				Life = new ConfigLife();
 
 				FormArsenal = new ConfigFormArsenal();
+				FormDock = new ConfigFormDock();
 				FormFleet = new ConfigFormFleet();
 				FormHeadquarters = new ConfigFormHeadquarters();
 				FormQuest = new ConfigFormQuest();

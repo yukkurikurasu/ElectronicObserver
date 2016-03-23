@@ -41,6 +41,23 @@ namespace KanVoice
             return (ShipId + 7) * 17 * (voiceKey[VoiceId] - voiceKey[VoiceId - 1]) % 99173 + 100000;
         }
 
+        public string GetVoice(int shipid, int voiceID)
+        {
+            if (voiceMap.ContainsKey(shipid) && data.ContainsKey(shipid.ToString()))
+            {
+                string voiceid = voiceID.ToString();
+
+                var voices = (Dictionary<string, object>)data[shipid.ToString()];
+                if (voices.ContainsKey(voiceid))
+                {
+                    string text = voices[voiceid].ToString();
+                    return text;
+                }
+                
+            }
+            return null;
+        }
+
         public string GetVoice(string ShipCode, int FileName)
         {
             var ship = KCDatabase.Instance.MasterShips.Values.FirstOrDefault(e => { return e.ResourceName == ShipCode; });

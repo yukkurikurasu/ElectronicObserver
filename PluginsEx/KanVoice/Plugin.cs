@@ -50,7 +50,20 @@ namespace KanVoice
             VoiceObserverPlugin.Data.Init();
             LoadConfig();
             //ElectronicObserver.Utility.Configuration.Instance.AddObserverPlugin(VoiceObserverPlugin);
+            try
+            {
+                ElectronicObserver.Utility.KanVoice.OnGetVoiceText += KanVoice_OnGetVoiceText;
+            }
+            catch
+            {
+                //没有这个事件钩子 ,74主程序版本不够
+            }
             return true;
+        }
+
+        string KanVoice_OnGetVoiceText(int shipID, int voiceID)
+        {
+            return VoiceObserverPlugin.Data.GetVoice(shipID, voiceID);
         }
         void Plugin_Click(object sender, EventArgs e)
         {
