@@ -526,6 +526,15 @@ namespace ItemUpgrade
             AddInformation(ItemType.探照灯, "96式150cm探照灯", new int[] { 2, 3, 4, 5 }, "霧島", RequirementList);
 
             RequirementList.New();
+            RequirementList.Initial.SetCondition(2, 3, "零式水上偵察機", 1);
+            RequirementList.Steps.SetCondition(3, 5, "零式水上偵察機", 2);
+            RequirementList.Refresh.SetCondition(5, 10, "零式艦戦21型", 3, "二式水戦改");
+            AddInformation(ItemType.水上偵察機, "零式水上偵察機", new int[] { 5, 6 }, "千歳甲", new string[] { "千歳航", "千歳航改", "千歳航改二" }, RequirementList);
+            AddInformation(ItemType.水上偵察機, "零式水上偵察機", new int[] { 3, 4 }, "千代田甲", new string[] { "千代田航", "千代田航改", "千代田航改二" }, RequirementList);
+            AddInformation(ItemType.水上偵察機, "零式水上偵察機", new int[] { 0, 4, 5, 6 }, "秋津洲改", RequirementList);
+            AddInformation(ItemType.水上偵察機, "零式水上偵察機", new int[] { 0, 1, 2, 5, 6 }, "瑞穂", RequirementList);
+
+            RequirementList.New();
             RequirementList.Initial.SetCondition(3, 5, "瑞雲", 1);
             RequirementList.Steps.SetCondition(4, 7, "零式水上観測機", 1);
             AddInformation(ItemType.水上偵察機, "零式水上観測機", new int[] { 0, 1, 2, 3, 6 }, "瑞穂", RequirementList);
@@ -538,6 +547,29 @@ namespace ItemUpgrade
             AddInformation(ItemType.水上偵察機, "Ro.43水偵", new int[] { 1, 2, 3, 4, 5 }, "Zara改", RequirementList);
             AddInformation(ItemType.水上偵察機, "Ro.43水偵", new int[] { 2, 3 }, "Roma改", RequirementList);
             AddInformation(ItemType.水上偵察機, "Ro.43水偵", new int[] { 0, 6 }, "Italia", RequirementList);
+
+            RequirementList.New();
+            RequirementList.Initial.SetCondition(1, 2, "ドラム缶(輸送用)", 1);
+            RequirementList.Steps.SetCondition(2, 3, "7.7mm機銃", 1);
+            RequirementList.Refresh.SetCondition(3, 7, "12.7mm単装機銃", 3, "大発動艇(八九式中戦車&陸戦隊)");
+            AddInformation(ItemType.水上偵察機, "大発動艇", new int[] { 0, 1, 2, 3, 4, 5, 6 }, "あきつ丸", RequirementList);
+            AddInformation(ItemType.水上偵察機, "大発動艇", new int[] { 0, 1, 2, 3 }, "皐月改二", RequirementList);
+            AddInformation(ItemType.水上偵察機, "大発動艇", new int[] { 0, 1, 5, 6 }, "阿武隈改二", RequirementList);
+
+            RequirementList.New();
+            RequirementList.Initial.SetCondition(2, 3, "25mm単装機銃", 1);
+            RequirementList.Steps.SetCondition(3, 5, "12cm30連装噴進砲", 2);
+            RequirementList.Refresh.SetCondition(5, 9, "7.7mm機銃", 3, "特二式内火艇");
+            AddInformation(ItemType.水上偵察機, "大発動艇(八九式中戦車&陸戦隊)", new int[] { 0, 1, 5, 6 }, "あきつ丸", RequirementList);
+            AddInformation(ItemType.水上偵察機, "大発動艇(八九式中戦車&陸戦隊)", new int[] { 4, 5, 6 }, "皐月改二", RequirementList);
+            AddInformation(ItemType.水上偵察機, "大発動艇(八九式中戦車&陸戦隊)", new int[] { 2, 3, 4 }, "阿武隈改二", RequirementList);
+
+            RequirementList.New();
+            RequirementList.Initial.SetCondition(3, 4, "7.7mm機銃", 2);
+            RequirementList.Steps.SetCondition(4, 6, "12.7mm単装機銃", 3);
+            AddInformation(ItemType.水上偵察機, "特二式内火艇", new int[] { 0, 1, 5, 6 }, "伊58", RequirementList);
+            AddInformation(ItemType.水上偵察機, "特二式内火艇", new int[] { 3, 4, 5, 6 }, "伊8", RequirementList);
+            AddInformation(ItemType.水上偵察機, "特二式内火艇", new int[] { 1, 2, 3, 4 }, "伊401", RequirementList);
         }
 
         public void AddInformation(ItemType Type, string Name, int[] DayofWeeks, string ShipName, UpgradeRequirementList list)

@@ -17,7 +17,7 @@ namespace ItemUpgrade
 
 		public override string Version
 		{
-			get { return "1.0.0.5"; }
+			get { return "1.0.0.6"; }
 		}
 
 		public override Form GetToolWindow()
