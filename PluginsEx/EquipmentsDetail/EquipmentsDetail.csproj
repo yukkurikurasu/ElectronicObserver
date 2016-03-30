@@ -95,7 +95,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DockPanelSuite\WinFormsUI\WinFormsUI.csproj">
+    <ProjectReference Include="..\..\DockPanelSuite\WinFormsUI\WinFormsUI.csproj">
       <Project>{c75532c4-765b-418e-b09b-46d36b2abdb1}</Project>
       <Name>WinFormsUI</Name>
     </ProjectReference>
