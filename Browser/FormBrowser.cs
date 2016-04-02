@@ -919,8 +919,8 @@ namespace Browser {
 
                 //try {
 
-                //    await Task.Factory.StartNew( (Action)( () => ClearCache() ) );
-                //    MessageBox.Show( "キャッシュの削除が完了しました。", "削除完了", MessageBoxButtons.OK, MessageBoxIcon.Information );
+					//await Task.Run( (Action)( () => ClearCache() ) );
+					//MessageBox.Show( "キャッシュの削除が完了しました。", "削除完了", MessageBoxButtons.OK, MessageBoxIcon.Information );
 
                 //} catch ( Exception ex ) {
                 //    BrowserHost.Proxy.SendErrorReport( ex.Message, "清除缓存时出错。" );

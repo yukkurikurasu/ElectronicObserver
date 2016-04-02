@@ -8,7 +8,7 @@ using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
 using System.Threading;
 using System.Web.Script.Serialization;
-using ICSharpCode.SharpZipLib.Zip;
+using System.IO.Compression;
 
 namespace ElectronicObserver.Window.Plugins
 {
@@ -241,29 +241,31 @@ namespace ElectronicObserver.Window.Plugins
                 
                 if (File.Exists(updateFile))
                 {
-                    if (Path.GetExtension(file).ToUpper() == ".PLUGIN")
-                    {
-                        ZipFile zip = new ZipFile(updateFile);
-                        try
-                        {
-                            for (int i = 0; i < zip.Count; i++)
-                            {
-                                if (zip[i].IsFile)
-                                {
-                                    var stream = zip.GetInputStream(zip[i]);
-                                    SaveStreamToFile(stream, zip[i].Name);
-                                }
-                            }
-                        }
-                        finally
-                        {
-                            zip.Close();
-                        }
-                    }
-                    else
-                    {
-                        File.Copy(updateFile, PluginsFolder + "\\" + file, true);
-                    }
+					if (Path.GetExtension(file).ToUpper() == ".PLUGIN")
+					{
+						ZipArchive zip = ZipFile.Open(updateFile, ZipArchiveMode.Read);
+						try
+						{
+							for (int i = 0; i < zip.Entries.Count; i++)
+							{
+								// TODO: check if all files.
+								//if (zip.Entries[i].IsFile)
+								{
+									var entry = zip.Entries[i];
+									var stream = entry.Open();
+									SaveStreamToFile(stream, entry.Name);
+								}
+							}
+						}
+						finally
+						{
+							zip.Dispose();
+						}
+					}
+					else
+					{
+						File.Copy(updateFile, PluginsFolder + "\\" + file, true);
+					}
                     ElectronicObserver.Utility.Logger.Add(2, "已经成功更新插件:" + file);
                     File.Delete(updateFile);
                 }
