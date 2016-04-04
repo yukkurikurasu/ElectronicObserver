@@ -17,12 +17,22 @@ namespace ItemUpgrade
 
 		public override string Version
 		{
-			get { return "1.0.0.6"; }
+			get { return "1.1.0.0"; }
 		}
 
 		public override Form GetToolWindow()
 		{
             return new UpgradeHelper();
 		}
-	}
+
+        public override PluginUpdateInformation UpdateInformation
+        {
+            get
+            {
+                PluginUpdateInformation inf = new PluginUpdateInformation(PluginUpdateInformation.UpdateType.Auto);
+                inf.UpdateInformationURI = "http://herix001.github.io/74Plugins/ItemUpgradeUpdate.json";
+                return inf;
+            }
+        }
+    }
 }

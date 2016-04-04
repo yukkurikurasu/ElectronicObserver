@@ -16,14 +16,33 @@ using WeifenLuo.WinFormsUI.Docking;
 
 namespace KanVoice
 {
-
-    public class VoicePlugin : ServerPlugin
+    public class VoicePlugin : ObserverPlugin
     {
-        public static VoiceSubtitle form = new VoiceSubtitle();
         public static ElectronicObserver.Window.FormMain Main = null;
-        VoiceObserverPlugin VoiceObserverPlugin = new VoiceObserverPlugin();
 
         const string Title = "舰娘语音字幕";
+
+        public static VoiceData Data = new VoiceData();
+
+        public static event EventHandler SubtitleConfigChanged;
+
+        public override PluginType PluginType
+        {
+            get
+            {
+                return PluginType.ServicePlugin | PluginType.DockContentPlugin | PluginType.ObserverPlugin;
+            }
+        }
+
+        public override PluginUpdateInformation UpdateInformation
+        {
+            get
+            {
+                PluginUpdateInformation inf = new PluginUpdateInformation(PluginUpdateInformation.UpdateType.Auto);
+                inf.UpdateInformationURI = "http://herix001.github.io/74Plugins/KanVoiceUpdate.json";
+                return inf;
+            }
+        }
 
         public override string MenuTitle
         {
@@ -32,23 +51,17 @@ namespace KanVoice
 
         public override string Version
         {
-            get { return "1.0.0.2"; }
+            get { return "1.1.0.1"; }
         }
 
         public override bool RunService(ElectronicObserver.Window.FormMain main)
         {
             Main = main;
-            Main.SubForms.Add(form);
-            for (int i = 0; i < Main.MainMenuStrip.Items.Count; i++)
-            {
-                if (Main.MainMenuStrip.Items[i].Name == "StripMenu_View")
-                {
-                    var aa = (ToolStripMenuItem)Main.MainMenuStrip.Items[i];
-                    aa.DropDownItems.Add(Title).Click += Plugin_Click;
-                }
-            }
-            VoiceObserverPlugin.Data.Init();
+          
+            Data.Init();
+
             LoadConfig();
+
             //ElectronicObserver.Utility.Configuration.Instance.AddObserverPlugin(VoiceObserverPlugin);
             try
             {
@@ -63,20 +76,9 @@ namespace KanVoice
 
         string KanVoice_OnGetVoiceText(int shipID, int voiceID)
         {
-            return VoiceObserverPlugin.Data.GetVoice(shipID, voiceID);
+            return Data.GetVoice(shipID, voiceID);
         }
-        void Plugin_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                form.Show(Main.MainPanel);
-            }
-            catch
-            {
-                form = new VoiceSubtitle();
-                form.Show(Main.MainPanel);
-            }
-        }
+     
 
         public static void LoadConfig()
         {
@@ -92,7 +94,6 @@ namespace KanVoice
                     if (UseThirdBuffer == "True")
                     {
                         VoiceData.UseThirdBuffer = true;
-                        form.UseThird.Checked = true;
                     }
                     else
                     {
@@ -105,13 +106,12 @@ namespace KanVoice
                     {
                         VoiceData.subtitleDisplayArea = Area;
                     }
-                    ((ToolStripMenuItem)(form.MenuArea.DropDownItems[(int)Area])).Checked = true;
+                   
 
                     string IgnoreBlankSubtitles = Root.GetAttribute("IgnoreBlankSubtitles");
                     if (IgnoreBlankSubtitles == "True")
                     {
                         VoiceData.IgnoreBlankSubtitles = true;
-                        form.IgnoreItem.Checked = true;
                     }
                     else
                     {
@@ -122,10 +122,13 @@ namespace KanVoice
                     int max;
                     if (int.TryParse(MaxLines, out max))
                     {
-                        VoiceSubtitle.MaxLines = max;
+                        VoiceData.MaxLines = max;
                     }
-                    if (VoiceSubtitle.MaxLines <= form.SetMax.DropDownItems.Count)
-                        ((ToolStripMenuItem)form.SetMax.DropDownItems[VoiceSubtitle.MaxLines - 1]).Checked = true;
+                   
+                }
+                if (SubtitleConfigChanged != null)
+                {
+                    SubtitleConfigChanged(null, null);
                 }
             }
             catch
@@ -152,28 +155,12 @@ namespace KanVoice
                 Root.SetAttribute("UseThirdBuffer", VoiceData.UseThirdBuffer.ToString());
                 Root.SetAttribute("IgnoreBlankSubtitles", VoiceData.IgnoreBlankSubtitles.ToString());
                 Root.SetAttribute("SubtitleDisplayArea", VoiceData.subtitleDisplayArea.ToString());
-                Root.SetAttribute("MaxLines", VoiceSubtitle.MaxLines.ToString());
+                Root.SetAttribute("MaxLines", VoiceData.MaxLines.ToString());
                 doc.Save(VoiceData.ConfigFile);
             }
             catch
             {
             }
-        }
-    }
-
-
-    public class VoiceObserverPlugin : ObserverPlugin
-    {
-        const string Title = "舰娘语音字幕";
-        public static VoiceData Data = new VoiceData();
-        public override string MenuTitle
-        {
-            get { return Title; }
-        }
-
-        public override string Version
-        {
-            get { return "1.0.0.2"; }
         }
 
         public override bool OnBeforeRequest(Session oSession)
@@ -213,7 +200,7 @@ namespace KanVoice
                     {
                         if (VoiceData.subtitleDisplayArea == SubtitleDisplayArea.DockForm || VoiceData.subtitleDisplayArea == SubtitleDisplayArea.Both)
                         {
-                            VoicePlugin.form.AddText(voice);
+                            VoiceSubtitle.VoiceSubtitleForm.AddText(voice);
                         }
                         if (VoiceData.subtitleDisplayArea == SubtitleDisplayArea.StatusBar || VoiceData.subtitleDisplayArea == SubtitleDisplayArea.Both)
                         {
@@ -237,4 +224,5 @@ namespace KanVoice
             return false;
         }
     }
+
 }

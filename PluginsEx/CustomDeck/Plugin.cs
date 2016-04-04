@@ -19,12 +19,25 @@ namespace CustomDeck
 
         public override string Version
         {
-            get { return "1.0.0.3"; }
+            get { return "1.1.0.0"; }
         }
 
         public override Form GetToolWindow()
         {
             return new DeckMainForm();
+        }
+
+        public override PluginUpdateInformation UpdateInformation
+        {
+            get
+            {
+
+                PluginUpdateInformation inf = new PluginUpdateInformation(PluginUpdateInformation.UpdateType.Auto);
+                inf.UpdateInformationURI = "http://herix001.github.io/74Plugins/CustomDeckUpdate.json";
+                inf.PluginDownloadURI = "";
+                return inf;
+
+            }
         }
     }
 }

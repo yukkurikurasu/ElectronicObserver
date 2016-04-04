@@ -14,9 +14,11 @@ namespace KanVoice
 {
     public partial class VoiceSubtitle : DockContent
     {
-        public static int MaxLines = 10;
         List<string> VoiceText = new List<string>();
-        public VoiceSubtitle()
+
+        public static VoiceSubtitle VoiceSubtitleForm = null;
+
+        public VoiceSubtitle(ElectronicObserver.Window.FormMain parent)
         {
             InitializeComponent();
 
@@ -26,7 +28,7 @@ namespace KanVoice
         public void AddText(string Text)
         {
             VoiceText.Add(Text);
-            if (VoiceText.Count > MaxLines)
+            if (VoiceText.Count > VoiceData.MaxLines)
                 VoiceText.RemoveAt(0);
             textBox1.Text = string.Join("\r\n", VoiceText.ToArray());
             textBox1.SelectionLength = 0;
@@ -53,18 +55,18 @@ namespace KanVoice
 
         private void toolStripMenuItem2_Click(object sender, EventArgs e)
         {
-            foreach(var item in SetMax.DropDownItems)
+            foreach (var item in SetMax.DropDownItems)
             {
                 ((ToolStripMenuItem)item).Checked = false;
             }
             ((ToolStripMenuItem)sender).Checked = true;
-            MaxLines = int.Parse(((ToolStripMenuItem)sender).Text);
+            VoiceData.MaxLines = int.Parse(((ToolStripMenuItem)sender).Text);
             VoicePlugin.SaveConfig();
         }
 
         private void 我想帮忙完善台词ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.Start("http:\\zh.kcwiki.moe"); 
+            System.Diagnostics.Process.Start("http:\\zh.kcwiki.moe");
         }
 
         private void IgnoreItem_Click(object sender, EventArgs e)
@@ -75,11 +77,25 @@ namespace KanVoice
 
         private void VoiceSubtitle_Load(object sender, EventArgs e)
         {
+            VoiceSubtitleForm = this;
             Instance_ConfigurationChanged();
-           
+
             this.HideOnClose = true;
 
             ElectronicObserver.Utility.Configuration.Instance.ConfigurationChanged += Instance_ConfigurationChanged;
+            VoicePlugin.SubtitleConfigChanged += VoiceData_SubtitleConfigChanged;
+
+            VoicePlugin.LoadConfig();
+        }
+
+        private void VoiceData_SubtitleConfigChanged(object sender, EventArgs e)
+        {
+            VoiceSubtitleForm = this;
+            ((ToolStripMenuItem)(MenuArea.DropDownItems[(int)VoiceData.subtitleDisplayArea])).Checked = true;
+            UseThird.Checked = VoiceData.UseThirdBuffer;
+            IgnoreItem.Checked = VoiceData.IgnoreBlankSubtitles;
+            if (VoiceData.MaxLines <= SetMax.DropDownItems.Count)
+                ((ToolStripMenuItem)SetMax.DropDownItems[VoiceData.MaxLines - 1]).Checked = true;
         }
 
         void Instance_ConfigurationChanged()

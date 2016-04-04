@@ -22,6 +22,7 @@ namespace KanVoice
         public static bool UseThirdBuffer = false;
         public static bool IgnoreBlankSubtitles = false;
         public static SubtitleDisplayArea subtitleDisplayArea = SubtitleDisplayArea.DockForm;
+        public static int MaxLines = 10;
 
         public void Init()
         {
