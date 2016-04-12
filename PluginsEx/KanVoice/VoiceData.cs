@@ -154,6 +154,7 @@ namespace KanVoice
 
         public string GetVoice(int shipid, int voiceID)
         {
+            CheckUpdate();
             lock (data)
             {
                 if (voiceMap.ContainsKey(shipid) && data.ContainsKey(shipid.ToString()))
@@ -173,6 +174,7 @@ namespace KanVoice
 
         public string GetVoice(string ShipCode, int FileName)
         {
+            CheckUpdate();
             var ship = KCDatabase.Instance.MasterShips.Values.FirstOrDefault(e => { return e.ResourceName == ShipCode; });
             if (ship == null)
                 return null;
