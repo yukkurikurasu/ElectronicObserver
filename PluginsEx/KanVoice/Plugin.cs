@@ -51,7 +51,7 @@ namespace KanVoice
 
         public override string Version
         {
-            get { return "1.1.1.0"; }
+            get { return "1.1.1.1"; }
         }
 
         public override bool RunService(ElectronicObserver.Window.FormMain main)
@@ -106,7 +106,13 @@ namespace KanVoice
                     {
                         VoiceData.subtitleDisplayArea = Area;
                     }
-                   
+
+                    string subtitleLanguage = Root.GetAttribute("SubtitleLanguage");
+                    SubtitleLanguage Language;
+                    if (Enum.TryParse(subtitleLanguage, out Language))
+                    {
+                        VoiceData.subtitleLanguage = Language;
+                    }
 
                     string IgnoreBlankSubtitles = Root.GetAttribute("IgnoreBlankSubtitles");
                     if (IgnoreBlankSubtitles == "True")
@@ -155,6 +161,7 @@ namespace KanVoice
                 Root.SetAttribute("UseThirdBuffer", VoiceData.UseThirdBuffer.ToString());
                 Root.SetAttribute("IgnoreBlankSubtitles", VoiceData.IgnoreBlankSubtitles.ToString());
                 Root.SetAttribute("SubtitleDisplayArea", VoiceData.subtitleDisplayArea.ToString());
+                Root.SetAttribute("SubtitleLanguage", VoiceData.subtitleLanguage.ToString());
                 Root.SetAttribute("MaxLines", VoiceData.MaxLines.ToString());
                 doc.Save(VoiceData.ConfigFile);
             }
@@ -207,7 +214,8 @@ namespace KanVoice
                             try
                             {
                                 var stripStatus = VoicePlugin.Main.Controls.Find("StripStatus", false)[0] as StatusStrip;
-                                stripStatus.Items[0].Text = voice;
+                                if (voice != null)
+                                    stripStatus.Items[0].Text = voice;
                             }
                             catch
                             {//状态栏可能移动位置了

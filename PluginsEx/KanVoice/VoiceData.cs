@@ -13,47 +13,64 @@ namespace KanVoice
     {
         DockForm = 0, StatusBar = 1, Both = 2
     }
+    public enum SubtitleLanguage
+    {
+        chs = 0, jp = 1, both = 2
+    }
     public class VoiceData
     {
         int[] voiceKey = new int[] { 604825, 607300, 613847, 615318, 624009, 631856, 635451, 637218, 640529, 643036, 652687, 658008, 662481, 669598, 675545, 685034, 687703, 696444, 702593, 703894, 711191, 714166, 720579, 728970, 738675, 740918, 743009, 747240, 750347, 759846, 764051, 770064, 773457, 779858, 786843, 790526, 799973, 803260, 808441, 816028, 825381, 827516, 832463, 837868, 843091, 852548, 858315, 867580, 875771, 879698, 882759, 885564, 888837, 896168 };
         Dictionary<int, Dictionary<int, int>> voiceMap = new Dictionary<int, Dictionary<int, int>>();
-        Dictionary<string, object> data;
-        System.DateTime LastUpdateTime;
-        bool Updating;
+        List<Voice> Voices = new List<Voice>();
+      
         public static string ConfigFile;
-        public string LocalFile;
         public static bool UseThirdBuffer = false;
         public static bool IgnoreBlankSubtitles = false;
         public static SubtitleDisplayArea subtitleDisplayArea = SubtitleDisplayArea.DockForm;
+        public static SubtitleLanguage subtitleLanguage = SubtitleLanguage.chs;
         public static int MaxLines = 10;
-        
 
         public void Init()
         {
-            LocalFile = System.Windows.Forms.Application.StartupPath + "\\Settings\\Subtitles.json";
+
             ConfigFile = System.Windows.Forms.Application.StartupPath + "\\Settings\\VoiceSubtitle.xml";
             JavaScriptSerializer Serializer = new JavaScriptSerializer();
-
-            if (File.Exists(LocalFile))
+            Serializer.MaxJsonLength = Serializer.MaxJsonLength * 2;
+            Voices.Add(new Voice("简体中文", "http://api.kcwiki.moe/subtitles/diff/"));
+            Voices.Add(new Voice("日文", "http://api.kcwiki.moe/subtitles/jp/"));
+            Voices[0].LocalFile = System.Windows.Forms.Application.StartupPath + "\\Settings\\Subtitles.json";
+            Voices[1].LocalFile = System.Windows.Forms.Application.StartupPath + "\\Settings\\Subtitles.jp.json";
+            Voices[0].InternalData = Properties.Resources.subtitles;
+            Voices[1].InternalData = Properties.Resources.Subtitles_jp;
+            Voices[1].CouldUpdate = false;
+            for (int index = 0; index < Voices.Count; index++)
             {
-                var localjson = File.ReadAllText(LocalFile);
-                try
+                if (File.Exists(Voices[index].LocalFile))
                 {
-                    var localdata = Serializer.DeserializeObject(localjson) as Dictionary<string, object>;
-                    if (localdata != null)
+                    var localjson = File.ReadAllText(Voices[index].LocalFile);
+                    try
                     {
-                        data = localdata;
+                        var localdata = Serializer.DeserializeObject(localjson) as Dictionary<string, object>;
+                        if (localdata != null)
+                        {
+                            Voices[index].VoiceData = localdata;
+                        }
                     }
+                    catch { }
                 }
-                catch { }
+              
+                if (Voices[index].VoiceData == null)
+                {
+                    string s = Encoding.UTF8.GetString(Voices[index].InternalData);
+                    Voices[index].VoiceData = (Dictionary<string, object>)Serializer.DeserializeObject(s);
+                }
+
+                if (Voices[index].CouldUpdate)
+                {
+                    Voices[index].Updating = true;
+                    Task.Factory.StartNew(UpdateVoice, Voices[index]);
+                }
             }
-            if (data == null)
-            {
-                string s = Encoding.UTF8.GetString(Properties.Resources.subtitles);
-                data = (Dictionary<string, object>)Serializer.DeserializeObject(s);
-            }
-            Updating = true;
-            Task.Factory.StartNew(UpdateVoice);
 
             for (int ShipID = 1; ShipID <= 500; ShipID++)
             {
@@ -72,21 +89,25 @@ namespace KanVoice
 
         void CheckUpdate()
         {
-            if (!Updating)
+            foreach (var voice in Voices)
             {
-                Updating = true;
-                if (System.DateTime.Now > LastUpdateTime.AddHours(12))
+                if (!voice.Updating && voice.CouldUpdate)
                 {
-                    Task.Factory.StartNew(UpdateVoice);
+                    voice.Updating = true;
+                    if (System.DateTime.Now > voice.LastUpdateTime.AddHours(12))
+                    {
+                        Task.Factory.StartNew(UpdateVoice, voice);
+                    }
                 }
             }
         }
 
-        void UpdateVoice()
+        void UpdateVoice(object oi)
         {
-            string LocalVer = data["version"].ToString();
-            ElectronicObserver.Utility.Logger.Add(2, string.Format("开始检查字幕更新数据,当前版本是({0})", LocalVer));
-            string Url = "http://api.kcwiki.moe/subtitles/diff/" + LocalVer;
+            Voice voice = (Voice)oi;
+            string LocalVer = voice.VoiceData["version"].ToString();
+            ElectronicObserver.Utility.Logger.Add(2, string.Format("开始检查{1}字幕更新数据,当前版本是({0})", LocalVer, voice.Language));
+            string Url = voice.UpdateUrl + LocalVer;
             WebRequest wReq = System.Net.WebRequest.Create(Url);
             // Get the response instance.
             WebResponse wResp = wReq.GetResponse();
@@ -101,7 +122,7 @@ namespace KanVoice
                     var diff = JavaScriptSerializer.DeserializeObject(diffstring) as Dictionary<string, object>;
                     if (diff != null && diff.Count > 0)
                     {
-                        lock (data)
+                        lock (voice.VoiceData)
                         {
                             foreach (var shipdata in diff)
                             {
@@ -109,24 +130,23 @@ namespace KanVoice
                                 {
                                     var shipvoice = shipdata.Value as Dictionary<string, object>;
                                     count += shipvoice.Count;
-                                    if (!data.ContainsKey(shipdata.Key))
+                                    if (!voice.VoiceData.ContainsKey(shipdata.Key))
                                     {
-                                        data[shipdata.Key] = shipvoice;
-                                        File.AppendAllText(@"d:\1.txt", shipdata.Key + ":" + shipvoice);
+                                        voice.VoiceData[shipdata.Key] = shipvoice;
                                     }
                                     else
                                     {
-                                        var LocalVoices = data[shipdata.Key] as Dictionary<string, object>;
-                                        foreach (var voice in shipvoice)
+                                        var LocalVoices = voice.VoiceData[shipdata.Key] as Dictionary<string, object>;
+                                        foreach (var Singlevoice in shipvoice)
                                         {
-                                            LocalVoices[voice.Key] = voice.Value;
+                                            LocalVoices[Singlevoice.Key] = Singlevoice.Value;
                                             //File.AppendAllText(@"d:\1.txt", voice.Key + ":" + voice.Value);
                                         }
                                     }
                                 }
                                 else
                                 {
-                                    data[shipdata.Key] = shipdata.Value;
+                                    voice.VoiceData[shipdata.Key] = shipdata.Value;
                                     //File.AppendAllText(@"d:\1.txt", shipdata.Key + ":" + shipdata.Value);
                                 }
                             }
@@ -135,33 +155,73 @@ namespace KanVoice
                 }
                 catch { count = -1; }
             }
-            LastUpdateTime = System.DateTime.Now;
+            voice.LastUpdateTime = System.DateTime.Now;
             if (count == -1)
             {
-                ElectronicObserver.Utility.Logger.Add(2, "字幕数据更新出现错误,稍后会再次检查更新");
+                ElectronicObserver.Utility.Logger.Add(2, string.Format("{0}字幕数据更新出现错误,稍后会再次检查更新", voice.Language));
             }
             else if (count == 0)
             {
-                ElectronicObserver.Utility.Logger.Add(2, "字幕数据检查更新完成,无需更新");
+                ElectronicObserver.Utility.Logger.Add(2, string.Format("{0}字幕数据检查更新完成,无需更新", voice.Language));
             }
             else
             {
-                ElectronicObserver.Utility.Logger.Add(2, string.Format("字幕数据更新完成({0}),更新了({1})条语音", data["version"], count));
-                File.WriteAllText(LocalFile, JavaScriptSerializer.Serialize(data));
+                ElectronicObserver.Utility.Logger.Add(2, string.Format("{2}字幕数据更新完成({0}),更新了({1})条语音", voice.VoiceData["version"], count, voice.Language));
+                File.WriteAllText(voice.LocalFile, JavaScriptSerializer.Serialize(voice.VoiceData));
             }
-            Updating = false;
+            voice.Updating = false;
         }
-
-        public string GetVoice(int shipid, int voiceID)
+        public string GetVoice(int shipid, int voiceID )
         {
             CheckUpdate();
-            lock (data)
+            StringBuilder builder = new StringBuilder();
+            var ShipName = KCDatabase.Instance.MasterShips[shipid].Name;
+            builder.Append("[" + ShipName + "]: ");
+            string chsSubtitle, jpSubtitls;
+            switch (subtitleLanguage)
             {
-                if (voiceMap.ContainsKey(shipid) && data.ContainsKey(shipid.ToString()))
+                case SubtitleLanguage.chs:
+                    chsSubtitle = GetVoice(shipid, voiceID, Voices[0]);
+                    if (string.IsNullOrWhiteSpace(chsSubtitle))
+                        return null;
+                    builder.Append(chsSubtitle); ;
+                    break;
+                case SubtitleLanguage.jp:
+                    jpSubtitls = GetVoice(shipid, voiceID, Voices[1]);
+                    if (string.IsNullOrWhiteSpace(jpSubtitls))
+                        return null;
+                    builder.Append(jpSubtitls);
+                    break;
+                case SubtitleLanguage.both:
+                    chsSubtitle = GetVoice(shipid, voiceID, Voices[0]);
+                    jpSubtitls = GetVoice(shipid, voiceID, Voices[1]);
+                    bool chsExist = !string.IsNullOrWhiteSpace(chsSubtitle);
+                    bool jpExist = !string.IsNullOrWhiteSpace(jpSubtitls);
+                    if (chsExist)
+                        builder.Append(chsSubtitle);
+                    else if (!jpExist)
+                    {
+                        return null;
+                    }
+                    if (chsExist && jpExist)
+                        builder.Append("\r\n(");
+                    if (jpExist)
+                        builder.Append(jpSubtitls);
+                    if (chsExist && jpExist)
+                        builder.Append(")");
+                    break;
+            }
+            return builder.ToString();
+        }
+        public string GetVoice(int shipid, int voiceID, Voice voice)
+        {
+            lock (voice)
+            {
+                if (voiceMap.ContainsKey(shipid) && voice.VoiceData.ContainsKey(shipid.ToString()))
                 {
                     string voiceid = voiceID.ToString();
 
-                    var voices = (Dictionary<string, object>)data[shipid.ToString()];
+                    var voices = (Dictionary<string, object>)voice.VoiceData[shipid.ToString()];
                     if (voices.ContainsKey(voiceid))
                     {
                         string text = voices[voiceid].ToString();
@@ -174,31 +234,33 @@ namespace KanVoice
 
         public string GetVoice(string ShipCode, int FileName)
         {
-            CheckUpdate();
             var ship = KCDatabase.Instance.MasterShips.Values.FirstOrDefault(e => { return e.ResourceName == ShipCode; });
             if (ship == null)
                 return null;
             int shipid = ship.ShipID;
-            string ShipName = ship.Name;
-            lock (data)
-            {
-                if (voiceMap.ContainsKey(shipid) && data.ContainsKey(shipid.ToString()))
-                {
-                    var kan = voiceMap[shipid];
-                    if (kan.ContainsKey(FileName))
-                    {
-                        string voiceid = kan[FileName].ToString();
+            if (voiceMap.ContainsKey(shipid) && voiceMap[shipid].ContainsKey(FileName))
+                return GetVoice(shipid, voiceMap[shipid][FileName]);
+            return null;
+        }
+        
+        
+    }
 
-                        var voices = (Dictionary<string, object>)data[shipid.ToString()];
-                        if (voices.ContainsKey(voiceid))
-                        {
-                            string text = voices[voiceid].ToString();
-                            return "[" + ShipName + "]: " + text;
-                        }
-                    }
-                }
-            }
-            return IgnoreBlankSubtitles ? null : "[" + ShipName + "]: 这句语音还没有台词呢,到舰娘百科网站帮忙维护吧";
+    public class Voice
+    {
+        public string Language { get; set; }
+        public string UpdateUrl { get; set; }
+        public Dictionary<string, object> VoiceData { get; set; }
+        public bool Updating = false;
+        public bool CouldUpdate = true;
+        public System.DateTime LastUpdateTime { get; set; }
+        public string LocalFile { get; set; }
+        public byte[] InternalData;
+
+        public Voice(string language, string updateUrl)
+        {
+            Language = language;
+            UpdateUrl = updateUrl;
         }
     }
 }

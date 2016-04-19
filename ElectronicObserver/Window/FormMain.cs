@@ -14,7 +14,6 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.IO;
-using System.IO.Compression;
 using System.Linq;
 using System.Reflection;
 using System.Security.Permissions;
@@ -23,6 +22,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
+using ICSharpCode.SharpZipLib.Zip;
 
 namespace ElectronicObserver.Window
 {

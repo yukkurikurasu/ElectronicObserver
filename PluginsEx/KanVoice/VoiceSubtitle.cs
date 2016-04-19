@@ -22,11 +22,12 @@ namespace KanVoice
         {
             InitializeComponent();
 
-
         }
 
         public void AddText(string Text)
         {
+            if (Text == null)
+                return;
             VoiceText.Add(Text);
             if (VoiceText.Count > VoiceData.MaxLines)
                 VoiceText.RemoveAt(0);
@@ -92,6 +93,8 @@ namespace KanVoice
         {
             VoiceSubtitleForm = this;
             ((ToolStripMenuItem)(MenuArea.DropDownItems[(int)VoiceData.subtitleDisplayArea])).Checked = true;
+            ((ToolStripMenuItem)(MenuLanguage.DropDownItems[(int)VoiceData.subtitleLanguage])).Checked = true;
+
             UseThird.Checked = VoiceData.UseThirdBuffer;
             IgnoreItem.Checked = VoiceData.IgnoreBlankSubtitles;
             if (VoiceData.MaxLines <= SetMax.DropDownItems.Count)
@@ -113,6 +116,17 @@ namespace KanVoice
             }
             ((ToolStripMenuItem)sender).Checked = true;
             VoiceData.subtitleDisplayArea = (SubtitleDisplayArea)((ToolStripMenuItem)sender).Tag;
+            VoicePlugin.SaveConfig();
+        }
+
+        private void LanguageClick(object sender, EventArgs e)
+        {
+            foreach (var item in MenuLanguage.DropDownItems)
+            {
+                ((ToolStripMenuItem)item).Checked = false;
+            }
+            ((ToolStripMenuItem)sender).Checked = true;
+            VoiceData.subtitleLanguage = (SubtitleLanguage)((ToolStripMenuItem)sender).Tag;
             VoicePlugin.SaveConfig();
         }
     }
