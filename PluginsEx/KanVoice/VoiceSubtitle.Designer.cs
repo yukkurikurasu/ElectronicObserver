@@ -65,6 +65,14 @@
             this.字幕窗口ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.状态栏ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.以上二者ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.UseThird = new System.Windows.Forms.ToolStripMenuItem();
+            this.IgnoreItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+            this.WebSiteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuLanguage = new System.Windows.Forms.ToolStripMenuItem();
+            this.简体中文ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.日文ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.以上二者ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -347,7 +355,7 @@
             this.字幕窗口ToolStripMenuItem.Text = "字幕窗口";
             this.字幕窗口ToolStripMenuItem.Click += new System.EventHandler(this.AreaClick);
             // 
-            // 状态栏ToolStripMenuItem
+            // 日文ToolStripMenuItem
             // 
             this.状态栏ToolStripMenuItem.Name = "状态栏ToolStripMenuItem";
             this.状态栏ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
@@ -355,7 +363,7 @@
             this.状态栏ToolStripMenuItem.Text = "状态栏";
             this.状态栏ToolStripMenuItem.Click += new System.EventHandler(this.AreaClick);
             // 
-            // 以上二者ToolStripMenuItem
+            // 以上二者ToolStripMenuItem1
             // 
             this.以上二者ToolStripMenuItem.Name = "以上二者ToolStripMenuItem";
             this.以上二者ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);

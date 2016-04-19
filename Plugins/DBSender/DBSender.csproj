@@ -31,12 +31,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ElectronicObserver">
-      <HintPath>..\..\output\ElectronicObserver.exe</HintPath>
-    </Reference>
-    <Reference Include="FiddlerCore4, Version=4.5.1.0, Culture=neutral, PublicKeyToken=67cb91587178ac5a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\output\FiddlerCore4.dll</HintPath>
+    <Reference Include="FiddlerCore4">
+      <HintPath>..\..\packages\FiddlerCore.4.4.8.4\lib\net40\FiddlerCore4.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -68,6 +64,12 @@
     <EmbeddedResource Include="Settings.resx">
       <DependentUpon>Settings.cs</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\ElectronicObserver\ElectronicObserver.csproj">
+      <Project>{a9abec50-1bfc-4c69-87ae-c68db6004f68}</Project>
+      <Name>ElectronicObserver</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
