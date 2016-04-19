@@ -115,5 +115,16 @@ namespace KanVoice
             VoiceData.subtitleDisplayArea = (SubtitleDisplayArea)((ToolStripMenuItem)sender).Tag;
             VoicePlugin.SaveConfig();
         }
+
+        private void LanguageClick(object sender, EventArgs e)
+        {
+            foreach (var item in MenuLanguage.DropDownItems)
+            {
+                ((ToolStripMenuItem)item).Checked = false;
+            }
+            ((ToolStripMenuItem)sender).Checked = true;
+            VoiceData.subtitleLanguage = (SubtitleLanguage)((ToolStripMenuItem)sender).Tag;
+            VoicePlugin.SaveConfig();
+        }
     }
 }

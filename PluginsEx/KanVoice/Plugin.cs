@@ -106,7 +106,13 @@ namespace KanVoice
                     {
                         VoiceData.subtitleDisplayArea = Area;
                     }
-                   
+
+                    string subtitleLanguage = Root.GetAttribute("SubtitleLanguage");
+                    SubtitleLanguage Language;
+                    if (Enum.TryParse(subtitleLanguage, out Language))
+                    {
+                        VoiceData.subtitleLanguage = Language;
+                    }
 
                     string IgnoreBlankSubtitles = Root.GetAttribute("IgnoreBlankSubtitles");
                     if (IgnoreBlankSubtitles == "True")
@@ -155,6 +161,7 @@ namespace KanVoice
                 Root.SetAttribute("UseThirdBuffer", VoiceData.UseThirdBuffer.ToString());
                 Root.SetAttribute("IgnoreBlankSubtitles", VoiceData.IgnoreBlankSubtitles.ToString());
                 Root.SetAttribute("SubtitleDisplayArea", VoiceData.subtitleDisplayArea.ToString());
+                Root.SetAttribute("SubtitleLanguage", VoiceData.subtitleLanguage.ToString());
                 Root.SetAttribute("MaxLines", VoiceData.MaxLines.ToString());
                 doc.Save(VoiceData.ConfigFile);
             }
