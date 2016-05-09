@@ -215,6 +215,7 @@ namespace ElectronicObserver.Window.Dialog {
 
 
 
+
 		private void Life_LayoutFilePathSearch_Click( object sender, EventArgs e ) {
 
 			Life_LayoutFilePath.Text = PathHelper.ProcessOpenFileDialog( Life_LayoutFilePath.Text, LayoutFileBrowser );
@@ -336,9 +337,10 @@ namespace ElectronicObserver.Window.Dialog {
 			Life_AutoScaleDpi.Checked = config.UI.AutoScaleDpi;
 			Life_LockLayout.Checked = config.Life.IsLocked;
 			Life_CanCloseFloatWindowInLock.Checked = config.Life.CanCloseFloatWindowInLock;
+            Life_ScreenDock.Checked = config.Life.CanScreenDock;
 
-			//[サブウィンドウ]
-			FormFleet_ShowAircraft.Checked = config.FormFleet.ShowAircraft;
+            //[サブウィンドウ]
+            FormFleet_ShowAircraft.Checked = config.FormFleet.ShowAircraft;
 			FormFleet_SearchingAbilityMethod.SelectedIndex = config.FormFleet.SearchingAbilityMethod;
 			FormFleet_IsScrollable.Checked = config.FormFleet.IsScrollable;
 			FormFleet_FixShipNameWidth.Checked = config.FormFleet.FixShipNameWidth;
@@ -413,6 +415,11 @@ namespace ElectronicObserver.Window.Dialog {
 			FormBrowser_FlashWMode.Text = config.FormBrowser.FlashWmode;
 
 			FormCompass_CandidateDisplayCount.Value = config.FormCompass.CandidateDisplayCount;
+
+			//[データベース]
+			//Database_SendDataToKancolleDB.Checked = config.Connection.SendDataToKancolleDB;
+			//Database_SendKancolleOAuth.Text = config.Connection.SendKancolleOAuth;
+			//Database_SendDataToKCVDB.Checked = config.Connection.SendDataToKCVDB;
 
 			//[BGM]
 			BGMPlayer_Enabled.Checked = config.BGMPlayer.Enabled;
@@ -549,9 +556,10 @@ namespace ElectronicObserver.Window.Dialog {
 			config.UI.AutoScaleDpi = Life_AutoScaleDpi.Checked;
 			config.Life.IsLocked = Life_LockLayout.Checked;
 			config.Life.CanCloseFloatWindowInLock = Life_CanCloseFloatWindowInLock.Checked;
+            config.Life.CanScreenDock = Life_ScreenDock.Checked;
 
-			//[サブウィンドウ]
-			config.FormFleet.ShowAircraft = FormFleet_ShowAircraft.Checked;
+            //[サブウィンドウ]
+            config.FormFleet.ShowAircraft = FormFleet_ShowAircraft.Checked;
 			config.FormFleet.SearchingAbilityMethod = FormFleet_SearchingAbilityMethod.SelectedIndex;
 			config.FormFleet.IsScrollable = FormFleet_IsScrollable.Checked;
 			config.FormFleet.FixShipNameWidth = FormFleet_FixShipNameWidth.Checked;
@@ -584,6 +592,11 @@ namespace ElectronicObserver.Window.Dialog {
 			config.FormBrowser.FlashWmode = FormBrowser_FlashWMode.Text;
 
 			config.FormCompass.CandidateDisplayCount = (int)FormCompass_CandidateDisplayCount.Value;
+
+			//[データベース]
+			//config.Connection.SendDataToKancolleDB = Database_SendDataToKancolleDB.Checked;
+			//config.Connection.SendKancolleOAuth = Database_SendKancolleOAuth.Text;
+			//config.Connection.SendDataToKCVDB = Database_SendDataToKCVDB.Checked;
 
 			//[BGM]
 			config.BGMPlayer.Enabled = BGMPlayer_Enabled.Checked;
@@ -726,6 +739,13 @@ namespace ElectronicObserver.Window.Dialog {
 			}
 
 		}
+
+
+		private void Database_LinkKCVDB_LinkClicked( object sender, LinkLabelLinkClickedEventArgs e ) {
+			System.Diagnostics.Process.Start( "http://kcvdb.jp/guidelines" );
+		}
+
+		
 
 	}
 

@@ -277,7 +277,7 @@ namespace ElectronicObserver.Window.Dialog
             _shipID = shipID;
             ShipID.Text = ship.ShipID.ToString();
             AlbumNo.Text = ship.AlbumNo.ToString();
-            ResourceName.Text = string.Format("{0} ver. {1}", ship.ResourceName, ship.ResourceVersion);
+            ResourceName.Text = string.Format( "{0} ver. {1}", ship.ResourceName, ship.ResourceGraphicVersion );
 
             ShipType.Text = ship.IsLandBase ? "陸上基地" : db.ShipTypes[ship.ShipType].Name;
             ShipName.Text = ship.NameWithClass;
@@ -902,7 +902,7 @@ namespace ElectronicObserver.Window.Dialog
                                 ship.Ammo,
                                 Constants.GetVoiceFlag(ship.VoiceFlag),
                                 ship.ResourceName,
-                                ship.ResourceVersion
+                                ship.ResourceGraphicVersion
                                 );
 
                         }
@@ -1009,7 +1009,7 @@ namespace ElectronicObserver.Window.Dialog
                                 ship.Ammo,
                                 ship.VoiceFlag,
                                 ship.ResourceName,
-                                ship.ResourceVersion
+                                ship.ResourceGraphicVersion
                                 );
 
                         }
@@ -1087,6 +1087,13 @@ namespace ElectronicObserver.Window.Dialog
                 LoadVoice();
         }
 
+        private void lblDownloadAllVoice_Click(object sender, EventArgs e)
+        {
+            Task.Factory
+                .StartNew(DownloadAllVoice)
+                .ContinueWith(t => LoadVoice(), scheduler: TaskScheduler.FromCurrentSynchronizationContext());
+        }
+
         void LoadVoice()
         {
             dataGridView1.SuspendLayout();
@@ -1109,6 +1116,32 @@ namespace ElectronicObserver.Window.Dialog
             dataGridView1.Rows.AddRange(rows.ToArray());
 
             dataGridView1.ResumeLayout();
+        }
+
+        private void DownloadAllVoice()
+        {
+            System.Net.WebClient client = new System.Net.WebClient();
+            for (int i = 1; i < Utility.KanVoice.GetVoiceCount(); i++)
+            {
+                string address = Utility.KanVoice.GetVoiceServerPath(_shipID, i);
+                string localFilePath = Path.Combine(VoiceCachePath, Utility.KanVoice.GetVoicePath(_shipID, i));
+                try
+                {
+                    if (!File.Exists(localFilePath))
+                    {
+                        Utility.Logger.Add(2, string.Format("下载语音文件: {0}", address));
+                        Directory.CreateDirectory(Path.GetDirectoryName(localFilePath));
+                        client.DownloadFile(address, localFilePath);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    if (ex.InnerException != null)
+                        ex = ex.InnerException;
+                    Utility.Logger.Add(2, string.Format("发生错误: {0}", ex.Message));
+                }
+            }
+
         }
 
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
