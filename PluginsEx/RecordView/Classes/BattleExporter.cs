@@ -77,7 +77,15 @@ td,th,tr {text-align:left; padding:1px 2px;}
             string FormationEnemy = Constants.GetFormationShort(record.EnemyFormation);
             string Formation = Constants.GetEngagementForm(record.T_Status);
 
-
+            bool AirBaseAttack = false;
+            int[] AirBaseAttackDamage = new int[6];
+            for (int i = 0; i < 6; i++)
+            {
+                AirBaseAttackDamage[i] = record.EnemyFleet.NowHP[i] >> 16;
+                record.EnemyFleet.NowHP[i] &= 0xffff;
+                if (AirBaseAttackDamage[i] > 0)
+                    AirBaseAttack = true;
+            }
             string[] friends = new string[6];
             string[] accompany = new string[6];
             int back = (record.BattleResult.MVP >> 8) & 0xff;
@@ -180,7 +188,10 @@ td,th,tr {text-align:left; padding:1px 2px;}
 ", FormationFriend, FormationEnemy, Formation);
 
 
-
+            if (AirBaseAttack)
+            {
+                FillAirBaseDamage(builderBottom, &record, AirBaseAttackDamage, enemys);
+            }
 
 
             if (record.AirBattle1.AirSuperiority >= 0)
@@ -675,6 +686,46 @@ td,th,tr {text-align:left; padding:1px 2px;}
 
             return builder;
         }
+        unsafe static private void FillAirBaseDamage(StringBuilder builder, BattleRecord* record, int[] damages, string[] enemys)
+        {
+
+
+
+            builder.AppendLine(@"<h2>基地航空队支援</h2><hr/><table cellspacing = ""2"" cellpadding = ""0"" >
+<thead><th width=""160"">敌方</th>
+<th width=""90"">伤害总量</th>
+<th width=""90"">血量</th>
+</tr>
+</thead>
+<tbody>");
+
+
+            for (int i = 0; i < 6; i++)
+            {
+                builder.AppendLine("<tr>");
+
+                if (enemys[i] != null)
+                {
+                    int before = record->EnemyFleet.NowHP[i];
+                    record->EnemyFleet.NowHP[i] = Math.Max(record->EnemyFleet.NowHP[i] - damages[i], 0);
+                    builder.AppendFormat("<td>{5}.{0}</td><td>{6}</td><td{4}>{1}→{2}/{3}</td>\r\n",
+                        enemys[i], before, record->EnemyFleet.NowHP[i], record->EnemyFleet.MaxHP[i],
+                        GetHealthStatus(record->EnemyFleet.NowHP[i], record->EnemyFleet.MaxHP[i]),
+                        (i + 1),
+                        (damages[i] > 0 ? damages[i].ToString() : "miss"));
+                }
+                else
+                {
+                    builder.AppendLine("<td>&nbsp;</td><td>&nbsp;</td>");
+                }
+
+                builder.AppendLine("</tr>");
+            }
+
+            builder.AppendLine("</tbody>\r\n</table>");
+
+        }
+
 
         unsafe static void FillAirDamage(StringBuilder builder, BattleRecord* record, int AirPeriod, string[] friends, string[] enemys, string[] accompany)
         {

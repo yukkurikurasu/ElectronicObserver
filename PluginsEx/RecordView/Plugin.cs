@@ -10,8 +10,25 @@ namespace RecordView
 {
 	public class Plugin : ServerPlugin
 	{
+        public override PluginType PluginType
+        {
+            get
+            {
+                return PluginType.DialogPlugin | PluginType.ServicePlugin;
+            }
+        }
 
-		public override string MenuTitle
+        public override PluginUpdateInformation UpdateInformation
+        {
+            get
+            {
+                PluginUpdateInformation inf = new PluginUpdateInformation(PluginUpdateInformation.UpdateType.Auto);
+                inf.UpdateInformationURI = "http://herix001.github.io/74Plugins/RecordUpdate.json";
+                return inf;
+            }
+        }
+
+        public override string MenuTitle
 		{
 			get { return "记录浏览"; }
 
@@ -19,7 +36,7 @@ namespace RecordView
 
 		public override string Version
 		{
-			get { return "1.0.0.6"; }
+			get { return "1.0.1.1"; }
 		}
 
 		public override Form GetToolWindow()

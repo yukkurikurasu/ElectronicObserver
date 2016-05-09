@@ -296,6 +296,13 @@ namespace RecordView
                     Record.AccompanyFleet.ShipID[0] = -1;
             }
 
+            if (day.AirBaseAttack != null && day.AirBaseAttack.IsAvailable)
+            {
+                for (int index = 0; index < 6; index++)
+                {
+                    Record.EnemyFleet.NowHP[index] |= day.AttackAirBaseDamages[index + 6] << 16;
+                }
+            }
 
             // day
             {
