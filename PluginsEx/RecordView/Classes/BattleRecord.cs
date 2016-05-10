@@ -296,7 +296,7 @@ namespace RecordView
                     Record.AccompanyFleet.ShipID[0] = -1;
             }
 
-            if (day.AirBaseAttack != null && day.AirBaseAttack.IsAvailable)
+            if (day.BaseAirAttack != null && day.BaseAirAttack.IsAvailable)
             {
                 for (int index = 0; index < 6; index++)
                 {
