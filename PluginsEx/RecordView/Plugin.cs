@@ -52,17 +52,7 @@ namespace RecordView
             
             RecordViewer.ConfigFile = Application.StartupPath + "\\Settings\\RecordViewer.xml";//Settings\\
             LoadConfig();
-            //api_req_sortie/airbattle
-            //api_req_battle_midnight@battle
 
-            for (int i = 0; i < main.MainMenuStrip.Items.Count; i++)
-            {
-                if (main.MainMenuStrip.Items[i].Name == "StripMenu_Tool")
-                {
-                    var aa = (ToolStripMenuItem)main.MainMenuStrip.Items[i];
-                    aa.DropDownItems.Add("记录浏览").Click += Plugin_Click;
-                }
-            }
 
             return true;
         }
