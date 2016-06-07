@@ -56,10 +56,10 @@
             this.MenuArea = new System.Windows.Forms.ToolStripMenuItem();
             this.字幕窗口ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.状态栏ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.以上二者ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuLanguage = new System.Windows.Forms.ToolStripMenuItem();
             this.简体中文ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.日文ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.以上二者ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.UseThird = new System.Windows.Forms.ToolStripMenuItem();
             this.IgnoreItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
@@ -92,7 +92,7 @@
             this.toolStripMenuItem1,
             this.WebSiteToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(185, 164);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(185, 186);
             // 
             // CopyText
             // 
@@ -293,14 +293,6 @@
             this.状态栏ToolStripMenuItem.Text = "状态栏";
             this.状态栏ToolStripMenuItem.Click += new System.EventHandler(this.AreaClick);
             // 
-            // 以上二者ToolStripMenuItem
-            // 
-            this.以上二者ToolStripMenuItem.Name = "以上二者ToolStripMenuItem";
-            this.以上二者ToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
-            this.以上二者ToolStripMenuItem.Tag = KanVoice.SubtitleDisplayArea.Both;
-            this.以上二者ToolStripMenuItem.Text = "以上二者";
-            this.以上二者ToolStripMenuItem.Click += new System.EventHandler(this.AreaClick);
-            // 
             // MenuLanguage
             // 
             this.MenuLanguage.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -314,7 +306,7 @@
             // 简体中文ToolStripMenuItem
             // 
             this.简体中文ToolStripMenuItem.Name = "简体中文ToolStripMenuItem";
-            this.简体中文ToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.简体中文ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.简体中文ToolStripMenuItem.Tag = KanVoice.SubtitleLanguage.chs;
             this.简体中文ToolStripMenuItem.Text = "简体中文";
             this.简体中文ToolStripMenuItem.Click += new System.EventHandler(this.LanguageClick);
@@ -322,10 +314,18 @@
             // 日文ToolStripMenuItem
             // 
             this.日文ToolStripMenuItem.Name = "日文ToolStripMenuItem";
-            this.日文ToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.日文ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.日文ToolStripMenuItem.Tag = KanVoice.SubtitleLanguage.jp;
             this.日文ToolStripMenuItem.Text = "日文";
             this.日文ToolStripMenuItem.Click += new System.EventHandler(this.LanguageClick);
+            // 
+            // 以上二者ToolStripMenuItem
+            // 
+            this.以上二者ToolStripMenuItem.Name = "以上二者ToolStripMenuItem";
+            this.以上二者ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.以上二者ToolStripMenuItem.Tag = KanVoice.SubtitleDisplayArea.Both;
+            this.以上二者ToolStripMenuItem.Text = "以上二者";
+            this.以上二者ToolStripMenuItem.Click += new System.EventHandler(this.LanguageClick);
             // 
             // UseThird
             // 
