@@ -546,6 +546,11 @@ namespace ItemUpgrade
             AddInformation(ItemType.水上偵察機, "Ro.43水偵", new int[] { 0, 6 }, "Italia", RequirementList);
 
             RequirementList.New();
+            RequirementList.Initial.SetCondition(3, 4, "零式水上偵察機", 1);
+            RequirementList.Steps.SetCondition(4, 8, "零式水上偵察機", 2);
+            AddInformation(ItemType.水上偵察機, "九八式水上偵察機(夜偵)", new int[] { 0, 1, 4, 5, 6 }, "川内改二", RequirementList);
+
+            RequirementList.New();
             RequirementList.Initial.SetCondition(1, 2, "ドラム缶(輸送用)", 1);
             RequirementList.Steps.SetCondition(2, 3, "7.7mm機銃", 1);
             RequirementList.Refresh.SetCondition(3, 7, "12.7mm単装機銃", 3, "大発動艇(八九式中戦車&陸戦隊)");

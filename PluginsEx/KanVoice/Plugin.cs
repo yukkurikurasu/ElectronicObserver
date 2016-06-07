@@ -51,7 +51,7 @@ namespace KanVoice
 
         public override string Version
         {
-            get { return "1.1.1.2"; }
+            get { return "1.1.1.3"; }
         }
 
         public override bool RunService(ElectronicObserver.Window.FormMain main)

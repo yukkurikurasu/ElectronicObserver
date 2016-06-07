@@ -37,12 +37,11 @@ namespace KanVoice
             JavaScriptSerializer Serializer = new JavaScriptSerializer();
             Serializer.MaxJsonLength = Serializer.MaxJsonLength * 2;
             Voices.Add(new Voice("简体中文", "http://api.kcwiki.moe/subtitles/diff/"));
-            Voices.Add(new Voice("日文", "http://api.kcwiki.moe/subtitles/jp/"));
+            Voices.Add(new Voice("日文", "http://api.kcwiki.moe/subtitles/jp/diff/"));
             Voices[0].LocalFile = System.Windows.Forms.Application.StartupPath + "\\Settings\\Subtitles.json";
             Voices[1].LocalFile = System.Windows.Forms.Application.StartupPath + "\\Settings\\Subtitles.jp.json";
             Voices[0].InternalData = Properties.Resources.subtitles;
             Voices[1].InternalData = Properties.Resources.Subtitles_jp;
-            Voices[1].CouldUpdate = false;
             for (int index = 0; index < Voices.Count; index++)
             {
                 if (File.Exists(Voices[index].LocalFile))
