@@ -217,12 +217,12 @@ td,th,tr {text-align:left; padding:1px 2px;}
             if (record.AirBattle1.AirSuperiority >= 0)
             {
                 EquipmentDataMaster[] planes =
-						{
-							KCDatabase.Instance.MasterEquipments[record.AirBattle1.FriendTouch],
-							KCDatabase.Instance.MasterEquipments[record.AirBattle2.FriendTouch],
-							KCDatabase.Instance.MasterEquipments[record.AirBattle1.EnemyTouch],
-							KCDatabase.Instance.MasterEquipments[record.AirBattle2.EnemyTouch]
-						};
+                        {
+                            KCDatabase.Instance.MasterEquipments[record.AirBattle1.FriendTouch],
+                            KCDatabase.Instance.MasterEquipments[record.AirBattle2.FriendTouch],
+                            KCDatabase.Instance.MasterEquipments[record.AirBattle1.EnemyTouch],
+                            KCDatabase.Instance.MasterEquipments[record.AirBattle2.EnemyTouch]
+                        };
 
                 bool[] s1available = { true, record.AirBattle2.AirSuperiority >= 0 };
                 bool[] s2available = new bool[2];
@@ -338,17 +338,22 @@ td,th,tr {text-align:left; padding:1px 2px;}
             }
 
             int ppp = 0;
-            if (isCombined&&!isWater)
+            if (isCombined && !isWater)
                 ppp = 1;
             if (isWater)
                 ppp = 2;
+
+            if ((record.ShellBattle1.IsAvailable >> 16) > 0)
+            {
+                FillOpeningASWDamage( ppp, "开幕反潜", builderBottom, &record, isCombined ? accompany : friends, enemys);
+            }
 
             if (record.OpenTorpedoBattle.IsAvailable > 0)
             {
                 FillTorpedoDamage(1, "开幕雷击", builderBottom, &record, isCombined ? accompany : friends, enemys);
             }
 
-            if (record.ShellBattle1.IsAvailable > 0)
+            if ((record.ShellBattle1.IsAvailable & 0xffff) > 0)
             {
                 FillShellingDamage(1, ppp, "炮击战1回合", builderBottom, &record, (isCombined && !isWater) ? accompany : friends, enemys);
             }
@@ -1023,14 +1028,29 @@ td,th,tr {text-align:left; padding:1px 2px;}
             return (damage & 0x30000) == 0;
         }
 
+        static bool isASWMissed(int damage)
+        {
+            return (damage & 0x300) == 0;
+        }
+
         static bool isCritical(int damage)
         {
             return (damage & 0x20000) > 0;
         }
 
+        static bool isASWCritical(int damage)
+        {
+            return (damage & 0x200) > 0;
+        }
+
         static int GetRealDamage(int damage)
         {
             return damage & 0xffff;
+        }
+
+        static int GetRealASWDamage(int damage)
+        {
+            return damage & 0xff;
         }
 
         unsafe private static void FillShellingDamage(int Period,int Combined, string name, StringBuilder builder, BattleRecord* record, string[] friends, string[] enemys)
@@ -1078,8 +1098,8 @@ td,th,tr {text-align:left; padding:1px 2px;}
 
             for (int i = 0; i < 24; i++)
             {
-                int from = shell.Attacker[i];
-                int to = shell.Target[i];
+                int from = shell.Attacker[i] & 0xff;
+                int to = shell.Target[i] & 0xff;
                 int damage = shell.Damages[i];
                 string Special = Period == 4 ? GetNightSP(damage) : GetDaySP(damage);
                 int RealDamage = GetRealDamage(damage);
@@ -1181,7 +1201,135 @@ td,th,tr {text-align:left; padding:1px 2px;}
             builder.AppendLine("</tbody>\r\n</table>");
         }
 
-    static  string GetDaySP(int damage)
+        unsafe private static void FillOpeningASWDamage(int Combined, string name, StringBuilder builder, BattleRecord* record, string[] friends, string[] enemys)
+        {
+            if (!string.IsNullOrEmpty(name))
+            {
+                builder.AppendFormat(@"<h2>{0}</h2>
+<hr />
+", name);
+            }
+
+            builder.AppendLine(@"<table cellspacing=""2"" cellpadding=""0"">
+<thead>
+<tr>
+<th width=""24"">&nbsp;</th>
+<th width=""160"">舰</th>
+<th width=""90"">血量</th>
+<th width=""40"">&nbsp;</th>
+<th width=""24"">&nbsp;</th>
+<th width=""160"">舰</th>
+<th width=""90"">伤害</th>
+<th width=""90"">血量</th>
+<th width=""90"">暴击</th>
+<th width=""120"">特殊</th>
+</tr>
+</thead>
+<tbody>");
+            ShellingRecord shell = record->ShellBattle1;
+
+
+            for (int i = 0; i < 24; i++)
+            {
+                int from = (shell.Attacker[i] >> 8) & 0xff;
+                int to = shell.Target[i] >> 8;
+                int damage = shell.Attacker[i] >> 16;
+                string Special= "";
+                int RealDamage = GetRealASWDamage(damage);
+                bool Criticl = isASWCritical(damage);
+                bool Missed = isASWMissed(damage);
+
+                if (from == 0 && to == 0)
+                    break;
+
+                int Tag;
+                if (Combined == 0)
+                    Tag = 1;
+                else
+                    Tag = 2;
+
+                int ATnow, ATmax;
+                if (Tag == 1)
+                {
+                    ATnow = record->FriendFleet.NowHP[from];
+                    ATmax = record->FriendFleet.MaxHP[from];
+                }
+                else
+                {
+                    ATnow = record->AccompanyFleet.NowHP[from];
+                    ATmax = record->AccompanyFleet.MaxHP[from];
+                }
+
+                if (to < 6)
+                {
+                    // 我方受到攻击
+                    builder.AppendLine(@"<tr class=""damage"">");
+                }
+                else
+                {
+                    builder.AppendLine("<tr>");
+                }
+
+                if (i > 0 && from == shell.Attacker[i - 1] && Special != null)
+                {
+                    builder.Append(@"<td colspan=""5"">&nbsp;</td>");
+                }
+                else
+                {
+                    builder.AppendFormat("<td>{0}</td><td>{1}.{2}</td><td{4}>{5}</td><td>→</td><td>{3}</td>",
+                        (from < 6 ? "我" : "敌"),
+                        (from % 6 + 1),
+                        (from < 6 ? friends[from] : enemys[from - 6]),
+                        (to < 6 ? "我" : "敌"),
+                        GetHealthStatus(ATnow, ATmax), ATnow.ToString() + "/" + ATmax.ToString());
+                }
+
+                int before, now, max;
+                if (to < 6)
+                {
+                    if (Tag == 1)
+                    {
+                        before = record->FriendFleet.NowHP[to];
+                        record->FriendFleet.NowHP[to] = Math.Max(0, record->FriendFleet.NowHP[to] - RealDamage);
+                        now = record->FriendFleet.NowHP[to];
+                        max = record->FriendFleet.MaxHP[to];
+                    }
+                    else
+                    {
+                        before = record->AccompanyFleet.NowHP[to];
+                        record->AccompanyFleet.NowHP[to] = Math.Max(0, record->AccompanyFleet.NowHP[to] - RealDamage);
+                        now = record->AccompanyFleet.NowHP[to];
+                        max = record->AccompanyFleet.MaxHP[to];
+                    }
+                }
+                else
+                {
+                    before = record->EnemyFleet.NowHP[to - 6];
+                    record->EnemyFleet.NowHP[to - 6] = Math.Max(0, record->EnemyFleet.NowHP[to - 6] - RealDamage);
+                    now = record->EnemyFleet.NowHP[to - 6];
+                    max = record->EnemyFleet.MaxHP[to - 6];
+                }
+
+                builder.AppendFormat("<td>{0}.{1}</td><td>{2}</td><td{7}>{3}→{4}/{5}</td><td>{6}</td>",
+                    (to % 6 + 1),
+                    (to < 6 ? friends[to] : enemys[to - 6]),
+                    (RealDamage == 0 ? (Missed ? "miss" : "0") : RealDamage.ToString()),
+                    Math.Max(before, 0),
+                    Math.Max(now, 0), max,
+                    (Criticl ? "√" : ""),
+                    GetHealthStatus(now, max));
+
+
+                builder.AppendFormat("<td>{0}</td>", Special);
+
+
+                builder.AppendLine("</tr>");
+            }
+
+            builder.AppendLine("</tbody>\r\n</table>");
+        }
+
+        static string GetDaySP(int damage)
       {
           if (damage >> 18 > 0)
               return Constants.GetDayAttackKind(damage >> 18);
