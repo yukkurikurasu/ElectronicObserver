@@ -117,6 +117,7 @@
     <Compile Include="Data\Battle\Phase\PhaseBaseAirAttack.cs" />
     <Compile Include="Data\Battle\Phase\PhaseInitial.cs" />
     <Compile Include="Data\Battle\Phase\PhaseNightBattle.cs" />
+    <Compile Include="Data\Battle\Phase\PhaseOpeningASW.cs" />
     <Compile Include="Data\Battle\Phase\PhaseSearching.cs" />
     <Compile Include="Data\Battle\Phase\PhaseShelling.cs" />
     <Compile Include="Data\Battle\Phase\PhaseSupport.cs" />
@@ -173,6 +174,7 @@
     <Compile Include="Observer\kcsapi\api_req_hensei\preset_select.cs" />
     <Compile Include="Observer\kcsapi\api_req_kaisou\marriage.cs" />
     <Compile Include="Observer\kcsapi\api_req_kaisou\open_exslot.cs" />
+    <Compile Include="Observer\kcsapi\api_req_kaisou\slot_deprive.cs" />
     <Compile Include="Observer\kcsapi\api_req_kaisou\slot_exchange_index.cs" />
     <Compile Include="Observer\kcsapi\api_req_kousyou\remodel_slotlist.cs" />
     <Compile Include="Observer\kcsapi\api_req_map\select_eventmap_rank.cs" />

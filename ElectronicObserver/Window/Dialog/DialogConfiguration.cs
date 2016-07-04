@@ -325,6 +325,7 @@ namespace ElectronicObserver.Window.Dialog {
 			Control_ConditionBorder.Value = config.Control.ConditionBorder;
 			Control_RecordAutoSaving.SelectedIndex = config.Control.RecordAutoSaving;
 			Control_UseSystemVolume.Checked = config.Control.UseSystemVolume;
+			Control_PowerEngagementForm.SelectedIndex = config.Control.PowerEngagementForm - 1;
 
 
 			//[起動と終了]
@@ -346,15 +347,16 @@ namespace ElectronicObserver.Window.Dialog {
 			FormFleet_FixShipNameWidth.Checked = config.FormFleet.FixShipNameWidth;
 			FormFleet_ShortenHPBar.Checked = config.FormFleet.ShortenHPBar;
 			FormFleet_ShowNextExp.Checked = config.FormFleet.ShowNextExp;
+			FormFleet_EquipmentLevelVisibility.SelectedIndex = (int)config.FormFleet.EquipmentLevelVisibility;
 			FormFleet_BlinkHPBar.Checked = config.UI.NotExpeditionBlink;
 			FormFleet_TextProficiency.Checked = config.FormFleet.ShowTextProficiency;
-			FormFleet_ShowEquipmentLevel.Checked = config.FormFleet.ShowEquipmentLevel;
 			FormFleet_AirSuperiorityMethod.SelectedIndex = config.FormFleet.AirSuperiorityMethod;
 			FormFleet_ShowAnchorageRepairingTimer.Checked = config.FormFleet.ShowAnchorageRepairingTimer;
 			FormFleet_BlinkAtCompletion.Checked = config.FormFleet.BlinkAtCompletion;
 
 			FormShipGroup_AutoUpdate.Checked = config.FormShipGroup.AutoUpdate;
 			FormShipGroup_ShowStatusBar.Checked = config.FormShipGroup.ShowStatusBar;
+			FormShipGroup_ShipNameSortMethod.SelectedIndex = config.FormShipGroup.ShipNameSortMethod;
 
 			FormBrowser_IsEnabled.Checked = config.FormBrowser.IsEnabled;
 			FormBrowser_ZoomRate.Value = config.FormBrowser.ZoomRate;
@@ -417,9 +419,6 @@ namespace ElectronicObserver.Window.Dialog {
 			FormCompass_CandidateDisplayCount.Value = config.FormCompass.CandidateDisplayCount;
 
 			//[データベース]
-			//Database_SendDataToKancolleDB.Checked = config.Connection.SendDataToKancolleDB;
-			//Database_SendKancolleOAuth.Text = config.Connection.SendKancolleOAuth;
-			//Database_SendDataToKCVDB.Checked = config.Connection.SendDataToKCVDB;
 
 			//[BGM]
 			BGMPlayer_Enabled.Checked = config.BGMPlayer.Enabled;
@@ -544,6 +543,7 @@ namespace ElectronicObserver.Window.Dialog {
 			config.Control.ConditionBorder = (int)Control_ConditionBorder.Value;
 			config.Control.RecordAutoSaving = Control_RecordAutoSaving.SelectedIndex;
 			config.Control.UseSystemVolume = Control_UseSystemVolume.Checked;
+			config.Control.PowerEngagementForm = Control_PowerEngagementForm.SelectedIndex + 1;
 
 
 			//[起動と終了]
@@ -565,15 +565,16 @@ namespace ElectronicObserver.Window.Dialog {
 			config.FormFleet.FixShipNameWidth = FormFleet_FixShipNameWidth.Checked;
 			config.FormFleet.ShortenHPBar = FormFleet_ShortenHPBar.Checked;
 			config.FormFleet.ShowNextExp = FormFleet_ShowNextExp.Checked;
+			config.FormFleet.EquipmentLevelVisibility = (Window.Control.ShipStatusEquipment.LevelVisibilityFlag)FormFleet_EquipmentLevelVisibility.SelectedIndex;
 			config.UI.NotExpeditionBlink = FormFleet_BlinkHPBar.Checked;
 			config.FormFleet.ShowTextProficiency = FormFleet_TextProficiency.Checked;
-			config.FormFleet.ShowEquipmentLevel = FormFleet_ShowEquipmentLevel.Checked;
 			config.FormFleet.AirSuperiorityMethod = FormFleet_AirSuperiorityMethod.SelectedIndex;
 			config.FormFleet.ShowAnchorageRepairingTimer = FormFleet_ShowAnchorageRepairingTimer.Checked;
 			config.FormFleet.BlinkAtCompletion = FormFleet_BlinkAtCompletion.Checked;
 
 			config.FormShipGroup.AutoUpdate = FormShipGroup_AutoUpdate.Checked;
 			config.FormShipGroup.ShowStatusBar = FormShipGroup_ShowStatusBar.Checked;
+			config.FormShipGroup.ShipNameSortMethod = FormShipGroup_ShipNameSortMethod.SelectedIndex;
 
 			config.FormBrowser.IsEnabled = FormBrowser_IsEnabled.Checked;
 			config.FormBrowser.ZoomRate = (int)FormBrowser_ZoomRate.Value;
@@ -594,9 +595,6 @@ namespace ElectronicObserver.Window.Dialog {
 			config.FormCompass.CandidateDisplayCount = (int)FormCompass_CandidateDisplayCount.Value;
 
 			//[データベース]
-			//config.Connection.SendDataToKancolleDB = Database_SendDataToKancolleDB.Checked;
-			//config.Connection.SendKancolleOAuth = Database_SendKancolleOAuth.Text;
-			//config.Connection.SendDataToKCVDB = Database_SendDataToKCVDB.Checked;
 
 			//[BGM]
 			config.BGMPlayer.Enabled = BGMPlayer_Enabled.Checked;
@@ -740,12 +738,6 @@ namespace ElectronicObserver.Window.Dialog {
 
 		}
 
-
-		private void Database_LinkKCVDB_LinkClicked( object sender, LinkLabelLinkClickedEventArgs e ) {
-			System.Diagnostics.Process.Start( "http://kcvdb.jp/guidelines" );
-		}
-
-		
 
 	}
 
