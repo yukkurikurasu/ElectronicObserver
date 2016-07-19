@@ -304,6 +304,13 @@ namespace ItemUpgrade
             RequirementList.Steps.SetCondition(7, 10, "46cm三連装砲", 3);
             AddInformation(ItemType.大口径主砲, "試製51cm連装砲", new int[] { 1, 2 }, "大和改", RequirementList);
             AddInformation(ItemType.大口径主砲, "試製51cm連装砲", new int[] { 1, 3 }, "武蔵改", RequirementList);
+            
+            RequirementList.New();
+            RequirementList.Initial.SetCondition(6, 10, "41cm連装砲", 3);
+            RequirementList.Steps.SetCondition(8, 16, "46cm三連装砲", 3);
+            AddInformation(ItemType.大口径主砲, "16inch三連装砲 Mk.7", new int[] { 0, 1, 2, 3, 4, 5, 6 }, "Iowa", RequirementList);
+            
+            
 
             RequirementList.New();
             RequirementList.Initial.SetCondition(1, 2, "10cm連装高角砲", 1);
